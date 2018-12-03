@@ -269,7 +269,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 搜索商品
-     * @param type：商品关键字
+     * @param type：商品名称
      * @param page：商品页码
      * @param number：一页所要显示的商品数量
      */
