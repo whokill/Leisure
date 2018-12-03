@@ -271,7 +271,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
      * 搜索商品
      * @param type：商品类型
      * @param page：商品页码
-     * @param number：一页索要显示的商品数量
+     * @param number：一页所要显示的商品数量
      */
     private void searchGoogds(String type,String page,String number){
         String url = search_url+"/"+type+"/"+page+"/"+number;
