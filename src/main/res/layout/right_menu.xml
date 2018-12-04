@@ -16,34 +16,44 @@
             android:textSize="13sp"
             android:textColor="#000000"
             android:textStyle="bold"/>
-        <LinearLayout
+        <cn.linghouse.leisure.Util.RadioGroupUtils
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
+            android:id="@+id/rg_utils"
             android:layout_marginLeft="20dp">
-            <Button
+            <RadioButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:text="见面交易"
-                android:textSize="10sp"
+                android:textColor="@color/radiobutton_classify_textcolor"
+                style="@style/my_radiobutton_style"
+                android:textSize="13sp"
+                android:background="@drawable/radiobutton_background"
                 android:layout_marginRight="10dp"/>
-            <Button
+            <RadioButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:text="包邮"
-                android:textSize="10sp"
+                android:textColor="@color/radiobutton_classify_textcolor"
+                style="@style/my_radiobutton_style"
+                android:textSize="13sp"
+                android:background="@drawable/radiobutton_background"
                 android:layout_marginRight="10dp"/>
-            <Button
+            <RadioButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:text="同城自提"
-                android:textSize="10sp"
+                android:textColor="@color/radiobutton_classify_textcolor"
+                style="@style/my_radiobutton_style"
+                android:textSize="13sp"
+                android:background="@drawable/radiobutton_background"
                 android:layout_marginRight="10dp"/>
-        </LinearLayout>
+        </cn.linghouse.leisure.Util.RadioGroupUtils>
     </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -73,6 +83,7 @@
                 android:layout_height="35dp"
                 android:layout_weight="1"
                 android:hint="最低价"
+                android:id="@+id/sl_et_price_min"
                 android:textSize="10sp"
                 android:paddingLeft="6dp"
                 android:background="@drawable/shape_cornet_screening"
@@ -90,6 +101,7 @@
                 android:textSize="10sp"
                 android:paddingLeft="6dp"
                 android:hint="最高价"
+                android:id="@+id/sl_et_price_max"
                 android:background="@drawable/shape_cornet_screening"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"/>
@@ -100,20 +112,21 @@
         android:layout_height="match_parent"
         android:layout_marginTop="25dp"
         android:gravity="bottom"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:id="@+id/lin_button"
         android:orientation="horizontal">
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:text="重  置"
+            android:layout_marginLeft="10dp"
             android:id="@+id/btn_restart"
             android:background="#DEDEDE"
             android:layout_marginRight="10dp"
             android:layout_weight="1"/>
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:text="确  定"
             android:id="@+id/btn_sure"
             android:background="#ff0000"
