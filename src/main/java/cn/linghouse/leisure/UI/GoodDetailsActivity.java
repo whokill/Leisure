@@ -54,10 +54,10 @@ public class GoodDetailsActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_add_shoppingcar:
-                ToastUtil.ShowLong(GoodDetailsActivity.this, "加入购物车");
+                ToastUtil.ShowLong("加入购物车");
                 break;
             case R.id.btn_shopping:
-                ToastUtil.ShowLong(GoodDetailsActivity.this, "立即购买");
+                ToastUtil.ShowLong("立即购买");
                 break;
             case R.id.iv_goods_details_back:
                 GoodDetailsActivity.this.finish();

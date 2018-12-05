@@ -83,7 +83,7 @@ public class Index_Adapter extends BaseAdapter {
         viewHolder.item_image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.ShowShort(context,"image1");
+                ToastUtil.ShowShort("image1");
                 /*Intent intent = new Intent();
                 intent.setClass(context,GoodDetailsActivity.class);
                 context.startActivity(intent);*/
@@ -93,7 +93,7 @@ public class Index_Adapter extends BaseAdapter {
         viewHolder.item_image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.ShowShort(context,"image2");
+                ToastUtil.ShowShort("image2");
             }
         });
         return convertView;

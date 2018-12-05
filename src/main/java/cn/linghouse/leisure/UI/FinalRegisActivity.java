@@ -73,7 +73,7 @@ public class FinalRegisActivity extends AppCompatActivity implements View.OnClic
                                     try {
                                         JSONObject jsonObject = new JSONObject(response);
                                         String msg = jsonObject.getString("msg");
-                                        ToastUtil.ShowShort(FinalRegisActivity.this,msg);
+                                        ToastUtil.ShowShort(msg);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

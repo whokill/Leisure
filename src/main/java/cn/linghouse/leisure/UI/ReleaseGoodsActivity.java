@@ -363,13 +363,13 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                     @Override
                     public void onClick(View v) {
                         if (TextUtils.isEmpty(etlabel.getText().toString())&&taglayout.getChildCount()<5){
-                            ToastUtil.ShowShort(ReleaseGoodsActivity.this,"标签名不能为空哦");
+                            ToastUtil.ShowShort("标签名不能为空哦");
                         }else if (taglayout.getChildCount()<5){
                             list.add(etlabel.getText().toString());
                             etlabel.setText("");
                             taglayout.setTags(list);
                         }else{
-                            ToastUtil.ShowShort(ReleaseGoodsActivity.this,"最多只能添加5个标签哦");
+                            ToastUtil.ShowShort("最多只能添加5个标签哦");
                         }
                     }
                 });
@@ -469,22 +469,22 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                 //判断商品的各个参数是否为空
                 if (TextUtils.isEmpty(etbabytitle.getText().toString())){
                     etbabytitle.setError("商品标题不能为空");
-                    ToastUtil.ShowLong(ReleaseGoodsActivity.this,"商品标题不能为空");
+                    ToastUtil.ShowLong("商品标题不能为空");
                 }else if (TextUtils.isEmpty(etbabydescribe.getText().toString())){
                     etbabydescribe.setError("商品描述不能为空");
-                    ToastUtil.ShowLong(ReleaseGoodsActivity.this,"商品描述不能为空");
+                    ToastUtil.ShowLong("商品描述不能为空");
                 }else if (TextUtils.isEmpty(finalclassify)){
                     //没有选择分类
-                    ToastUtil.ShowLong(ReleaseGoodsActivity.this,"分类为空");
+                    ToastUtil.ShowLong("分类为空");
                 }else if (TextUtils.isEmpty(finalprice)){
                     //没有输入价格
-                    ToastUtil.ShowLong(ReleaseGoodsActivity.this,"价格为空");
+                    ToastUtil.ShowLong("价格为空");
                 }else if (TextUtils.isEmpty(finalway)){
                     //没有选择交易方式
-                    ToastUtil.ShowLong(ReleaseGoodsActivity.this,"交易方式为空");
+                    ToastUtil.ShowLong("交易方式为空");
                 }else if (list==null || list.size()==0){
                     //list为空，也就是没有添加任何标签
-                    ToastUtil.ShowLong(ReleaseGoodsActivity.this,"没有标签");
+                    ToastUtil.ShowLong("没有标签");
                 }else{
                     //判断商品信息后，调用网络请求，将物品信息发布到后端
                     uploadImage(images,finalclassify,finalprice,finalway,list);
@@ -519,7 +519,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
      * @param label：商品标签
      */
     private void uploadImage(ArrayList<ImageItem> ImageList,String classify,String price,String way,List<String> label) {
-        ToastUtil.ShowLong(ReleaseGoodsActivity.this,""+classify+"、"+price+"、"+way+"、"+label.size());
+        ToastUtil.ShowLong(classify+"、"+price+"、"+way+"、"+label.size());
     }
 
     @Override

@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        ToastUtil.ShowShort(LoginActivity.this,e.toString());
+                        ToastUtil.ShowShort(e.toString());
                     }
 
                     @Override
@@ -135,11 +135,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             SharedPreferences.Editor editor = pre.edit();
                                             editor.putString("username",username);
                                             editor.commit();
-                                            ToastUtil.ShowShort(LoginActivity.this,"登录成功");
+                                            ToastUtil.ShowShort("登录成功");
                                             startActivity(new Intent(LoginActivity.this,IndexActivity.class));
                                             overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                                         }else{
-                                            ToastUtil.ShowShort(LoginActivity.this,msg);
+                                            ToastUtil.ShowShort(msg);
                                             etCode.setText("");
                                             GetCode();
                                         }

@@ -143,13 +143,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
                     case 0:
-                        ToastUtil.ShowShort(SearchActivity.this,"综合排序");
+                        ToastUtil.ShowShort("综合排序");
                         break;
                     case 1:
-                        ToastUtil.ShowShort(SearchActivity.this,"价格升序");
+                        ToastUtil.ShowShort("价格升序");
                         break;
                     case 2:
-                        ToastUtil.ShowShort(SearchActivity.this,"价格降序");
+                        ToastUtil.ShowShort("价格降序");
                         break;
                 }
             }
@@ -200,6 +200,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 if (!slidingMenu.isSecondaryMenuShowing()){
                     slidingMenu.showSecondaryMenu();
                 }else{
+                    //隐藏侧滑菜单
                     slidingMenu.toggle();
                 }
                 break;

@@ -128,7 +128,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
                 if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
                     openAlbum();
                 }else{
-                    ToastUtil.ShowShort(getContext(),"缺少必要权限");
+                    ToastUtil.ShowShort("缺少必要权限");
                 }
                 break;
         }
@@ -191,12 +191,12 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
             //判断是否是支付宝收款二维码,用布尔类型来保存结果
             boolean iscode = parseafter.startsWith("HTTPS://QR.ALIPAY.COM");
             if (!iscode){
-                ToastUtil.ShowShort(getContext(),"您选取的不是支付宝的收款二维码,请重新选择");
+                ToastUtil.ShowShort("您选取的不是支付宝的收款二维码,请重新选择");
             }else{
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("imageurl",imagePath);
                 editor.commit();
-                ToastUtil.ShowLong(getContext(),""+sp.getString("imageurl","查询失败"));
+                ToastUtil.ShowLong(sp.getString("imageurl","查询失败"));
                 ivcollection.setImageBitmap(bitmap);
                 //点击查看大图
                 ivcollection.setOnClickListener(new View.OnClickListener() {
@@ -240,7 +240,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener{
                 sp = getContext().getSharedPreferences("data",Context.MODE_PRIVATE);
                 sp.edit().putString("username","false").commit();
                 sp.getString("username","");
-                ToastUtil.ShowShort(getContext(),"注销成功");
+                ToastUtil.ShowShort("注销成功");
                 lltitle.setVisibility(View.VISIBLE);
                 linelogin.setVisibility(View.GONE);
                 linenotlogged.setVisibility(View.VISIBLE);

@@ -55,7 +55,6 @@ public class IndexFragment extends Fragment{
     private ListView listView;
     private Index_Adapter adapter;
     private View headview;
-    private MyApplication application;
     private SharedPreferences sp;
     private TextView search;
     private String [] images = {
@@ -70,7 +69,6 @@ public class IndexFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_fragment_main,container,false);
         headview = getLayoutInflater().inflate(R.layout.head_view,null);
-        application = MyApplication.getInstance();
         sp = getActivity().getSharedPreferences("data",Context.MODE_PRIVATE);
         String name = sp.getString("username","false");
         if (name.equals("false")){
