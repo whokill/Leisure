@@ -38,6 +38,7 @@ import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import java.util.ArrayList;
 import java.util.List;
 import cn.linghouse.leisure.Adapter.ImagePickerAdapter;
+import cn.linghouse.leisure.App.ActivityController;
 import cn.linghouse.leisure.R;
 import cn.linghouse.leisure.Util.KeyboardUtil;
 import cn.linghouse.leisure.Util.RadioGroupUtils;
@@ -79,6 +80,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_release_goods);
+        ActivityController.addActivity(this);
         //沉浸式状态栏
         ImmersionBar.with(this).init();
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA,
@@ -526,5 +528,6 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
     protected void onDestroy() {
         super.onDestroy();
         ImmersionBar.with(this).destroy();
+        ActivityController.removeActivity(this);
     }
 }

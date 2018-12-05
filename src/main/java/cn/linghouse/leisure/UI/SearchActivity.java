@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -44,6 +42,8 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.linghouse.leisure.Adapter.Search_Adapter;
+import cn.linghouse.leisure.App.ActivityController;
+import cn.linghouse.leisure.App.MyApplication;
 import cn.linghouse.leisure.Entity.Search_Entity;
 import cn.linghouse.leisure.R;
 import cn.linghouse.leisure.Util.RadioGroupUtils;
@@ -73,6 +73,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        ActivityController.addActivity(this);
         //沉浸式状态栏
         ImmersionBar.with(SearchActivity.this).init();
         //初始化控件
@@ -217,16 +218,16 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                 SearchActivity.this.finish();
                 break;
-            //侧滑菜单中的重置按钮
+            //侧滑菜单中的重置按钮,清除所有已经设置了的数据
             case R.id.btn_restart:
                 rgutils.clearCheck();
                 slmin.setText("");
                 slmax.setText("");
                 slidingMenu.toggle();
                 break;
-                //侧滑菜单中的确定按钮
+                //侧滑菜单中的确定按钮,发起网络请求，将筛选条件发送到后端
             case R.id.btn_sure:
-                //发起网络请求，将筛选条件发送到后端
+
                 break;
                 default:
                     break;
@@ -352,5 +353,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     protected void onDestroy() {
         super.onDestroy();
         ImmersionBar.with(this).destroy();
+        ActivityController.removeActivity(this);
     }
 }

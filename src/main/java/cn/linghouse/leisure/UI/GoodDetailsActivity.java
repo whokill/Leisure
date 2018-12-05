@@ -13,6 +13,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.linghouse.leisure.App.ActivityController;
 import cn.linghouse.leisure.R;
 import cn.linghouse.leisure.Util.ToastUtil;
 
@@ -43,6 +44,7 @@ public class GoodDetailsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_details);
+        ActivityController.addActivity(this);
         ImmersionBar.with(GoodDetailsActivity.this).init();
         ButterKnife.bind(this);
         String title = getIntent().getStringExtra("title");
@@ -71,5 +73,6 @@ public class GoodDetailsActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ImmersionBar.with(GoodDetailsActivity.this).destroy();
+        ActivityController.removeActivity(this);
     }
 }

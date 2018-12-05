@@ -17,6 +17,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.linghouse.leisure.App.ActivityController;
 import cn.linghouse.leisure.R;
 import cn.linghouse.leisure.Util.ToastUtil;
 import okhttp3.Call;
@@ -31,6 +32,7 @@ public class FinalRegisActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_final);
+        ActivityController.addActivity(this);
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
         password = intent.getStringExtra("password");
@@ -87,5 +89,11 @@ public class FinalRegisActivity extends AppCompatActivity implements View.OnClic
                 FinalRegisActivity.this.finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityController.removeActivity(this);
     }
 }

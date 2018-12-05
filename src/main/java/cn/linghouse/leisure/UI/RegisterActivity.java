@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import cn.linghouse.leisure.App.ActivityController;
 import cn.linghouse.leisure.R;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
@@ -23,6 +24,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        ActivityController.addActivity(this);
         initView();
     }
 
@@ -67,5 +69,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityController.removeActivity(this);
     }
 }

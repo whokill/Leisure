@@ -17,6 +17,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import java.util.ArrayList;
 
 import cn.linghouse.leisure.Adapter.Fragment_Adapter;
+import cn.linghouse.leisure.App.ActivityController;
 import cn.linghouse.leisure.Fragment.PersonalFragment;
 import cn.linghouse.leisure.Fragment.IndexFragment;
 import cn.linghouse.leisure.Fragment.Recommend_Fragment;
@@ -39,6 +40,7 @@ public class IndexActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActivityController.addActivity(this);
         //沉浸式状态栏
         ImmersionBar.with(IndexActivity.this).init();
         initView();
@@ -103,5 +105,11 @@ public class IndexActivity extends AppCompatActivity implements View.OnClickList
                 default:
                     break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityController.removeActivity(this);
     }
 }

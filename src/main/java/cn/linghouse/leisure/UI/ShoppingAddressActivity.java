@@ -10,6 +10,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.linghouse.leisure.App.ActivityController;
 import cn.linghouse.leisure.R;
 
 public class ShoppingAddressActivity extends AppCompatActivity {
@@ -20,6 +21,7 @@ public class ShoppingAddressActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shopping_address_activity);
+        ActivityController.addActivity(this);
         //沉浸式状态栏
         ImmersionBar.with(this).init();
         ButterKnife.bind(this);
@@ -35,5 +37,6 @@ public class ShoppingAddressActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ImmersionBar.with(this).destroy();
+        ActivityController.removeActivity(this);
     }
 }

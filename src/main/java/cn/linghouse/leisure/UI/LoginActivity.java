@@ -22,6 +22,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.linghouse.leisure.App.ActivityController;
 import cn.linghouse.leisure.App.MyApplication;
 import cn.linghouse.leisure.Fragment.PersonalFragment;
 import cn.linghouse.leisure.R;
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ActivityController.addActivity(this);
         initView();
     }
 
@@ -159,5 +161,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 GetCode();
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityController.removeActivity(this);
     }
 }
