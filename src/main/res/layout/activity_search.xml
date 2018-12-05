@@ -56,35 +56,23 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="时间"
+                android:text="最新发布"
                 android:id="@+id/tv_news"
                 android:textColor="#000000"
                 android:gravity="center"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="销量"
+                android:text="销量优先"
                 android:textColor="#000000"
                 android:gravity="center"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="筛选"
+                android:text="更多筛选"
                 android:id="@+id/tv_classify"
                 android:textColor="#000000"
                 android:gravity="center"/>

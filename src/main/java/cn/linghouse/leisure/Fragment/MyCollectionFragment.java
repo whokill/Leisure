@@ -6,26 +6,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.UiThread;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.zhy.http.okhttp.OkHttpUtils;
-
-import cn.linghouse.leisure.App.MyApplication;
 import cn.linghouse.leisure.R;
 import cn.linghouse.leisure.UI.LoginActivity;
-import cn.linghouse.leisure.Util.AliPayUtil;
-import cn.linghouse.leisure.Util.ToastUtil;
 
-public class ShoppingCarFragment extends Fragment implements View.OnClickListener{
+public class MyCollectionFragment extends Fragment implements View.OnClickListener{
     private View view;
     private TextView jumplogin;
     private LinearLayout shoppingempty,linenotlogged;//购物车为空显示的视图
@@ -58,7 +50,7 @@ public class ShoppingCarFragment extends Fragment implements View.OnClickListene
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.shopping_car_fragment, container, false);
+        view = inflater.inflate(R.layout.my_collection_fragment, container, false);
         /**
          * 视图显示问题：
          * 1、当用户未登录时，所展示的界面应该是提示用户登录

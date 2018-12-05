@@ -135,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="#DEDEDE"
-        android:text="今日推荐"
+        android:text="热门商品"
         android:textSize="18sp"
         android:gravity="center_horizontal"/>
 </LinearLayout>

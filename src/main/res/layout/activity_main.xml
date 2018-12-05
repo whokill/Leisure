@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/my_radiobutton_style"
-                android:text="分类"
+                android:text="推荐"
                 android:textColor="@color/radiobutton_textcolor"
                 android:id="@+id/rb_second_page"/>
             <ImageView
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/my_radiobutton_style"
-                android:text="购物车"
+                android:text="收藏"
                 android:textColor="@color/radiobutton_textcolor"
                 android:id="@+id/rb_third_page"/>
             <RadioButton

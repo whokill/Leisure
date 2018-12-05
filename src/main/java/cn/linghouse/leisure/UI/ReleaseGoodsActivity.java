@@ -487,7 +487,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                     ToastUtil.ShowLong(ReleaseGoodsActivity.this,"没有标签");
                 }else{
                     //判断商品信息后，调用网络请求，将物品信息发布到后端
-                    uploadImage(finalclassify,finalprice,finalway,list);
+                    uploadImage(images,finalclassify,finalprice,finalway,list);
                 }
                 break;
             default:
@@ -518,7 +518,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
      * @param way：商品交易方式
      * @param label：商品标签
      */
-    private void uploadImage(String classify,String price,String way,List<String> label) {
+    private void uploadImage(ArrayList<ImageItem> ImageList,String classify,String price,String way,List<String> label) {
         ToastUtil.ShowLong(ReleaseGoodsActivity.this,""+classify+"、"+price+"、"+way+"、"+label.size());
     }
 

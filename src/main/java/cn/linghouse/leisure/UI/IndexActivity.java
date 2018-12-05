@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import cn.linghouse.leisure.Adapter.Fragment_Adapter;
 import cn.linghouse.leisure.Fragment.PersonalFragment;
 import cn.linghouse.leisure.Fragment.IndexFragment;
-import cn.linghouse.leisure.Fragment.ClassifyFragment;
-import cn.linghouse.leisure.Fragment.ShoppingCarFragment;
+import cn.linghouse.leisure.Fragment.Recommend_Fragment;
+import cn.linghouse.leisure.Fragment.MyCollectionFragment;
 import cn.linghouse.leisure.R;
 import cn.linghouse.leisure.Util.NoScrollViewPager;
 
@@ -58,8 +58,8 @@ public class IndexActivity extends AppCompatActivity implements View.OnClickList
 
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(new IndexFragment());
-        fragments.add(new ClassifyFragment());
-        fragments.add(new ShoppingCarFragment());
+        fragments.add(new Recommend_Fragment());
+        fragments.add(new MyCollectionFragment());
         fragments.add(new PersonalFragment());
         adapter = new Fragment_Adapter(getSupportFragmentManager());
         adapter.setList(fragments);

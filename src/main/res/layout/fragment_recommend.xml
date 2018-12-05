@@ -1,36 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:id="@+id/line_shopping_address"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/title"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="27dp"
-            android:layout_height="27dp"
-            android:src="@mipmap/left"
-            android:id="@+id/iv_shopping_address_back"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center_vertical"/>
+        android:background="@color/title">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="收货地址"
-            android:layout_marginTop="5dp"
+            android:text="每日推荐"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:textColor="#ffffff"
             android:textSize="20sp"
-            android:paddingRight="20dp"
             android:gravity="center"
             android:layout_gravity="center"/>
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="尊敬的用户"
+        android:textColor="#000000"
+        android:gravity="center"
+        android:textSize="15sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="根据您以往的浏览和购买记录,特向您推荐以下商品"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="13sp"
+        android:layout_marginTop="10dp"/>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rl_shopping_address">
+        android:layout_marginTop="10dp"
+        android:id="@+id/rl_recommend">
+
     </android.support.v7.widget.RecyclerView>
 </LinearLayout>
