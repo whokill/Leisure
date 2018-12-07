@@ -50,13 +50,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cn.linghouse.leisure.Adapter.ImagePickerAdapter;
-import cn.linghouse.leisure.App.ActivityController;
-import cn.linghouse.leisure.App.MyApplication;
+import cn.linghouse.Adapter.ImagePickerAdapter;
+import cn.linghouse.App.ActivityController;
+import cn.linghouse.Util.KeyboardUtil;
+import cn.linghouse.Util.MyRadioGroup;
+import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
-import cn.linghouse.leisure.Util.KeyboardUtil;
-import cn.linghouse.leisure.Util.MyRadioGroup;
-import cn.linghouse.leisure.Util.ToastUtil;
 import cn.qqtheme.framework.picker.OptionPicker;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;

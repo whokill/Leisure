@@ -292,8 +292,36 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
      * @param page：商品页码
      * @param number：一页所要显示的商品数量
      */
-    private void searchGoogds(String type,String page,String number){
+    private void searchGoogds(String name,String page,String size){
+        OkHttpUtils.post()
+                .url("http://192.168.137.1:8080/leisure/commodities/search")
+                .addParams("commodityName",name)
+                .addParams("searchMethod","default")
+                .addParams("page",page)
+                .addParams("size",size)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
 
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            JSONArray commd = data.getJSONArray("commodities");
+                            for (int i =0;i<commd.length();i++){
+                                JSONObject object = commd.getJSONObject(i);
+                                String price = object.getString("price");
+                                ToastUtil.ShowLong(price);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     @Override

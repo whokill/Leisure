@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import cn.linghouse.leisure.Entity.Shopping_Address_Entity;
+import cn.linghouse.Entity.Shopping_Address_Entity;
 import cn.linghouse.leisure.R;
 
 public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Address_Adapter.MyHolder>{

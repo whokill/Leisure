@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import cn.linghouse.UI.LoginActivity;
 import cn.linghouse.leisure.R;
-import cn.linghouse.leisure.UI.LoginActivity;
 
 public class MyCollectionFragment extends Fragment implements View.OnClickListener{
     private View view;

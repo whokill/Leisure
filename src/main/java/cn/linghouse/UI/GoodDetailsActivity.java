@@ -13,9 +13,9 @@ import com.gyf.barlibrary.ImmersionBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.linghouse.leisure.App.ActivityController;
+import cn.linghouse.App.ActivityController;
+import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
-import cn.linghouse.leisure.Util.ToastUtil;
 
 public class GoodDetailsActivity extends AppCompatActivity {
     //商品图片

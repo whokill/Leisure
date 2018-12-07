@@ -16,14 +16,14 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.ArrayList;
 
-import cn.linghouse.leisure.Adapter.Fragment_Adapter;
-import cn.linghouse.leisure.App.ActivityController;
-import cn.linghouse.leisure.Fragment.PersonalFragment;
-import cn.linghouse.leisure.Fragment.IndexFragment;
-import cn.linghouse.leisure.Fragment.Recommend_Fragment;
-import cn.linghouse.leisure.Fragment.MyCollectionFragment;
+import cn.linghouse.Adapter.Fragment_Adapter;
+import cn.linghouse.App.ActivityController;
+import cn.linghouse.Fragment.IndexFragment;
+import cn.linghouse.Fragment.MyCollectionFragment;
+import cn.linghouse.Fragment.PersonalFragment;
+import cn.linghouse.Fragment.Recommend_Fragment;
+import cn.linghouse.Util.NoScrollViewPager;
 import cn.linghouse.leisure.R;
-import cn.linghouse.leisure.Util.NoScrollViewPager;
 
 public class IndexActivity extends AppCompatActivity implements View.OnClickListener{
     private NoScrollViewPager vpPager;

@@ -27,8 +27,6 @@
         <activity android:name="cn.linghouse.UI.LoginActivity"/>
         <activity android:name="cn.linghouse.UI.SearchActivity"/>
         <activity android:name="cn.linghouse.UI.GoodDetailsActivity"/>
-        <activity android:name="cn.linghouse.UI.ShoppingAddressActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"/>
+        <activity android:name="cn.linghouse.UI.ShoppingAddressActivity"/>
     </application>
 </manifest>

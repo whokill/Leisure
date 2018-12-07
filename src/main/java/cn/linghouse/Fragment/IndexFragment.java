@@ -39,12 +39,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cn.linghouse.leisure.Adapter.Index_Adapter;
-import cn.linghouse.leisure.App.MyApplication;
-import cn.linghouse.leisure.Entity.Index_Pic_Entity;
+import cn.linghouse.Adapter.Index_Adapter;
+import cn.linghouse.Entity.Index_Pic_Entity;
+import cn.linghouse.UI.SearchActivity;
 import cn.linghouse.leisure.R;
-import cn.linghouse.leisure.UI.SearchActivity;
-import cn.linghouse.leisure.Util.ToastUtil;
 import okhttp3.Call;
 
 public class IndexFragment extends Fragment{

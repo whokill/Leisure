@@ -3,12 +3,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <cn.linghouse.leisure.Util.NoScrollViewPager
+    <cn.linghouse.Util.NoScrollViewPager
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:id="@+id/vp_pager">
-    </cn.linghouse.leisure.Util.NoScrollViewPager>
+    </cn.linghouse.Util.NoScrollViewPager>
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"

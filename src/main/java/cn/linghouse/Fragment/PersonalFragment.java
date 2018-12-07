@@ -36,11 +36,11 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import cn.linghouse.leisure.App.ActivityController;
+import cn.linghouse.App.ActivityController;
+import cn.linghouse.UI.LoginActivity;
+import cn.linghouse.UI.ShoppingAddressActivity;
+import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
-import cn.linghouse.leisure.UI.LoginActivity;
-import cn.linghouse.leisure.UI.ShoppingAddressActivity;
-import cn.linghouse.leisure.Util.ToastUtil;
 import okhttp3.Call;
 
 public class PersonalFragment extends Fragment implements View.OnClickListener {

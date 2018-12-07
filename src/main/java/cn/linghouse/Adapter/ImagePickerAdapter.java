@@ -14,8 +14,8 @@ import com.lzy.imagepicker.bean.ImageItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.linghouse.UI.ReleaseGoodsActivity;
 import cn.linghouse.leisure.R;
-import cn.linghouse.leisure.UI.ReleaseGoodsActivity;
 
 public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.SelectedPicViewHolder> {
     private int maxImgCount;

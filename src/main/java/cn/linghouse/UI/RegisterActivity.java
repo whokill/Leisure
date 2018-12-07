@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import cn.linghouse.leisure.App.ActivityController;
+import cn.linghouse.App.ActivityController;
 import cn.linghouse.leisure.R;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{

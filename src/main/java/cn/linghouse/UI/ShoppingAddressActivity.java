@@ -10,7 +10,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.linghouse.leisure.App.ActivityController;
+import cn.linghouse.App.ActivityController;
 import cn.linghouse.leisure.R;
 
 public class ShoppingAddressActivity extends AppCompatActivity {

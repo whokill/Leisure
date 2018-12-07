@@ -22,12 +22,10 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.linghouse.leisure.App.ActivityController;
-import cn.linghouse.leisure.App.MyApplication;
-import cn.linghouse.leisure.Fragment.PersonalFragment;
+import cn.linghouse.App.ActivityController;
+import cn.linghouse.Util.CodeUtils;
+import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
-import cn.linghouse.leisure.Util.CodeUtils;
-import cn.linghouse.leisure.Util.ToastUtil;
 import okhttp3.Call;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
