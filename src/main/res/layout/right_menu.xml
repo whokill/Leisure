@@ -16,44 +16,35 @@
             android:textSize="13sp"
             android:textColor="#000000"
             android:textStyle="bold"/>
-        <cn.linghouse.leisure.Util.RadioGroupUtils
+        <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             android:id="@+id/rg_utils"
-            android:layout_marginLeft="20dp">
+            android:layout_gravity="center_horizontal">
             <RadioButton
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="35dp"
                 android:layout_weight="1"
-                android:text="见面交易"
+                android:text="见 面 交 易"
+                android:layout_marginLeft="20dp"
                 android:textColor="@color/radiobutton_classify_textcolor"
                 style="@style/my_radiobutton_style"
                 android:textSize="13sp"
                 android:background="@drawable/radiobutton_background"
                 android:layout_marginRight="10dp"/>
             <RadioButton
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="35dp"
                 android:layout_weight="1"
-                android:text="包邮"
+                android:text="包 邮"
                 android:textColor="@color/radiobutton_classify_textcolor"
                 style="@style/my_radiobutton_style"
                 android:textSize="13sp"
                 android:background="@drawable/radiobutton_background"
-                android:layout_marginRight="10dp"/>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:text="同城自提"
-                android:textColor="@color/radiobutton_classify_textcolor"
-                style="@style/my_radiobutton_style"
-                android:textSize="13sp"
-                android:background="@drawable/radiobutton_background"
-                android:layout_marginRight="10dp"/>
-        </cn.linghouse.leisure.Util.RadioGroupUtils>
+                android:layout_marginRight="20dp"/>
+        </RadioGroup>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

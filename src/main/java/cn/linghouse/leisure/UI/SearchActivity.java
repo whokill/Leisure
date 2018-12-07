@@ -43,10 +43,8 @@ import java.util.Locale;
 
 import cn.linghouse.leisure.Adapter.Search_Adapter;
 import cn.linghouse.leisure.App.ActivityController;
-import cn.linghouse.leisure.App.MyApplication;
 import cn.linghouse.leisure.Entity.Search_Entity;
 import cn.linghouse.leisure.R;
-import cn.linghouse.leisure.Util.RadioGroupUtils;
 import cn.linghouse.leisure.Util.ToastUtil;
 import okhttp3.Call;
 
@@ -63,7 +61,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private ZLoadingDialog dialog;
     private Button restart,sure;
     private SlidingMenu slidingMenu;
-    private RadioGroupUtils rgutils;
+    //private RadioGroupUtils rgutils;
     private EditText slmin,slmax;
     private LinearLayout linbutton;
     private List<Search_Entity> search_entity;
@@ -185,7 +183,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         restart = slidingMenu.findViewById(R.id.btn_restart);
         sure = slidingMenu.findViewById(R.id.btn_sure);
         linbutton = slidingMenu.findViewById(R.id.lin_button);
-        rgutils = slidingMenu.findViewById(R.id.rg_utils);
+        //rgutils = slidingMenu.findViewById(R.id.rg_utils);
         slmin = slidingMenu.findViewById(R.id.sl_et_price_min);
         slmax = slidingMenu.findViewById(R.id.sl_et_price_max);
 
@@ -220,7 +218,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             //侧滑菜单中的重置按钮,清除所有已经设置了的数据
             case R.id.btn_restart:
-                rgutils.clearCheck();
+                //rgutils.clearCheck();
                 slmin.setText("");
                 slmax.setText("");
                 slidingMenu.toggle();

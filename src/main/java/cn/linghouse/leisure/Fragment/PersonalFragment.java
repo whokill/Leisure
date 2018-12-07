@@ -30,6 +30,8 @@ import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.xuexiang.xqrcode.XQRCode;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +41,7 @@ import cn.linghouse.leisure.R;
 import cn.linghouse.leisure.UI.LoginActivity;
 import cn.linghouse.leisure.UI.ShoppingAddressActivity;
 import cn.linghouse.leisure.Util.ToastUtil;
+import okhttp3.Call;
 
 public class PersonalFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.ll_title)
@@ -249,23 +252,17 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            //点击登录
+            //点击登录跳转到登录界面
             case R.id.tv_click_login:
                 startActivity(new Intent(getContext(), LoginActivity.class));
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                getActivity().finish();
                 onDestroyView();
                 break;
 
             //注销登录
             case R.id.tv_person_change_account:
-                sp = getContext().getSharedPreferences("data", Context.MODE_PRIVATE);
-                sp.edit().putString("username", "false").commit();
-                sp.getString("username", "");
-                ToastUtil.ShowShort("注销成功");
-                llTitle.setVisibility(View.VISIBLE);
-                lineLogin.setVisibility(View.GONE);
-                lineNotLogged.setVisibility(View.VISIBLE);
+                //调用切换账号的网络请求
+                chagneAccount();
                 break;
 
             //我的收货地址
@@ -292,6 +289,28 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+    //注销当前用户
+    private void chagneAccount() {
+        OkHttpUtils.get().url("http://192.168.137.1:8080/leisure/logout")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        sp = getContext().getSharedPreferences("data", Context.MODE_PRIVATE);
+                        sp.edit().putString("username","false").commit();
+                        sp.getString("username", "");
+                        ToastUtil.ShowLong(sp.getString("username","未获取到"));
+                        startActivity(new Intent(getContext(),LoginActivity.class));
+                        getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                    }
+                });
     }
 
     @Override

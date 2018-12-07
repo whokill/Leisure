@@ -138,6 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             editor.putString("username",username);
                                             editor.commit();
                                             ToastUtil.ShowShort("登录成功");
+                                            ToastUtil.ShowLong(pre.getString("username","未写入"));
                                             startActivity(new Intent(LoginActivity.this,IndexActivity.class));
                                             overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                                         }else{
