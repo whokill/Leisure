@@ -33,6 +33,7 @@
                 android:id="@+id/et_search_goods"
                 android:layout_marginRight="15dp"
                 android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:gravity="center_vertical"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -77,6 +78,10 @@
                 android:textColor="#000000"
                 android:gravity="center"/>
         </LinearLayout>
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/refresh">
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -84,6 +89,7 @@
             android:id="@+id/lv_search"
             android:layout_weight="1">
         </ListView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
