@@ -60,13 +60,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private Search_Adapter adapter;
     private TextView searchfaild;
     private Search_Entity entity;
-    private TextView tvclassify;
+    private TextView tvclassify, tvnews, tvscore;
     private ZLoadingDialog dialog;
     private Button restart, sure;
     private SlidingMenu slidingMenu;
     private RadioGroup rgutils;
     private EditText slmin, slmax;
-    private LinearLayout linbutton;
+    private LinearLayout linbutton,llscreening;
     private List<Search_Entity> search_entity;
     private String search_url = "http://192.168.137.1:8080/leisure/commodities/search";
 
@@ -102,6 +102,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initview() {
+        llscreening = findViewById(R.id.ll_screening);
+        llscreening.setVisibility(View.GONE);
+        tvscore = findViewById(R.id.tv_score);
+        tvnews = findViewById(R.id.tv_news);
         refreshLayout = findViewById(R.id.refresh);
         searchfaild = findViewById(R.id.tv_search_faild);
         searchback = findViewById(R.id.iv_search_back);
@@ -116,6 +120,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         tvclassify.setOnClickListener(this);
         searchback.setOnClickListener(this);
         tvsearch.setOnClickListener(this);
+        tvnews.setOnClickListener(this);
+        tvscore.setOnClickListener(this);
         final List<String> data = new ArrayList<>();
         data.add("综合排序");
         data.add("价格升序");
@@ -129,6 +135,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     if (TextUtils.isEmpty(etsearch.getText().toString())) {
                         etsearch.setError("输入宝贝名称试试看");
                     } else {
+                        llscreening.setVisibility(View.VISIBLE);
                         search_entity.clear();
                         initdialog();
                         searchGoogds_Default(etsearch.getText().toString(), "1", "20");
@@ -148,20 +155,19 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        ToastUtil.ShowShort("综合排序");
+                        search_entity.clear();
+                        initdialog();
+                        searchGoogds_Default(etsearch.getText().toString(), "0", "20");
                         break;
                     case 1:
                         search_entity.clear();
                         initdialog();
                         priceWay(etsearch.getText().toString(), "desc");
-                        ToastUtil.ShowShort("价格升序");
                         break;
                     case 2:
                         search_entity.clear();
                         initdialog();
                         priceWay(etsearch.getText().toString(), "asc");
-                        ToastUtil.ShowShort("价格降序");
-
                         break;
                 }
             }
@@ -199,6 +205,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         rgutils = slidingMenu.findViewById(R.id.rg_utils);
         slmin = slidingMenu.findViewById(R.id.sl_et_price_min);
         slmax = slidingMenu.findViewById(R.id.sl_et_price_max);
+        slmin.requestFocus();
 
         restart.setOnClickListener(this);
         sure.setOnClickListener(this);
@@ -229,6 +236,18 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 SearchActivity.this.finish();
                 break;
+            //搜索界面上的最新发布
+            case R.id.tv_news:
+                search_entity.clear();
+                initdialog();
+                searchGoods_news(etsearch.getText().toString(), "0", "20");
+                break;
+            //搜索界面上的评分排序
+            case R.id.tv_score:
+                search_entity.clear();
+                initdialog();
+                searchGoods_score(etsearch.getText().toString(),"0","20");
+                break;
             //侧滑菜单中的重置按钮,清除所有已经设置了的数据
             case R.id.btn_restart:
                 rgutils.clearCheck();
@@ -238,10 +257,177 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             //侧滑菜单中的确定按钮,发起网络请求，将筛选条件发送到后端
             case R.id.btn_sure:
-
+                search_entity.clear();
+                initdialog();
+                search_Goods_Area(etsearch.getText().toString(),slmax.getText().toString(),slmin.getText().toString(),"0","20");
+                slidingMenu.toggle();
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 搜索商品
+     *
+     * @param name:商品名称
+     * @param page：商品页码
+     * @param size：一页显示的商品数量
+     */
+    private void searchGoogds_Default(String name, String page, String size) {
+        OkHttpUtils.post()
+                .url(search_url)
+                .addParams("commodityName", name)
+                .addParams("searchMethod", "default")
+                .addParams("page", page)
+                .addParams("size", size)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        llscreening.setVisibility(View.VISIBLE);
+                        SaxJson(response);
+                    }
+                });
+    }
+
+    /**
+     * 通过价格升序商品
+     * @param name：商品名称
+     */
+    private void priceWay(String name, String priceway) {
+        OkHttpUtils.post()
+                .url(search_url)
+                .addParams("commodityName", name)
+                .addParams("searchMethod", "price")
+                .addParams("order", priceway)
+                .addParams("page", "0")
+                .addParams("size", "20")
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                SaxJson(response);
+            }
+        });
+    }
+
+    /**
+     * 根据发布时间排序
+     * @param name：商品名称
+     * @param page：商品页码
+     * @param size：一页的数量
+     */
+    private void searchGoods_news(String name, String page, String size) {
+        OkHttpUtils.post()
+                .url(search_url)
+                .addParams("commodityName", name)
+                .addParams("searchMethod", "latest")
+                .addParams("page", page)
+                .addParams("size", size)
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                SaxJson(response);
+            }
+        });
+    }
+
+    /**
+     * 根据商品分数来排序
+     * @param name
+     * @param page
+     * @param size
+     */
+    private void searchGoods_score(String name,String page,String size){
+        OkHttpUtils.post()
+                .url(search_url)
+                .addParams("commodityName",name)
+                .addParams("searchMethod","goods")
+                .addParams("page",page)
+                .addParams("size",size)
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                SaxJson(response);
+            }
+        });
+    }
+
+    /**
+     * 侧滑菜单里面根据价格区间排序商品
+     * @param name：商品名称
+     * @param max：商品的最高价
+     * @param min：商品的最低价
+     * @param page：商品的页码
+     * @param size：一页的数量
+     */
+    private void search_Goods_Area(String name,String max,String min,String page,String size){
+        OkHttpUtils.post()
+                .url(search_url)
+                .addParams("commodityName",name)
+                .addParams("searchMethod","area")
+                .addParams("page",page)
+                .addParams("size",size)
+                .addParams("max",max)
+                .addParams("min",min)
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                SaxJson(response);
+            }
+        });
+
+    }
+
+    /**
+     * 将统一的解析JSON的方式封装成一个方法
+     * @param response：返回的JSON数据
+     */
+    private void SaxJson(String response){
+        dialog.dismiss();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONObject data = jsonObject.getJSONObject("data");
+            JSONArray commd = data.getJSONArray("commodities");
+            for (int i = 0; i < commd.length(); i++) {
+                JSONObject object = commd.getJSONObject(i);
+                String name = object.getString("commodityName");
+                String price = object.getString("price");
+                String score = object.getString("score");
+                entity = new Search_Entity();
+                entity.setName(name);
+                entity.setPice(price);
+                entity.setScore(score);
+                search_entity.add(entity);
+            }
+            adapter.notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -258,7 +444,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 判断是否存在NavigationBar
-     *
      * @param context：上下文环境
      * @return：返回是否存在(true/false)
      */
@@ -300,98 +485,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         int height = resources.getDimensionPixelSize(resourceId);
         return height;
-    }
-
-    /**
-     * 搜索商品
-     *
-     * @param name:商品名称
-     * @param page：商品页码
-     * @param size：一页显示的商品数量
-     */
-    private void searchGoogds_Default(String name, String page, String size) {
-        OkHttpUtils.post()
-                .url(search_url)
-                .addParams("commodityName", name)
-                .addParams("searchMethod", "default")
-                .addParams("page", page)
-                .addParams("size", size)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        dialog.dismiss();
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONObject data = jsonObject.getJSONObject("data");
-                            JSONArray commd = data.getJSONArray("commodities");
-                            for (int i = 0; i < commd.length(); i++) {
-                                JSONObject object = commd.getJSONObject(i);
-                                String name = object.getString("commodityName");
-                                String price = object.getString("price");
-                                String score = object.getString("score");
-                                entity = new Search_Entity();
-                                entity.setName(name);
-                                entity.setPice(price);
-                                entity.setScore(score);
-                                search_entity.add(entity);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-    }
-
-    /**
-     * 通过价格升序商品
-     *
-     * @param name：商品名称
-     */
-    private void priceWay(String name, String priceway) {
-        OkHttpUtils.post()
-                .url(search_url)
-                .addParams("commodityName", name)
-                .addParams("searchMethod", "price")
-                .addParams("order", priceway)
-                .addParams("page", "0")
-                .addParams("size", "20")
-                .build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                dialog.dismiss();
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONObject data = jsonObject.getJSONObject("data");
-                    JSONArray commd = data.getJSONArray("commodities");
-                    for (int i = 0; i < commd.length(); i++) {
-                        JSONObject object = commd.getJSONObject(i);
-                        String name = object.getString("commodityName");
-                        String price = object.getString("price");
-                        String score = object.getString("score");
-                        entity = new Search_Entity();
-                        entity.setName(name);
-                        entity.setPice(price);
-                        entity.setScore(score);
-                        search_entity.add(entity);
-                    }
-                    adapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     @Override
