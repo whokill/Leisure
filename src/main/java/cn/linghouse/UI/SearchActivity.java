@@ -50,7 +50,7 @@ import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 import okhttp3.Call;
 
-public class SearchActivity extends AppCompatActivity implements View.OnClickListener{
+public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
     private ListView lvsearch;
     private SmartRefreshLayout refreshLayout;
     private TextView tvsearch;
@@ -62,10 +62,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private Search_Entity entity;
     private TextView tvclassify;
     private ZLoadingDialog dialog;
-    private Button restart,sure;
+    private Button restart, sure;
     private SlidingMenu slidingMenu;
     private RadioGroup rgutils;
-    private EditText slmin,slmax;
+    private EditText slmin, slmax;
     private LinearLayout linbutton;
     private List<Search_Entity> search_entity;
     private String search_url = "http://192.168.137.1:8080/leisure/commodities/search";
@@ -84,12 +84,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         //检查是否存在虚拟按键
         checkDeviceHasNavigationBar(SearchActivity.this);
         search_entity = new ArrayList<>();
-        adapter = new Search_Adapter(search_entity,SearchActivity.this);
+        adapter = new Search_Adapter(search_entity, SearchActivity.this);
         lvsearch.setAdapter(adapter);
     }
 
     //初始化第三方对话框
-    private void initdialog(){
+    private void initdialog() {
         dialog = new ZLoadingDialog(SearchActivity.this);
         dialog.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE)//对话框样式
                 .setLoadingColor(Color.BLACK)//颜色
@@ -125,13 +125,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         etsearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId==EditorInfo.IME_ACTION_SEARCH){
-                    if (TextUtils.isEmpty(etsearch.getText().toString())){
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (TextUtils.isEmpty(etsearch.getText().toString())) {
                         etsearch.setError("输入宝贝名称试试看");
-                    }else{
+                    } else {
                         search_entity.clear();
                         initdialog();
-                        searchGoogds_Default(etsearch.getText().toString(),"1","20");
+                        searchGoogds_Default(etsearch.getText().toString(), "1", "20");
                         hideSoftKeyboard(SearchActivity.this);
                     }
                     return true;
@@ -146,21 +146,22 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         spinner.addOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
+                switch (position) {
                     case 0:
                         ToastUtil.ShowShort("综合排序");
                         break;
                     case 1:
                         search_entity.clear();
                         initdialog();
-                        priceWay(etsearch.getText().toString(),"desc");
+                        priceWay(etsearch.getText().toString(), "desc");
                         ToastUtil.ShowShort("价格升序");
                         break;
                     case 2:
                         search_entity.clear();
                         initdialog();
-                        priceWay(etsearch.getText().toString(),"asc");
+                        priceWay(etsearch.getText().toString(), "asc");
                         ToastUtil.ShowShort("价格降序");
+
                         break;
                 }
             }
@@ -172,10 +173,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 String price = search_entity.get(position).getPice();
                 String title = search_entity.get(position).getName();
                 Intent intent = new Intent();
-                intent.putExtra("title",title);
-                intent.putExtra("price",price);
-                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
-                intent.setClass(SearchActivity.this,GoodDetailsActivity.class);
+                intent.putExtra("title", title);
+                intent.putExtra("price", price);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                intent.setClass(SearchActivity.this, GoodDetailsActivity.class);
                 startActivity(intent);
             }
         });
@@ -184,9 +185,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     /**
      * 初始化侧滑菜单
      */
-    private void intislidemenu(){
+    private void intislidemenu() {
         slidingMenu = new SlidingMenu(this);
-        slidingMenu.attachToActivity(this,SlidingMenu.SLIDING_WINDOW);
+        slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);
         slidingMenu.setMode(SlidingMenu.RIGHT);//侧滑菜单滑出方向
         slidingMenu.setBehindWidth(800);//侧滑菜单宽度
         slidingMenu.setFadeDegree(0.35f);
@@ -206,26 +207,26 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_classify:
-                if (!slidingMenu.isSecondaryMenuShowing()){
+                if (!slidingMenu.isSecondaryMenuShowing()) {
                     slidingMenu.showSecondaryMenu();
-                }else{
+                } else {
                     //隐藏侧滑菜单
                     slidingMenu.toggle();
                 }
                 break;
             case R.id.tv_search:
-                if (TextUtils.isEmpty(etsearch.getText().toString())){
+                if (TextUtils.isEmpty(etsearch.getText().toString())) {
                     etsearch.setError("输入宝贝名称试试看");
-                }else{
+                } else {
                     search_entity.clear();
-                    searchGoogds_Default(etsearch.getText().toString(),"0","20");
+                    searchGoogds_Default(etsearch.getText().toString(), "0", "20");
                     initdialog();
                 }
                 break;
             case R.id.iv_search_back:
-                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 SearchActivity.this.finish();
                 break;
             //侧滑菜单中的重置按钮,清除所有已经设置了的数据
@@ -235,12 +236,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 slmax.setText("");
                 slidingMenu.toggle();
                 break;
-                //侧滑菜单中的确定按钮,发起网络请求，将筛选条件发送到后端
+            //侧滑菜单中的确定按钮,发起网络请求，将筛选条件发送到后端
             case R.id.btn_sure:
 
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
@@ -257,6 +258,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 判断是否存在NavigationBar
+     *
      * @param context：上下文环境
      * @return：返回是否存在(true/false)
      */
@@ -279,7 +281,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 hasNavigationBar = true;
                 //手动设置控件的margin
                 LinearLayout.LayoutParams layout = (LinearLayout.LayoutParams) linbutton.getLayoutParams();
-                layout.setMargins(0,0,0,getNavigationBarHeight(this)+10);
+                layout.setMargins(0, 0, 0, getNavigationBarHeight(this) + 10);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -289,29 +291,31 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 测量底部导航栏的高度
+     *
      * @param mActivity:上下文环境
      * @return：返回测量出的底部导航栏高度
      */
     private int getNavigationBarHeight(Activity mActivity) {
         Resources resources = mActivity.getResources();
-        int resourceId = resources.getIdentifier("navigation_bar_height","dimen", "android");
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         int height = resources.getDimensionPixelSize(resourceId);
         return height;
     }
 
     /**
      * 搜索商品
+     *
      * @param name:商品名称
      * @param page：商品页码
      * @param size：一页显示的商品数量
      */
-    private void searchGoogds_Default(String name,String page,String size){
+    private void searchGoogds_Default(String name, String page, String size) {
         OkHttpUtils.post()
                 .url(search_url)
-                .addParams("commodityName",name)
-                .addParams("searchMethod","default")
-                .addParams("page",page)
-                .addParams("size",size)
+                .addParams("commodityName", name)
+                .addParams("searchMethod", "default")
+                .addParams("page", page)
+                .addParams("size", size)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -326,7 +330,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                             JSONObject jsonObject = new JSONObject(response);
                             JSONObject data = jsonObject.getJSONObject("data");
                             JSONArray commd = data.getJSONArray("commodities");
-                            for (int i =0;i<commd.length();i++){
+                            for (int i = 0; i < commd.length(); i++) {
                                 JSONObject object = commd.getJSONObject(i);
                                 String name = object.getString("commodityName");
                                 String price = object.getString("price");
@@ -347,16 +351,17 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 通过价格升序商品
+     *
      * @param name：商品名称
      */
-    private void priceWay(String name,String priceway){
+    private void priceWay(String name, String priceway) {
         OkHttpUtils.post()
                 .url(search_url)
-                .addParams("commodityName",name)
-                .addParams("searchMethod","price")
-                .addParams("order",priceway)
-                .addParams("page","0")
-                .addParams("size","20")
+                .addParams("commodityName", name)
+                .addParams("searchMethod", "price")
+                .addParams("order", priceway)
+                .addParams("page", "0")
+                .addParams("size", "20")
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -370,7 +375,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject data = jsonObject.getJSONObject("data");
                     JSONArray commd = data.getJSONArray("commodities");
-                    for (int i =0;i<commd.length();i++){
+                    for (int i = 0; i < commd.length(); i++) {
                         JSONObject object = commd.getJSONObject(i);
                         String name = object.getString("commodityName");
                         String price = object.getString("price");
