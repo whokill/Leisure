@@ -157,8 +157,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         lvsearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String price = entity.getPice();
-                String title = entity.getName();
+                String price = search_entity.get(position).getPice();
+                String title = search_entity.get(position).getName();
                 Intent intent = new Intent();
                 intent.putExtra("title",title);
                 intent.putExtra("price",price);
@@ -209,7 +209,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 }else{
                     search_entity.clear();
                     initdialog();
-                    searchGoogds(etsearch.getText().toString(),"1","10");
                 }
                 break;
             case R.id.iv_search_back:
