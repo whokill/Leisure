@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 import com.zyao89.view.zloading.ZLoadingDialog;
@@ -51,6 +52,7 @@ import okhttp3.Call;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener{
     private ListView lvsearch;
+    private SmartRefreshLayout refreshLayout;
     private TextView tvsearch;
     private EditText etsearch;
     private NiceSpinner spinner;
@@ -99,6 +101,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initview() {
+        refreshLayout = findViewById(R.id.refresh);
         searchfaild = findViewById(R.id.tv_search_faild);
         searchback = findViewById(R.id.iv_search_back);
         etsearch = findViewById(R.id.et_search_goods);
@@ -106,6 +109,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         tvsearch = findViewById(R.id.tv_search);
         tvclassify = findViewById(R.id.tv_classify);
         spinner = findViewById(R.id.ns_sorting);
+        //设置禁止下拉刷新
+        refreshLayout.setEnableRefresh(false);
         searchfaild.setVisibility(View.GONE);//默认设置没有搜索出结果的视图为不可见
         tvclassify.setOnClickListener(this);
         searchback.setOnClickListener(this);
@@ -125,7 +130,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     }else{
                         search_entity.clear();
                         initdialog();
-                        searchGoogds(etsearch.getText().toString(),"1","10");
+                        searchGoogds(etsearch.getText().toString(),"1","20");
                         hideSoftKeyboard(SearchActivity.this);
                     }
                     return true;
@@ -208,6 +213,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     etsearch.setError("输入宝贝名称试试看");
                 }else{
                     search_entity.clear();
+                    searchGoogds(etsearch.getText().toString(),"0","20");
                     initdialog();
                 }
                 break;
@@ -288,9 +294,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 搜索商品
-     * @param type：商品名称
+     * @param name:商品名称
      * @param page：商品页码
-     * @param number：一页所要显示的商品数量
+     * @param size：一页显示的商品数量
      */
     private void searchGoogds(String name,String page,String size){
         OkHttpUtils.post()
@@ -308,18 +314,26 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void onResponse(String response, int id) {
+                        dialog.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONObject data = jsonObject.getJSONObject("data");
                             JSONArray commd = data.getJSONArray("commodities");
                             for (int i =0;i<commd.length();i++){
                                 JSONObject object = commd.getJSONObject(i);
+                                String name = object.getString("commodityName");
                                 String price = object.getString("price");
-                                ToastUtil.ShowLong(price);
+                                String score = object.getString("score");
+                                entity = new Search_Entity();
+                                entity.setName(name);
+                                entity.setPice(price);
+                                entity.setScore(score);
+                                search_entity.add(entity);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        adapter.notifyDataSetChanged();
                     }
                 });
     }
