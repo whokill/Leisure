@@ -68,6 +68,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private EditText slmin,slmax;
     private LinearLayout linbutton;
     private List<Search_Entity> search_entity;
+    private String search_url = "http://192.168.137.1:8080/leisure/commodities/search";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,7 +131,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     }else{
                         search_entity.clear();
                         initdialog();
-                        searchGoogds(etsearch.getText().toString(),"1","20");
+                        searchGoogds_Default(etsearch.getText().toString(),"1","20");
                         hideSoftKeyboard(SearchActivity.this);
                     }
                     return true;
@@ -150,9 +151,15 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                         ToastUtil.ShowShort("综合排序");
                         break;
                     case 1:
+                        search_entity.clear();
+                        initdialog();
+                        priceWay(etsearch.getText().toString(),"desc");
                         ToastUtil.ShowShort("价格升序");
                         break;
                     case 2:
+                        search_entity.clear();
+                        initdialog();
+                        priceWay(etsearch.getText().toString(),"asc");
                         ToastUtil.ShowShort("价格降序");
                         break;
                 }
@@ -213,7 +220,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     etsearch.setError("输入宝贝名称试试看");
                 }else{
                     search_entity.clear();
-                    searchGoogds(etsearch.getText().toString(),"0","20");
+                    searchGoogds_Default(etsearch.getText().toString(),"0","20");
                     initdialog();
                 }
                 break;
@@ -298,9 +305,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
      * @param page：商品页码
      * @param size：一页显示的商品数量
      */
-    private void searchGoogds(String name,String page,String size){
+    private void searchGoogds_Default(String name,String page,String size){
         OkHttpUtils.post()
-                .url("http://192.168.137.1:8080/leisure/commodities/search")
+                .url(search_url)
                 .addParams("commodityName",name)
                 .addParams("searchMethod","default")
                 .addParams("page",page)
@@ -336,6 +343,50 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                         adapter.notifyDataSetChanged();
                     }
                 });
+    }
+
+    /**
+     * 通过价格升序商品
+     * @param name：商品名称
+     */
+    private void priceWay(String name,String priceway){
+        OkHttpUtils.post()
+                .url(search_url)
+                .addParams("commodityName",name)
+                .addParams("searchMethod","price")
+                .addParams("order",priceway)
+                .addParams("page","0")
+                .addParams("size","20")
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                dialog.dismiss();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONObject data = jsonObject.getJSONObject("data");
+                    JSONArray commd = data.getJSONArray("commodities");
+                    for (int i =0;i<commd.length();i++){
+                        JSONObject object = commd.getJSONObject(i);
+                        String name = object.getString("commodityName");
+                        String price = object.getString("price");
+                        String score = object.getString("score");
+                        entity = new Search_Entity();
+                        entity.setName(name);
+                        entity.setPice(price);
+                        entity.setScore(score);
+                        search_entity.add(entity);
+                    }
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
