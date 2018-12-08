@@ -40,7 +40,6 @@ import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.internal.framed.Header;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 

@@ -7,34 +7,26 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
@@ -52,7 +44,10 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import cn.linghouse.Adapter.ImagePickerAdapter;
 import cn.linghouse.App.ActivityController;
@@ -217,6 +212,18 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
             //添加图片返回
             if (data != null && requestCode == REQUEST_CODE_SELECT) {
                 images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                for (int i =0;i<images.size();i++) {
+                    ImageItem item = images.get(i);
+                    //File[] files = new File[]{new File(item.path)};
+                    HashMap<String,File> map = new HashMap<>();
+                    map.put("file1",new File(item.path));
+                    Iterator iter = map.entrySet().iterator();
+                    while (iter.hasNext()){
+                        Map.Entry entry = (Map.Entry) iter.next();
+                        Object value = entry.getValue();
+                        ToastUtil.ShowLong(""+value);
+                    }
+                }
                 //1、不压缩直接显示
                 if (images != null) {
                     selImageList.addAll(images);
