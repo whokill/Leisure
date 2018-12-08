@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -46,6 +49,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,6 +64,7 @@ import cn.qqtheme.framework.picker.OptionPicker;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import okhttp3.Call;
+import okhttp3.MultipartBody;
 
 public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener, View.OnClickListener {
     public static final int IMAGE_ITEM_ADD = -1;
@@ -217,24 +222,6 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                     selImageList.addAll(images);
                     adapter.setImages(selImageList);
                 }
-               /* //2、开启子线程压缩后再显示
-                  new Thread(new Runnable() {
-                      @Override
-                      public void run() {
-                          for (ImageItem item : images) {
-                              String sourceImagePath = item.path;
-                              File file = new File(item.path);
-                              String targetImagePath = getExternalFilesDir(null).getAbsolutePath() + "/Pic/" + file.getName();
-                              boolean save = PicCompressUtil.imageCompress(sourceImagePath, targetImagePath, 200);//压缩程度
-                              if (save) {
-                                  Message message = Message.obtain();
-                                  message.obj = targetImagePath;
-                                  message.what = 1;
-                                  handler.sendMessage(message);
-                              }
-                          }
-                      }
-                  }).start();*/
             }
         } else if (resultCode == ImagePicker.RESULT_CODE_BACK) {
             //预览图片返回
@@ -327,7 +314,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                     pricedialog = new Dialog(ReleaseGoodsActivity.this, R.style.Dialog_Fullscreen);
                 }
                 if (priceview == null) {
-                    priceview = LayoutInflater.from(this).inflate(R.layout.releasegoods_price_dialog, null);
+                    priceview = LayoutInflater.from(this).inflate(R.layout.releasegoods_price_dialog,null);
                     pricedialog.setContentView(priceview);
                     etseprice = pricedialog.findViewById(R.id.se_et_price);
                     pinkage = pricedialog.findViewById(R.id.cb_pinkage);
@@ -524,6 +511,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
              * 用户的用户名，这个时候才能调用网络请求将商品发布到后端
              */
             case R.id.btn_release:
+                uploadImage(etbabytitle.getText().toString(),etbabydescribe.getText().toString(),finalclassify, finalprice, finalway, list);
                 //判断商品的各个参数是否为空
                 if (TextUtils.isEmpty(etbabytitle.getText().toString())) {
                     etbabytitle.setError("商品标题不能为空");
@@ -545,7 +533,6 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                     ToastUtil.ShowLong("没有标签");
                 } else {
                     //判断商品信息后，调用网络请求，将物品信息发布到后端
-                    uploadImage(images, finalclassify, finalprice, finalway, list);
                 }
                 break;
             default:
@@ -577,8 +564,30 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
      * @param way：商品交易方式
      * @param label：商品标签
      */
-    private void uploadImage(ArrayList<ImageItem> ImageList, String classify, String price, String way, List<String> label) {
-        ToastUtil.ShowLong(classify + "、" + price + "、" + way + "、" + label.size());
+    private void uploadImage(String name,String detail,String classify, String price, String way, List<String> label) {
+        SharedPreferences share = getSharedPreferences("Session",MODE_PRIVATE);
+        String sessionid= share.getString("sessionid","null");
+        String[]array = label.toArray(new String[label.size()]);
+        OkHttpUtils.post()
+                .url("http://192.168.137.1:8080/leisure/create/commodity")
+                .addHeader("cookie",sessionid)
+                .addParams("commodityName",name)
+                .addParams("sortName",classify)
+                .addParams("price",price)
+                .addParams("label",array+"")
+                .addParams("details",detail)
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                ToastUtil.ShowLong(e.toString());
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                ToastUtil.ShowLong(response);
+            }
+        });
+        //ToastUtil.ShowLong(classify + "、" + price + "、" + way + "、" + label.size());
     }
 
     @Override

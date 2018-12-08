@@ -476,7 +476,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 测量底部导航栏的高度
-     *
      * @param mActivity:上下文环境
      * @return：返回测量出的底部导航栏高度
      */
