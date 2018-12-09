@@ -178,9 +178,11 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String price = search_entity.get(position).getPice();
                 String title = search_entity.get(position).getName();
+                String detail = search_entity.get(position).getDetail();
                 Intent intent = new Intent();
                 intent.putExtra("title", title);
                 intent.putExtra("price", price);
+                intent.putExtra("detail",detail);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 intent.setClass(SearchActivity.this, GoodDetailsActivity.class);
                 startActivity(intent);

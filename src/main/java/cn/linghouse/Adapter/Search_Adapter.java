@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -46,25 +49,32 @@ public class Search_Adapter extends BaseAdapter {
             holder.title = convertView.findViewById(R.id.search_item_name);
             holder.pice = convertView.findViewById(R.id.search_item_pice);
             holder.score = convertView.findViewById(R.id.search_item_score);
-            holder.data = convertView.findViewById(R.id.search_item_data);
+            holder.detail = convertView.findViewById(R.id.search_item_data);
             holder.seller = convertView.findViewById(R.id.search_item_seller_name);
+            holder.picurl = convertView.findViewById(R.id.search_item_pic);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
         Search_Entity entity = search_entities.get(position);
+        Glide.with(context)
+                .load("http://leisure.myosotis.cc/leisure/commodity/xujunwei/0b93a3f2efcc47498140714737845a77.jpg")
+                .placeholder(R.mipmap.ic_launcher)
+                .dontAnimate()
+                .into(holder.picurl);
         holder.title.setText(entity.getName());
         holder.pice.setText(entity.getPice());
         holder.score.setText(entity.getScore());
-        holder.data.setText(entity.getData());
+        holder.detail.setText(entity.getDetail());
         holder.seller.setText(entity.getSeller());
         return convertView;
     }
     public class ViewHolder{
+        ImageView picurl;
         TextView title;
         TextView pice;
         TextView score;
-        TextView data;
+        TextView detail;
         TextView seller;
     }
 }

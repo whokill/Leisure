@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -55,24 +56,30 @@ public class Index_Adapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.item_image1 = convertView.findViewById(R.id.iv_item_image1);
             viewHolder.item_image2 = convertView.findViewById(R.id.iv_item_image2);
+            viewHolder.item_title1 = convertView.findViewById(R.id.tv_item_title1);
+            viewHolder.item_title2 = convertView.findViewById(R.id.tv_item_title2);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
         if (!pic_entity.get(position*2).equals(viewHolder.item_image1.getTag(R.id.iv_item_image1))){
+            viewHolder.item_title1.setText(pic_entity.get(position).getTitle());
             Glide.with(context)
                     .load(pic_entity.get(position*2).getPic_url())
                     .placeholder(R.mipmap.ic_launcher)
                     .dontAnimate()
+                    .override(200,200)
                     .into(viewHolder.item_image1);
             if (position*2+1>=pic_entity.size()){
                 viewHolder.item_image2.setVisibility(View.INVISIBLE);
             }else if (!pic_entity.get(position*2+1).equals(viewHolder.item_image1.getTag(R.id.iv_item_image2))){
                 viewHolder.item_image2.setVisibility(View.VISIBLE);
+                viewHolder.item_title2.setText(pic_entity.get(position).getTitle());
                 Glide.with(context)
                         .load(pic_entity.get(position*2+1).getPic_url())
                         .placeholder(R.mipmap.ic_launcher)
                         .dontAnimate()
+                        .override(200,200)
                         .into(viewHolder.item_image2);
                 viewHolder.item_image1.setTag(R.id.iv_item_image1,pic_entity.get(position*2+1));
             }
@@ -101,5 +108,7 @@ public class Index_Adapter extends BaseAdapter {
     public class ViewHolder{
         ImageView item_image1;
         ImageView item_image2;
+        TextView item_title1;
+        TextView item_title2;
     }
 }

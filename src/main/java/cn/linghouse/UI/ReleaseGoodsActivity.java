@@ -594,7 +594,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                ToastUtil.ShowLong(ex.toString());
+                Log.d("onError",ex.toString());
             }
 
             @Override

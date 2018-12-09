@@ -12,8 +12,8 @@ public class Search_Entity {
     private String score;
     //卖家昵称
     private String seller;
-    //发货时间
-    private String data;
+    //商品详情
+    private String detail;
 
     public String getPicurl() {
         return picurl;
@@ -55,11 +55,11 @@ public class Search_Entity {
         this.seller = seller;
     }
 
-    public String getData() {
-        return data;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setDetail(String data) {
+        this.detail = data;
     }
 }

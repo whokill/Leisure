@@ -318,6 +318,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        this.unbinder.unbind();
     }
 }
