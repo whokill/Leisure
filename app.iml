@@ -122,6 +122,7 @@
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:common:1.1.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.zyao89:zloading-1.1.2" level="project" />
     <orderEntry type="library" name="Gradle: com.lzy.widget:imagepicker-0.6.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.xutils:xutils-3.5.0" level="project" />
     <orderEntry type="library" name="Gradle: com.soundcloud.android.crop:lib_crop-1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.7@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:recyclerview-v7-27.1.1" level="project" />

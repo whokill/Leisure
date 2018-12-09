@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.lzy.imagepicker.ImagePicker;
 
+import org.xutils.x;
+
 import cn.linghouse.Util.PicassoImageLoader;
 
 
@@ -14,6 +16,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        x.Ext.init(this);
         ImagePicker imagePicker = ImagePicker.getInstance();
         imagePicker.setImageLoader(new PicassoImageLoader());   //设置图片加载器
         imagePicker.setShowCamera(true);  //显示拍照按钮

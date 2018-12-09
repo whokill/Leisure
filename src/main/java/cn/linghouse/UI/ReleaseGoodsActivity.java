@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,11 +36,15 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,6 +65,7 @@ import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import okhttp3.Call;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 
 public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener, View.OnClickListener {
     public static final int IMAGE_ITEM_ADD = -1;
@@ -88,6 +94,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
     private String finalprice;//价格弹窗中用户输入的价格
     private String finalway;
     private LinearLayout head;
+    private File[] files;
     private RadioButton radioButton;
     private String test[] = new String[0];
     private LinearLayout babyclassify, babypice, choiceway, choicelabel;
@@ -212,17 +219,9 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
             //添加图片返回
             if (data != null && requestCode == REQUEST_CODE_SELECT) {
                 images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+                files =  new File[images.size()];
                 for (int i =0;i<images.size();i++) {
-                    ImageItem item = images.get(i);
-                    //File[] files = new File[]{new File(item.path)};
-                    HashMap<String,File> map = new HashMap<>();
-                    map.put("file1",new File(item.path));
-                    Iterator iter = map.entrySet().iterator();
-                    while (iter.hasNext()){
-                        Map.Entry entry = (Map.Entry) iter.next();
-                        Object value = entry.getValue();
-                        ToastUtil.ShowLong(""+value);
-                    }
+                    files[i]=new File(images.get(i).path);
                 }
                 //1、不压缩直接显示
                 if (images != null) {
@@ -518,7 +517,6 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
              * 用户的用户名，这个时候才能调用网络请求将商品发布到后端
              */
             case R.id.btn_release:
-                uploadImage(etbabytitle.getText().toString(),etbabydescribe.getText().toString(),finalclassify, finalprice, finalway, list);
                 //判断商品的各个参数是否为空
                 if (TextUtils.isEmpty(etbabytitle.getText().toString())) {
                     etbabytitle.setError("商品标题不能为空");
@@ -540,6 +538,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                     ToastUtil.ShowLong("没有标签");
                 } else {
                     //判断商品信息后，调用网络请求，将物品信息发布到后端
+                    createCommodity(etbabytitle.getText().toString(),etbabydescribe.getText().toString(),finalclassify, finalprice, finalway, list);
                 }
                 break;
             default:
@@ -564,37 +563,50 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
     }
 
     /**
+     * 创建商品的方法
      * 上传商品相关数据到后台
-     *
      * @param classify：商品分类
      * @param price：商品价格
      * @param way：商品交易方式
      * @param label：商品标签
      */
-    private void uploadImage(String name,String detail,String classify, String price, String way, List<String> label) {
+    private void createCommodity(String name,String detail,String classify, String price, String way, List<String> label) {
         SharedPreferences share = getSharedPreferences("Session",MODE_PRIVATE);
         String sessionid= share.getString("sessionid","null");
         String[]array = label.toArray(new String[label.size()]);
-        OkHttpUtils.post()
-                .url("http://192.168.137.1:8080/leisure/create/commodity")
-                .addHeader("cookie",sessionid)
-                .addParams("commodityName",name)
-                .addParams("sortName",classify)
-                .addParams("price",price)
-                .addParams("label",array+"")
-                .addParams("details",detail)
-                .build().execute(new StringCallback() {
+        RequestParams params = new RequestParams("http://192.168.137.1:8080/leisure/create/commodity");
+        params.addHeader("cookie",sessionid);
+        params.addBodyParameter("sortName",classify);
+        params.addBodyParameter("commodityName",name);
+        params.addBodyParameter("price",price);
+        params.addBodyParameter("label",array+"");
+        params.addBodyParameter("details",detail);
+        for (int i =0;i<files.length;i++){
+            System.out.println(files[i]);
+            params.addBodyParameter("images",files[i]);
+        }
+        x.http().post(params, new Callback.CommonCallback<String>() {
+
             @Override
-            public void onError(Call call, Exception e, int id) {
-                ToastUtil.ShowLong(e.toString());
+            public void onSuccess(String result) {
+                ToastUtil.ShowLong("创建商品成功");
             }
 
             @Override
-            public void onResponse(String response, int id) {
-                ToastUtil.ShowLong(response);
+            public void onError(Throwable ex, boolean isOnCallback) {
+                ToastUtil.ShowLong(ex.toString());
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Log.d("onCancelled",cex.toString());
+            }
+
+            @Override
+            public void onFinished() {
+                Log.d("onFinished","onFinished()");
             }
         });
-        //ToastUtil.ShowLong(classify + "、" + price + "、" + way + "、" + label.size());
     }
 
     @Override

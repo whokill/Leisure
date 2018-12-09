@@ -258,7 +258,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 onDestroyView();
                 break;
-
+            //修改密码
+            case R.id.tv_person_change_password:
+                break;
             //注销登录
             case R.id.tv_person_change_account:
                 //调用切换账号的网络请求
@@ -304,11 +306,11 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onResponse(String response, int id) {
                         sp = getContext().getSharedPreferences("data", Context.MODE_PRIVATE);
-                        sp.edit().putString("username","false").commit();
+                        sp.edit().putString("username", "false").commit();
                         sp.getString("username", "");
-                        ToastUtil.ShowLong(sp.getString("username","未获取到"));
-                        startActivity(new Intent(getContext(),LoginActivity.class));
-                        getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                        ToastUtil.ShowLong(sp.getString("username", "未获取到"));
+                        startActivity(new Intent(getContext(), LoginActivity.class));
+                        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
                 });
     }

@@ -76,7 +76,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         e.printStackTrace();
                     }
                 }else if (msg.what==2){
-                    ToastUtil.ShowLong((String) msg.obj);
                     try {
                         JSONObject jsonObject = new JSONObject((String) msg.obj);
                         String message = jsonObject.getString("message");
@@ -161,8 +160,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }else if (TextUtils.isEmpty(etCode.getText().toString())){
                     etCode.setError("验证码不能为空");
                 }else{
-                    SharedPreferences share = getSharedPreferences("Session",MODE_PRIVATE);
-                    String sessionid= share.getString("sessionid","null");
                     String username = etUsername.getText().toString();
                     String password = etPassword.getText().toString();
                     String code = etCode.getText().toString();
@@ -174,7 +171,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             .build();
                     Request request = new Request.Builder()
                             .url(login_url)
-                            .addHeader("cookie",sessionid)
                             .post(body)
                             .build();
                     Call call = client.newCall(request);
