@@ -1,11 +1,16 @@
 package cn.linghouse.App;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
+import android.widget.LinearLayout;
 
 import com.lzy.imagepicker.ImagePicker;
 
 import org.xutils.x;
+
+import java.lang.reflect.Method;
 
 import cn.linghouse.Util.PicassoImageLoader;
 
@@ -13,6 +18,7 @@ import cn.linghouse.Util.PicassoImageLoader;
 public class MyApplication extends Application {
     //private static MyApplication mInstance = null;
     private static Context context;
+    public boolean hasNavigationBar = false;
     @Override
     public void onCreate() {
         super.onCreate();

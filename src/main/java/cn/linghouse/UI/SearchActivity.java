@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -45,6 +46,7 @@ import java.util.Locale;
 
 import cn.linghouse.Adapter.Search_Adapter;
 import cn.linghouse.App.ActivityController;
+import cn.linghouse.App.MyApplication;
 import cn.linghouse.Entity.Search_Entity;
 import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
@@ -65,6 +67,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private Button restart, sure;
     private SlidingMenu slidingMenu;
     private RadioGroup rgutils;
+    private View view;
     private EditText slmin, slmax;
     private LinearLayout linbutton, llscreening;
     private List<Search_Entity> search_entity;
@@ -77,11 +80,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         ActivityController.addActivity(this);
         //沉浸式状态栏
         ImmersionBar.with(SearchActivity.this).init();
+        view = LayoutInflater.from(this).inflate(R.layout.search_listview_footview,null);
         //初始化控件
         initview();
         //初始化侧滑菜单
         intislidemenu();
-        //检查是否存在虚拟按键
+        //检查是否存在底部导航栏
         checkDeviceHasNavigationBar(SearchActivity.this);
         search_entity = new ArrayList<>();
         adapter = new Search_Adapter(search_entity, SearchActivity.this);
@@ -189,6 +193,17 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 startActivity(intent);
             }
         });
+
+        if (checkDeviceHasNavigationBar(MyApplication.getContext())==true){
+            //存在底部导航栏
+            view.setMinimumHeight(getNavigationBarHeight(SearchActivity.this));
+            lvsearch.addFooterView(view,null,false);
+            lvsearch.setFooterDividersEnabled(false);
+        }else if (checkDeviceHasNavigationBar(MyApplication.getContext())==false){
+            //不存在底部导航栏
+            view.setVisibility(View.GONE);
+            lvsearch.removeFooterView(view);
+        }
     }
 
     /**
@@ -463,7 +478,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 判断是否存在NavigationBar
-     *
      * @param context：上下文环境
      * @return：返回是否存在(true/false)
      */
@@ -496,7 +510,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 测量底部导航栏的高度
-     *
      * @param mActivity:上下文环境
      * @return：返回测量出的底部导航栏高度
      */
