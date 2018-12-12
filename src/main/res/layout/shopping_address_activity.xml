@@ -30,7 +30,13 @@
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:id="@+id/rl_shopping_address">
     </android.support.v7.widget.RecyclerView>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加收货地址"
+        android:id="@+id/btn_add_address"/>
 </LinearLayout>

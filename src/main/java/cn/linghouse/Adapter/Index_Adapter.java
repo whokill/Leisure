@@ -1,6 +1,7 @@
 package cn.linghouse.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 import cn.linghouse.Entity.Index_Pic_Entity;
+import cn.linghouse.UI.GoodDetailsActivity;
 import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 
@@ -91,6 +93,7 @@ public class Index_Adapter extends BaseAdapter {
             public void onClick(View v) {
                 ToastUtil.ShowShort("image1");
                 /*Intent intent = new Intent();
+                intent.putExtra("name",pic_entity.get(position).getTitle());
                 intent.setClass(context,GoodDetailsActivity.class);
                 context.startActivity(intent);*/
             }

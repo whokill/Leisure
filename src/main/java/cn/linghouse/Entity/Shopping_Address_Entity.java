@@ -1,15 +1,47 @@
 package cn.linghouse.Entity;
 
 public class Shopping_Address_Entity {
-    private String probably_address;
+    //选中的省份
+    private String province;
+    //选中的市
+    private String City;
+    //选中的区
+    private String area;
+    //详细地址
     private String detail_address;
+    //是否选中
+    private Boolean ischeck;
 
-    public String getProbably_address() {
-        return probably_address;
+    public Boolean getIscheck() {
+        return ischeck;
     }
 
-    public void setProbably_address(String probably_address) {
-        this.probably_address = probably_address;
+    public void setIscheck(Boolean ischeck) {
+        this.ischeck = ischeck;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return City;
+    }
+
+    public void setCity(String city) {
+        City = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getDetail_address() {
