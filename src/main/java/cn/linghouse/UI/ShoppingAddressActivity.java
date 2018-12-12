@@ -65,7 +65,7 @@ public class ShoppingAddressActivity extends AppCompatActivity {
                         address_entity.setProvince(province);
                         address_entity.setCity(city);
                         address_entity.setArea(district);
-                        address_entity.setDetail_address("尚未编写");
+                        address_entity.setDetail_address("详细地址尚未编写");
                         entity.add(address_entity);
                         adaper.notifyDataSetChanged();
                     }

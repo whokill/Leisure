@@ -20,6 +20,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,10 @@ import com.xuexiang.xqrcode.XQRCode;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -42,6 +47,8 @@ import cn.linghouse.UI.ShoppingAddressActivity;
 import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 import okhttp3.Call;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class PersonalFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.ll_title)
@@ -95,7 +102,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         tvPersonShoppingAddress.setOnClickListener(this);
         tvPersonExitApp.setOnClickListener(this);
 
-        sp = getContext().getSharedPreferences("data", Context.MODE_PRIVATE);
+        sp = getContext().getSharedPreferences("data", MODE_PRIVATE);
         name = sp.getString("username", "false");
         collectionurl = sp.getString("imageurl", "false");
         if (name.equals("false")) {
@@ -221,8 +228,34 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("imageurl", imagePath);
                 editor.commit();
-                ToastUtil.ShowLong(sp.getString("imageurl", "查询失败"));
                 ivCollection.setImageBitmap(bitmap);
+                //上传收款二维码到后端
+                SharedPreferences share = getActivity().getSharedPreferences("Session", MODE_PRIVATE);
+                String sessionid = share.getString("sessionid", null);
+                RequestParams params = new RequestParams("http://192.168.137.1:8080/leisure/alipay/set");
+                params.addHeader("cookie", sessionid);
+                params.addBodyParameter("alipayImage", imagePath);
+                x.http().post(params, new Callback.CommonCallback<String>() {
+                    @Override
+                    public void onSuccess(String result) {
+                        Log.i("onSuccess", result);
+                    }
+
+                    @Override
+                    public void onCancelled(CancelledException cex) {
+                        Log.i("onCancelled", cex.toString());
+                    }
+
+                    @Override
+                    public void onFinished() {
+                        Log.i("onFinished", "onFinished");
+                    }
+
+                    @Override
+                    public void onError(Throwable ex, boolean isOnCallback) {
+                        Log.i("onError", ex.toString());
+                    }
+                });
                 //点击查看大图
                 ivCollection.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -305,7 +338,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        sp = getContext().getSharedPreferences("data", Context.MODE_PRIVATE);
+                        sp = getContext().getSharedPreferences("data", MODE_PRIVATE);
                         sp.edit().putString("username", "false").commit();
                         sp.getString("username", "");
                         ToastUtil.ShowLong(sp.getString("username", "未获取到"));

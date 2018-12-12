@@ -35,6 +35,8 @@ public class GoodDetailsActivity extends AppCompatActivity {
     ImageView ivDetailsCollection;
     @BindView(R.id.iv_details_chat)
     ImageView ivDetailsChat;
+    @BindView(R.id.tv_goods_details_label)
+    TextView tvGoodsDetailsLabel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,10 +47,28 @@ public class GoodDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         String title = getIntent().getStringExtra("title");
         String price = getIntent().getStringExtra("price");
-        String detail = getIntent().getStringExtra("detail");
+        String detail = getIntent().getStringExtra("details");
         tvGoodsDetailsTitle.setText(title);
         tvGoodsDetailsPrice.setText(price);
         tvGoodsDetails.setText(detail);
+    }
+
+    @OnClick({R.id.iv_details_collection, R.id.iv_details_chat, R.id.iv_goods_details_back})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            //收藏图标
+            case R.id.iv_details_collection:
+                break;
+            //咨询图标
+            case R.id.iv_details_chat:
+                break;
+            //返回图标
+            case R.id.iv_goods_details_back:
+                GoodDetailsActivity.this.finish();
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -58,15 +78,4 @@ public class GoodDetailsActivity extends AppCompatActivity {
         ActivityController.removeActivity(this);
     }
 
-    @OnClick({R.id.iv_details_collection, R.id.iv_details_chat})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            //收藏图标
-            case R.id.iv_details_collection:
-                break;
-            //咨询图标
-            case R.id.iv_details_chat:
-                break;
-        }
-    }
 }

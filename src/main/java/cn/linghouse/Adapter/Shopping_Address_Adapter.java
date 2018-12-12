@@ -63,6 +63,9 @@ public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Addr
                     check.add(position);
                     holder.ckdefault.setClickable(true);
                 }
+                if(holder.ckdefault.isChecked()==true){
+                    ToastUtil.ShowLong(""+position);
+                }
             }
         });
         holder.deleteAddress.setOnClickListener(new View.OnClickListener() {

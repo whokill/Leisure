@@ -70,7 +70,7 @@ public class Index_Adapter extends BaseAdapter {
                     .load(pic_entity.get(position*2).getPic_url())
                     .placeholder(R.mipmap.ic_launcher)
                     .dontAnimate()
-                    .override(200,200)
+                    .override(150,150)
                     .into(viewHolder.item_image1);
             if (position*2+1>=pic_entity.size()){
                 viewHolder.item_image2.setVisibility(View.INVISIBLE);
@@ -81,7 +81,7 @@ public class Index_Adapter extends BaseAdapter {
                         .load(pic_entity.get(position*2+1).getPic_url())
                         .placeholder(R.mipmap.ic_launcher)
                         .dontAnimate()
-                        .override(200,200)
+                        .override(150,150)
                         .into(viewHolder.item_image2);
                 viewHolder.item_image1.setTag(R.id.iv_item_image1,pic_entity.get(position*2+1));
             }
@@ -91,21 +91,26 @@ public class Index_Adapter extends BaseAdapter {
         viewHolder.item_image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.ShowShort("image1");
-                /*Intent intent = new Intent();
-                intent.putExtra("name",pic_entity.get(position).getTitle());
-                intent.setClass(context,GoodDetailsActivity.class);
-                context.startActivity(intent);*/
+                transmitData(position);
             }
         });
 
         viewHolder.item_image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.ShowShort("image2");
+                transmitData(position);
             }
         });
         return convertView;
+    }
+
+    public void transmitData(int position){
+        Intent intent = new Intent();
+        intent.putExtra("title",pic_entity.get(position).getTitle());
+        intent.putExtra("price",pic_entity.get(position).getPrice());
+        intent.putExtra("details",pic_entity.get(position).getDetail());
+        intent.setClass(context,GoodDetailsActivity.class);
+        context.startActivity(intent);
     }
 
     public class ViewHolder{

@@ -66,7 +66,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private SlidingMenu slidingMenu;
     private RadioGroup rgutils;
     private EditText slmin, slmax;
-    private LinearLayout linbutton,llscreening;
+    private LinearLayout linbutton, llscreening;
     private List<Search_Entity> search_entity;
     private String search_url = "http://192.168.137.1:8080/leisure/commodities/search";
 
@@ -135,10 +135,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     if (TextUtils.isEmpty(etsearch.getText().toString())) {
                         etsearch.setError("输入宝贝名称试试看");
                     } else {
-                        llscreening.setVisibility(View.VISIBLE);
                         search_entity.clear();
                         initdialog();
-                        searchGoogds_Default(etsearch.getText().toString(), "1", "20");
+                        searchGoogds_Default(etsearch.getText().toString(), "0", "20");
                         hideSoftKeyboard(SearchActivity.this);
                     }
                     return true;
@@ -169,6 +168,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                         initdialog();
                         priceWay(etsearch.getText().toString(), "asc");
                         break;
+                    default:
+                        break;
                 }
             }
         });
@@ -182,7 +183,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 Intent intent = new Intent();
                 intent.putExtra("title", title);
                 intent.putExtra("price", price);
-                intent.putExtra("detail",detail);
+                intent.putExtra("details", detail);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 intent.setClass(SearchActivity.this, GoodDetailsActivity.class);
                 startActivity(intent);
@@ -207,7 +208,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         rgutils = slidingMenu.findViewById(R.id.rg_utils);
         slmin = slidingMenu.findViewById(R.id.sl_et_price_min);
         slmax = slidingMenu.findViewById(R.id.sl_et_price_max);
-        slmin.requestFocus();
+        slmin.hasFocus();
 
         restart.setOnClickListener(this);
         sure.setOnClickListener(this);
@@ -248,7 +249,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.tv_score:
                 search_entity.clear();
                 initdialog();
-                searchGoods_score(etsearch.getText().toString(),"0","20");
+                searchGoods_score(etsearch.getText().toString(), "0", "20");
                 break;
             //侧滑菜单中的重置按钮,清除所有已经设置了的数据
             case R.id.btn_restart:
@@ -261,7 +262,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btn_sure:
                 search_entity.clear();
                 initdialog();
-                search_Goods_Area(etsearch.getText().toString(),slmax.getText().toString(),slmin.getText().toString(),"0","20");
+                search_Goods_Area(etsearch.getText().toString(), slmax.getText().toString(), slmin.getText().toString(), "0", "20");
                 slidingMenu.toggle();
                 break;
             default:
@@ -300,6 +301,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 通过价格升序商品
+     *
      * @param name：商品名称
      */
     private void priceWay(String name, String priceway) {
@@ -325,6 +327,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 根据发布时间排序
+     *
      * @param name：商品名称
      * @param page：商品页码
      * @param size：一页的数量
@@ -351,17 +354,18 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 根据商品分数来排序
+     *
      * @param name
      * @param page
      * @param size
      */
-    private void searchGoods_score(String name,String page,String size){
+    private void searchGoods_score(String name, String page, String size) {
         OkHttpUtils.post()
                 .url(search_url)
-                .addParams("commodityName",name)
-                .addParams("searchMethod","goods")
-                .addParams("page",page)
-                .addParams("size",size)
+                .addParams("commodityName", name)
+                .addParams("searchMethod", "goods")
+                .addParams("page", page)
+                .addParams("size", size)
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -377,21 +381,22 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 侧滑菜单里面根据价格区间排序商品
+     *
      * @param name：商品名称
      * @param max：商品的最高价
      * @param min：商品的最低价
      * @param page：商品的页码
      * @param size：一页的数量
      */
-    private void search_Goods_Area(String name,String max,String min,String page,String size){
+    private void search_Goods_Area(String name, String max, String min, String page, String size) {
         OkHttpUtils.post()
                 .url(search_url)
-                .addParams("commodityName",name)
-                .addParams("searchMethod","area")
-                .addParams("page",page)
-                .addParams("size",size)
-                .addParams("max",max)
-                .addParams("min",min)
+                .addParams("commodityName", name)
+                .addParams("searchMethod", "area")
+                .addParams("page", page)
+                .addParams("size", size)
+                .addParams("max", max)
+                .addParams("min", min)
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -408,24 +413,36 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 将统一的解析JSON的方式封装成一个方法
+     *
      * @param response：返回的JSON数据
      */
-    private void SaxJson(String response){
+    private void SaxJson(String response) {
         dialog.dismiss();
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONObject data = jsonObject.getJSONObject("data");
             JSONArray commd = data.getJSONArray("commodities");
-            for (int i = 0; i < commd.length(); i++) {
-                JSONObject object = commd.getJSONObject(i);
-                String name = object.getString("commodityName");
-                String price = object.getString("price");
-                String score = object.getString("score");
-                entity = new Search_Entity();
-                entity.setName(name);
-                entity.setPice(price);
-                entity.setScore(score);
-                search_entity.add(entity);
+            if (commd.length() < 1) {
+                //后台返回的商品数组为空
+                searchfaild.setVisibility(View.VISIBLE);
+                llscreening.setVisibility(View.GONE);
+                refreshLayout.setVisibility(View.GONE);
+            } else {
+                //商品数组不为空
+                llscreening.setVisibility(View.VISIBLE);
+                refreshLayout.setVisibility(View.VISIBLE);
+                searchfaild.setVisibility(View.GONE);
+                for (int i = 0; i < commd.length(); i++) {
+                    JSONObject object = commd.getJSONObject(i);
+                    String name = object.getString("commodityName");
+                    String price = object.getString("price");
+                    String score = object.getString("score");
+                    entity = new Search_Entity();
+                    entity.setName(name);
+                    entity.setPice(price);
+                    entity.setScore(score);
+                    search_entity.add(entity);
+                }
             }
             adapter.notifyDataSetChanged();
         } catch (JSONException e) {
@@ -446,6 +463,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 判断是否存在NavigationBar
+     *
      * @param context：上下文环境
      * @return：返回是否存在(true/false)
      */
@@ -478,6 +496,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 测量底部导航栏的高度
+     *
      * @param mActivity:上下文环境
      * @return：返回测量出的底部导航栏高度
      */

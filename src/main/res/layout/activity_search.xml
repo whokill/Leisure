@@ -82,21 +82,22 @@
         </LinearLayout>
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/refresh">
+        android:layout_height="0dp"
+        android:id="@+id/refresh"
+        android:layout_weight="1">
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:id="@+id/lv_search"
-            android:layout_weight="1">
+            android:id="@+id/lv_search">
         </ListView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:id="@+id/tv_search_faild"
-            android:text="对不起,暂时没有您搜索的宝贝"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/tv_search_faild"
+        android:text="对不起,暂时没有您搜索的宝贝"/>
 </LinearLayout>

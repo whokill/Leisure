@@ -81,6 +81,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:text="商品标签"
+            android:id="@+id/tv_goods_details_label"
             android:textColor="#000000" />
 
     </LinearLayout>
