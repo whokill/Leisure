@@ -1,6 +1,7 @@
 package cn.linghouse.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.linghouse.UI.LoginActivity;
 import cn.linghouse.leisure.R;
 
 public class Recommend_Fragment extends Fragment {
@@ -61,7 +63,9 @@ public class Recommend_Fragment extends Fragment {
         ImmersionBar.with(this).destroy();
     }
 
-    @OnClick(R.id.tv_recommend_click_login)
+    @OnClick({R.id.tv_recommend_click_login})
     public void onViewClicked() {
+        startActivity(new Intent(getContext(),LoginActivity.class));
+        getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
     }
 }

@@ -125,9 +125,9 @@ public class IndexFragment extends Fragment {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject data = jsonObject.getJSONObject("data");
-                    JSONArray commd = data.getJSONArray("commodities");
-                    for (int i = 0; i < commd.length(); i++) {
-                        JSONObject object = commd.getJSONObject(i);
+                    JSONArray commend = data.getJSONArray("commodities");
+                    for (int i = 0; i < commend.length(); i++) {
+                        JSONObject object = commend.getJSONObject(i);
                         String price = object.getString("price");
                         String commodityName = object.getString("commodityName");
                         String details = object.getString("details");

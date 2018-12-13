@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:orientation="horizontal">
         <ImageView
             android:layout_width="100dp"
@@ -23,16 +23,36 @@
                 android:textSize="15sp"
                 android:id="@+id/search_item_name"
                 android:textColor="#000000"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="商品标签"
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/search_item_label1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="商品标签"
+                    android:id="@+id/search_item_label2"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"/>
+            </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="商品单价"
+                android:textSize="15sp"
                 android:id="@+id/search_item_pice"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
-                android:textColor="#000000"/>
+                android:textColor="#ff0000"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,33 +77,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="发布日期"
-                    android:id="@+id/search_item_data"
-                    android:layout_weight="1"
-                    android:textColor="#000000"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="10dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="卖家昵称"
-                    android:id="@+id/search_item_seller_name"
-                    android:layout_weight="1"
-                    android:textColor="#000000"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="right"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

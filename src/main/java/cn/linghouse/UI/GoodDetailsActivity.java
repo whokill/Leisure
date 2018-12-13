@@ -9,10 +9,13 @@ import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.linghouse.App.ActivityController;
+import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 
 public class GoodDetailsActivity extends AppCompatActivity {
@@ -35,8 +38,8 @@ public class GoodDetailsActivity extends AppCompatActivity {
     ImageView ivDetailsCollection;
     @BindView(R.id.iv_details_chat)
     ImageView ivDetailsChat;
-    @BindView(R.id.tv_goods_details_label)
-    TextView tvGoodsDetailsLabel;
+    @BindView(R.id.tv_goods_details_sortname)
+    TextView tvGoodsDetailsSortname;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,9 +51,15 @@ public class GoodDetailsActivity extends AppCompatActivity {
         String title = getIntent().getStringExtra("title");
         String price = getIntent().getStringExtra("price");
         String detail = getIntent().getStringExtra("details");
+        String sortname = getIntent().getStringExtra("sortname");
+        ArrayList<String> list = getIntent().getStringArrayListExtra("imagelist");
+        for (int i = 0; i < list.size(); i++){
+            ToastUtil.ShowLong(list.get(i).toString());
+        }
         tvGoodsDetailsTitle.setText(title);
         tvGoodsDetailsPrice.setText(price);
         tvGoodsDetails.setText(detail);
+        tvGoodsDetailsSortname.setText(sortname);
     }
 
     @OnClick({R.id.iv_details_collection, R.id.iv_details_chat, R.id.iv_goods_details_back})
@@ -77,5 +86,4 @@ public class GoodDetailsActivity extends AppCompatActivity {
         ImmersionBar.with(GoodDetailsActivity.this).destroy();
         ActivityController.removeActivity(this);
     }
-
 }

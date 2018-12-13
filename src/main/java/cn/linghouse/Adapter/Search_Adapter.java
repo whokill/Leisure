@@ -49,24 +49,24 @@ public class Search_Adapter extends BaseAdapter {
             holder.title = convertView.findViewById(R.id.search_item_name);
             holder.pice = convertView.findViewById(R.id.search_item_pice);
             holder.score = convertView.findViewById(R.id.search_item_score);
-            holder.detail = convertView.findViewById(R.id.search_item_data);
-            holder.seller = convertView.findViewById(R.id.search_item_seller_name);
             holder.picurl = convertView.findViewById(R.id.search_item_pic);
+            holder.label1 = convertView.findViewById(R.id.search_item_label1);
+            holder.label2 = convertView.findViewById(R.id.search_item_label2);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
         Search_Entity entity = search_entities.get(position);
         Glide.with(context)
-                .load("http://leisure.myosotis.cc/leisure/commodity/xujunwei/0b93a3f2efcc47498140714737845a77.jpg")
+                .load(entity.getPicurl())
                 .placeholder(R.mipmap.ic_launcher)
                 .dontAnimate()
                 .into(holder.picurl);
         holder.title.setText(entity.getName());
         holder.pice.setText(entity.getPice());
         holder.score.setText(entity.getScore());
-        holder.detail.setText(entity.getDetail());
-        holder.seller.setText(entity.getSeller());
+        holder.label1.setText(entity.getLabel1());
+        holder.label2.setText(entity.getLabel2());
         return convertView;
     }
     public class ViewHolder{
@@ -75,6 +75,7 @@ public class Search_Adapter extends BaseAdapter {
         TextView pice;
         TextView score;
         TextView detail;
-        TextView seller;
+        TextView label1;
+        TextView label2;
     }
 }

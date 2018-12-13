@@ -70,7 +70,7 @@ public class Index_Adapter extends BaseAdapter {
                     .load(pic_entity.get(position*2).getPic_url())
                     .placeholder(R.mipmap.ic_launcher)
                     .dontAnimate()
-                    .override(150,150)
+                    .override(100,100)
                     .into(viewHolder.item_image1);
             if (position*2+1>=pic_entity.size()){
                 viewHolder.item_image2.setVisibility(View.INVISIBLE);
@@ -81,7 +81,7 @@ public class Index_Adapter extends BaseAdapter {
                         .load(pic_entity.get(position*2+1).getPic_url())
                         .placeholder(R.mipmap.ic_launcher)
                         .dontAnimate()
-                        .override(150,150)
+                        .override(100,100)
                         .into(viewHolder.item_image2);
                 viewHolder.item_image1.setTag(R.id.iv_item_image1,pic_entity.get(position*2+1));
             }
@@ -104,6 +104,10 @@ public class Index_Adapter extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     * 传送商品相关数据到商品详情页
+     * @param position
+     */
     public void transmitData(int position){
         Intent intent = new Intent();
         intent.putExtra("title",pic_entity.get(position).getTitle());

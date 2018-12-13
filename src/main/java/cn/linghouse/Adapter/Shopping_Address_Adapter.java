@@ -88,7 +88,6 @@ public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Addr
 
     /**
      * 删除item
-     *
      * @param position：被删除item的position
      */
     public void removeData(int position) {

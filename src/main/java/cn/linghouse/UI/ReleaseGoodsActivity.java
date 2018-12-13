@@ -424,7 +424,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                     public void onClick(View v) {
                         if (TextUtils.isEmpty(etlabel.getText().toString()) && taglayout.getChildCount() < 5) {
                             ToastUtil.ShowShort("标签名不能为空哦");
-                        } else if (taglayout.getChildCount() < 5) {
+                        } else if (taglayout.getChildCount() < 2) {
                             list.add(etlabel.getText().toString());
                             etlabel.setText("");
                             taglayout.setTags(list);

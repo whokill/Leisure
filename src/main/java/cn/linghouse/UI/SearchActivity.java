@@ -68,6 +68,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private SlidingMenu slidingMenu;
     private RadioGroup rgutils;
     private View view;
+    private ArrayList<String> imagelist;
     private EditText slmin, slmax;
     private LinearLayout linbutton, llscreening;
     private List<Search_Entity> search_entity;
@@ -184,10 +185,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 String price = search_entity.get(position).getPice();
                 String title = search_entity.get(position).getName();
                 String detail = search_entity.get(position).getDetail();
+                String sortname = search_entity.get(position).getSortname();
                 Intent intent = new Intent();
                 intent.putExtra("title", title);
                 intent.putExtra("price", price);
                 intent.putExtra("details", detail);
+                intent.putExtra("sortname",sortname);
+                intent.putStringArrayListExtra("imagelist",imagelist);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 intent.setClass(SearchActivity.this, GoodDetailsActivity.class);
                 startActivity(intent);
@@ -433,6 +437,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
      */
     private void SaxJson(String response) {
         dialog.dismiss();
+        imagelist = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONObject data = jsonObject.getJSONObject("data");
@@ -449,13 +454,33 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 searchfaild.setVisibility(View.GONE);
                 for (int i = 0; i < commd.length(); i++) {
                     JSONObject object = commd.getJSONObject(i);
+                    JSONObject sort = object.getJSONObject("sort");
+                    JSONArray label = object.getJSONArray("label");
+                    JSONArray images = object.getJSONArray("images");
                     String name = object.getString("commodityName");
                     String price = object.getString("price");
+                    String details = object.getString("details");
                     String score = object.getString("score");
+                    String sortname = sort.getString("sortName");
+                    String label1 = label.getString(0);
+                    String label2 = label.getString(1);
+                    String picurl = images.getString(0);
+                    for (int j =1;j<images.length();j++){
+                        imagelist.add(images.getString(j));
+                    }
+                    //将String类型的单价转换成货币类型
+                    Double numdouble = Double.parseDouble(price);
+                    NumberFormat format = NumberFormat.getCurrencyInstance(Locale.CHINA);
+                    String numprice = format.format(numdouble);
                     entity = new Search_Entity();
+                    entity.setPicurl(picurl);
                     entity.setName(name);
-                    entity.setPice(price);
+                    entity.setPice(numprice);
+                    entity.setDetail(details);
                     entity.setScore(score);
+                    entity.setSortname(sortname);
+                    entity.setLabel1(label1);
+                    entity.setLabel2(label2);
                     search_entity.add(entity);
                 }
             }
