@@ -52,9 +52,9 @@ public class GoodDetailsActivity extends AppCompatActivity {
         String price = getIntent().getStringExtra("price");
         String detail = getIntent().getStringExtra("details");
         String sortname = getIntent().getStringExtra("sortname");
-        ArrayList<String> list = getIntent().getStringArrayListExtra("imagelist");
-        for (int i = 0; i < list.size(); i++){
-            ToastUtil.ShowLong(list.get(i).toString());
+        String [] image = getIntent().getStringArrayExtra("imagelist");
+        for (int i =0;i<image.length;i++){
+            ToastUtil.ShowLong(""+image[i]);
         }
         tvGoodsDetailsTitle.setText(title);
         tvGoodsDetailsPrice.setText(price);

@@ -40,6 +40,7 @@ import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -72,6 +73,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private EditText slmin, slmax;
     private LinearLayout linbutton, llscreening;
     private List<Search_Entity> search_entity;
+    private String[][] img = new String[0][0];
     private String search_url = "http://192.168.137.1:8080/leisure/commodities/search";
 
     @Override
@@ -81,7 +83,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         ActivityController.addActivity(this);
         //沉浸式状态栏
         ImmersionBar.with(SearchActivity.this).init();
-        view = LayoutInflater.from(this).inflate(R.layout.search_listview_footview,null);
+        view = LayoutInflater.from(this).inflate(R.layout.search_listview_footview, null);
         //初始化控件
         initview();
         //初始化侧滑菜单
@@ -182,6 +184,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         lvsearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String[] img2 = img[position];
                 String price = search_entity.get(position).getPice();
                 String title = search_entity.get(position).getName();
                 String detail = search_entity.get(position).getDetail();
@@ -190,20 +193,20 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 intent.putExtra("title", title);
                 intent.putExtra("price", price);
                 intent.putExtra("details", detail);
-                intent.putExtra("sortname",sortname);
-                intent.putStringArrayListExtra("imagelist",imagelist);
+                intent.putExtra("sortname", sortname);
+                intent.putExtra("imagelist",img2);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 intent.setClass(SearchActivity.this, GoodDetailsActivity.class);
                 startActivity(intent);
             }
         });
 
-        if (checkDeviceHasNavigationBar(MyApplication.getContext())==true){
+        if (checkDeviceHasNavigationBar(MyApplication.getContext()) == true) {
             //存在底部导航栏
             view.setMinimumHeight(getNavigationBarHeight(SearchActivity.this));
-            lvsearch.addFooterView(view,null,false);
+            lvsearch.addFooterView(view, null, false);
             lvsearch.setFooterDividersEnabled(false);
-        }else if (checkDeviceHasNavigationBar(MyApplication.getContext())==false){
+        } else if (checkDeviceHasNavigationBar(MyApplication.getContext()) == false) {
             //不存在底部导航栏
             view.setVisibility(View.GONE);
             lvsearch.removeFooterView(view);
@@ -437,7 +440,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
      */
     private void SaxJson(String response) {
         dialog.dismiss();
-        imagelist = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONObject data = jsonObject.getJSONObject("data");
@@ -449,6 +451,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 refreshLayout.setVisibility(View.GONE);
             } else {
                 //商品数组不为空
+                imagelist = new ArrayList<>();
                 llscreening.setVisibility(View.VISIBLE);
                 refreshLayout.setVisibility(View.VISIBLE);
                 searchfaild.setVisibility(View.GONE);
@@ -465,9 +468,21 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     String label1 = label.getString(0);
                     String label2 = label.getString(1);
                     String picurl = images.getString(0);
-                    for (int j =1;j<images.length();j++){
-                        imagelist.add(images.getString(j));
+                    //
+
+                    img = Arrays.copyOf(img, img.length + 1);
+                    img[img.length - 1] = new String[0];
+                    String[] img1 = img[img.length - 1];
+                    for (int k = 0; k < images.length(); k++) {
+                        img1 = Arrays.copyOf(img1, img1.length + 1);
+                        img1[img1.length - 1] = images.getString(k);
                     }
+                    img[img.length - 1] = img1;
+
+//                    System.out.println(img.length);
+//                    System.out.println(img[0].length);
+                    //
+
                     //将String类型的单价转换成货币类型
                     Double numdouble = Double.parseDouble(price);
                     NumberFormat format = NumberFormat.getCurrencyInstance(Locale.CHINA);
@@ -503,6 +518,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 判断是否存在NavigationBar
+     *
      * @param context：上下文环境
      * @return：返回是否存在(true/false)
      */
@@ -535,6 +551,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 测量底部导航栏的高度
+     *
      * @param mActivity:上下文环境
      * @return：返回测量出的底部导航栏高度
      */
