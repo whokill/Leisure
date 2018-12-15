@@ -70,7 +70,7 @@ public class Index_Adapter extends BaseAdapter {
                     .load(pic_entity.get(position*2).getPic_url())
                     .placeholder(R.mipmap.ic_launcher)
                     .dontAnimate()
-                    .override(100,100)
+                    .centerCrop()
                     .into(viewHolder.item_image1);
             if (position*2+1>=pic_entity.size()){
                 viewHolder.item_image2.setVisibility(View.INVISIBLE);
@@ -81,7 +81,7 @@ public class Index_Adapter extends BaseAdapter {
                         .load(pic_entity.get(position*2+1).getPic_url())
                         .placeholder(R.mipmap.ic_launcher)
                         .dontAnimate()
-                        .override(100,100)
+                        .centerCrop()
                         .into(viewHolder.item_image2);
                 viewHolder.item_image1.setTag(R.id.iv_item_image1,pic_entity.get(position*2+1));
             }
@@ -91,30 +91,29 @@ public class Index_Adapter extends BaseAdapter {
         viewHolder.item_image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                transmitData(position);
+                Intent intent = new Intent();
+                intent.putExtra("title",pic_entity.get(position).getTitle());
+                intent.putExtra("price",pic_entity.get(position).getPrice());
+                intent.putExtra("details",pic_entity.get(position).getDetail());
+                intent.putExtra("imagelist",pic_entity.get(position*2).getImages());
+                intent.setClass(context,GoodDetailsActivity.class);
+                context.startActivity(intent);
             }
         });
 
         viewHolder.item_image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                transmitData(position);
+                Intent intent = new Intent();
+                intent.putExtra("title",pic_entity.get(position).getTitle());
+                intent.putExtra("price",pic_entity.get(position).getPrice());
+                intent.putExtra("details",pic_entity.get(position).getDetail());
+                intent.putExtra("imagelist",pic_entity.get(position*2+1).getImages());
+                intent.setClass(context,GoodDetailsActivity.class);
+                context.startActivity(intent);
             }
         });
         return convertView;
-    }
-
-    /**
-     * 传送商品相关数据到商品详情页
-     * @param position
-     */
-    public void transmitData(int position){
-        Intent intent = new Intent();
-        intent.putExtra("title",pic_entity.get(position).getTitle());
-        intent.putExtra("price",pic_entity.get(position).getPrice());
-        intent.putExtra("details",pic_entity.get(position).getDetail());
-        intent.setClass(context,GoodDetailsActivity.class);
-        context.startActivity(intent);
     }
 
     public class ViewHolder{

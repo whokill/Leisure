@@ -1,5 +1,7 @@
 package cn.linghouse.Entity;
 
+import java.util.ArrayList;
+
 public class Index_Pic_Entity {
     //商品图片url
     private String pic_url;
@@ -11,6 +13,15 @@ public class Index_Pic_Entity {
     private String price;
     //商品标签
     private String label;
+    private String[] images;
+
+    public String[] getImages() {
+        return images;
+    }
+
+    public void setImages(String[] images) {
+        this.images = images;
+    }
 
     public String getLabel() {
         return label;

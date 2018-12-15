@@ -1,5 +1,6 @@
 package cn.linghouse.UI;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -7,21 +8,23 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.holder.Holder;
+import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.linghouse.App.ActivityController;
-import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 
 public class GoodDetailsActivity extends AppCompatActivity {
-    //商品图片
-    @BindView(R.id.tv_goods_pic)
-    ImageView tvGoodsPic;
     //商品价格
     @BindView(R.id.tv_goods_details_price)
     TextView tvGoodsDetailsPrice;
@@ -40,6 +43,15 @@ public class GoodDetailsActivity extends AppCompatActivity {
     ImageView ivDetailsChat;
     @BindView(R.id.tv_goods_details_sortname)
     TextView tvGoodsDetailsSortname;
+    //商品轮播图
+    @BindView(R.id.con_goods_banner)
+    ConvenientBanner conGoodsBanner;
+    private String[] image;
+    private String sortname;
+    private String detail;
+    private String price;
+    private String title;
+    private List<String> list;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,18 +60,26 @@ public class GoodDetailsActivity extends AppCompatActivity {
         ActivityController.addActivity(this);
         ImmersionBar.with(GoodDetailsActivity.this).init();
         ButterKnife.bind(this);
-        String title = getIntent().getStringExtra("title");
-        String price = getIntent().getStringExtra("price");
-        String detail = getIntent().getStringExtra("details");
-        String sortname = getIntent().getStringExtra("sortname");
-        String [] image = getIntent().getStringArrayExtra("imagelist");
-        for (int i =0;i<image.length;i++){
-            ToastUtil.ShowLong(""+image[i]);
-        }
+        title = getIntent().getStringExtra("title");
+        price = getIntent().getStringExtra("price");
+        detail = getIntent().getStringExtra("details");
+        sortname = getIntent().getStringExtra("sortname");
+        image = getIntent().getStringArrayExtra("imagelist");
         tvGoodsDetailsTitle.setText(title);
         tvGoodsDetailsPrice.setText(price);
         tvGoodsDetails.setText(detail);
         tvGoodsDetailsSortname.setText(sortname);
+        list = Arrays.asList(image);
+        conGoodsBanner.setPointViewVisible(true);
+        conGoodsBanner.setPageIndicator(new int[]{R.mipmap.unselect, R.mipmap.select});
+        conGoodsBanner.setMotionEventSplittingEnabled(true);
+        conGoodsBanner.startTurning(1500);
+        conGoodsBanner.setPages(new CBViewHolderCreator<NetworkImageLoader>() {
+            @Override
+            public NetworkImageLoader createHolder() {
+                return new NetworkImageLoader();
+            }
+        },list);
     }
 
     @OnClick({R.id.iv_details_collection, R.id.iv_details_chat, R.id.iv_goods_details_back})
@@ -77,6 +97,21 @@ public class GoodDetailsActivity extends AppCompatActivity {
                 break;
             default:
                 break;
+        }
+    }
+
+    public class NetworkImageLoader implements Holder<String>{
+        private ImageView imageView;
+        @Override
+        public View createView(Context context) {
+            imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            return imageView;
+        }
+
+        @Override
+        public void UpdateUI(Context context, int position, String data) {
+            Glide.with(context).load(data).into(imageView);
         }
     }
 

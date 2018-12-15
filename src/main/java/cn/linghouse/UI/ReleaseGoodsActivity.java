@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,6 +39,8 @@ import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
+import com.zyao89.view.zloading.ZLoadingDialog;
+import com.zyao89.view.zloading.Z_TYPE;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -96,6 +99,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
     private String finalway;
     private LinearLayout head;
     private File[] files;
+    private ZLoadingDialog loadingdialog;
     private RadioButton radioButton;
     private String test[] = new String[0];
     private LinearLayout babyclassify, babypice, choiceway, choicelabel;
@@ -143,6 +147,18 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
         choiceway.setOnClickListener(this);
         choicelabel.setOnClickListener(this);
         btnrelease.setOnClickListener(this);
+    }
+
+    private void initLoadingDialog(){
+        loadingdialog = new ZLoadingDialog(ReleaseGoodsActivity.this);
+        loadingdialog.setLoadingBuilder(Z_TYPE.TEXT)
+                .setLoadingColor(Color.BLACK)
+                .setHintText("商品发布中,请稍后...")
+                .setHintTextSize(16)
+                .setHintTextColor(Color.GRAY)
+                .setDurationTime(0.5)
+                .setDialogBackgroundColor(Color.parseColor("#DEDEDE"))
+                .show();
     }
 
     @Override
@@ -539,6 +555,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                     ToastUtil.ShowLong("没有标签");
                 } else {
                     //判断商品信息后，调用网络请求，将物品信息发布到后端
+                    initLoadingDialog();
                     createCommodity(etbabytitle.getText().toString(),etbabydescribe.getText().toString(),finalclassify, finalprice, finalway, list);
                 }
                 break;
@@ -590,6 +607,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
 
             @Override
             public void onSuccess(String result) {
+                loadingdialog.dismiss();
                 ToastUtil.ShowLong("创建商品成功");
             }
 

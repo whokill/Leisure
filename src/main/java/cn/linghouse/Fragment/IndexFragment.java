@@ -35,6 +35,7 @@ import java.util.List;
 import cn.linghouse.Adapter.Index_Adapter;
 import cn.linghouse.Entity.Index_Pic_Entity;
 import cn.linghouse.UI.SearchActivity;
+import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 import okhttp3.Call;
 
@@ -49,6 +50,7 @@ public class IndexFragment extends Fragment {
     private View headview;
     private SharedPreferences sp;
     private TextView search;
+    private String[][] img = new String[0][0];
     private String[] images = {
             "http://img2.3lian.com/2014/f2/37/d/40.jpg",
             "http://img2.3lian.com/2014/f2/37/d/39.jpg",
@@ -56,6 +58,12 @@ public class IndexFragment extends Fragment {
             "http://f.hiphotos.baidu.com/image/h%3D200/sign=1478eb74d5a20cf45990f9df460b4b0c/d058ccbf6c81800a5422e5fdb43533fa838b4779.jpg",
             "http://f.hiphotos.baidu.com/image/pic/item/09fa513d269759ee50f1971ab6fb43166c22dfba.jpg"
     };
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        HotCommodity();
+    }
 
     @Nullable
     @Override
@@ -72,7 +80,6 @@ public class IndexFragment extends Fragment {
         initview();
         listView.addHeaderView(headview);
         pic_entity = new ArrayList<>();
-        HotCommodity();
         adapter = new Index_Adapter(getContext(), pic_entity);
         listView.setAdapter(adapter);
         return view;
@@ -117,7 +124,7 @@ public class IndexFragment extends Fragment {
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-                Log.i("热门推荐加载失败",e.toString());
+
             }
 
             @Override
@@ -128,14 +135,26 @@ public class IndexFragment extends Fragment {
                     JSONArray commend = data.getJSONArray("commodities");
                     for (int i = 0; i < commend.length(); i++) {
                         JSONObject object = commend.getJSONObject(i);
+                        JSONArray images = object.getJSONArray("images");
                         String price = object.getString("price");
                         String commodityName = object.getString("commodityName");
                         String details = object.getString("details");
+                        String picurl = images.getString(0);
+                        img = Arrays.copyOf(img, img.length + 1);
+                        img[img.length - 1] = new String[0];
+                        String[] img1 = img[img.length - 1];
+                        for (int k = 0; k < images.length(); k++) {
+                            img1 = Arrays.copyOf(img1, img1.length + 1);
+                            img1[img1.length - 1] = images.getString(k);
+                        }
+                        img[img.length - 1] = img1;
+                        String[] img2 = img[i];
                         entity = new Index_Pic_Entity();
                         entity.setPrice(price);
                         entity.setTitle(commodityName);
                         entity.setDetail(details);
-                        entity.setPic_url("http://139.199.2.193/leisure/commodity/xujunwei/290bbb197c3d4949bd9cfde56f24c3fc.jpg");
+                        entity.setPic_url(picurl);
+                        entity.setImages(img2);
                         pic_entity.add(entity);
                         adapter.notifyDataSetChanged();
                     }

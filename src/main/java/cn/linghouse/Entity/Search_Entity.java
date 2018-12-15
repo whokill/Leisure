@@ -1,8 +1,5 @@
 package cn.linghouse.Entity;
 
-
-import java.util.ArrayList;
-
 public class Search_Entity {
     //图片url
     private String picurl;

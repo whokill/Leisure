@@ -8,7 +8,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,11 +71,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private SlidingMenu slidingMenu;
     private RadioGroup rgutils;
     private View view;
-    private ArrayList<String> imagelist;
     private EditText slmin, slmax;
     private LinearLayout linbutton, llscreening;
     private List<Search_Entity> search_entity;
-    private String[][] img = new String[0][0];
+    private String[][] img;
     private String search_url = "http://192.168.137.1:8080/leisure/commodities/search";
 
     @Override
@@ -121,6 +122,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         tvsearch = findViewById(R.id.tv_search);
         tvclassify = findViewById(R.id.tv_classify);
         spinner = findViewById(R.id.ns_sorting);
+        etsearch.setFocusable(true);
+        etsearch.setFocusableInTouchMode(true);
+        etsearch.requestFocus();
         //设置禁止下拉刷新
         refreshLayout.setEnableRefresh(false);
         searchfaild.setVisibility(View.GONE);//默认设置没有搜索出结果的视图为不可见
@@ -142,6 +146,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     if (TextUtils.isEmpty(etsearch.getText().toString())) {
                         etsearch.setError("输入宝贝名称试试看");
                     } else {
+                        img = new String[0][0];
                         search_entity.clear();
                         initdialog();
                         searchGoogds_Default(etsearch.getText().toString(), "0", "20");
@@ -184,11 +189,11 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         lvsearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[] img2 = img[position];
                 String price = search_entity.get(position).getPice();
                 String title = search_entity.get(position).getName();
                 String detail = search_entity.get(position).getDetail();
                 String sortname = search_entity.get(position).getSortname();
+                String[] img2 = img[position];
                 Intent intent = new Intent();
                 intent.putExtra("title", title);
                 intent.putExtra("price", price);
@@ -252,6 +257,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 if (TextUtils.isEmpty(etsearch.getText().toString())) {
                     etsearch.setError("输入宝贝名称试试看");
                 } else {
+                    img = new String[0][0];
                     search_entity.clear();
                     searchGoogds_Default(etsearch.getText().toString(), "0", "20");
                     initdialog();
@@ -451,7 +457,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 refreshLayout.setVisibility(View.GONE);
             } else {
                 //商品数组不为空
-                imagelist = new ArrayList<>();
                 llscreening.setVisibility(View.VISIBLE);
                 refreshLayout.setVisibility(View.VISIBLE);
                 searchfaild.setVisibility(View.GONE);
@@ -468,8 +473,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     String label1 = label.getString(0);
                     String label2 = label.getString(1);
                     String picurl = images.getString(0);
-                    //
-
                     img = Arrays.copyOf(img, img.length + 1);
                     img[img.length - 1] = new String[0];
                     String[] img1 = img[img.length - 1];
@@ -478,11 +481,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                         img1[img1.length - 1] = images.getString(k);
                     }
                     img[img.length - 1] = img1;
-
-//                    System.out.println(img.length);
-//                    System.out.println(img[0].length);
-                    //
-
                     //将String类型的单价转换成货币类型
                     Double numdouble = Double.parseDouble(price);
                     NumberFormat format = NumberFormat.getCurrencyInstance(Locale.CHINA);

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -36,12 +37,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/tv_goods_pic"
+        <com.bigkoo.convenientbanner.ConvenientBanner
+            android:id="@+id/con_goods_banner"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:src="@mipmap/ic_launcher" />
-
+            android:src="@mipmap/ic_launcher"
+            app:canLoop="true"/>
         <TextView
             android:id="@+id/tv_goods_details_price"
             android:layout_width="match_parent"

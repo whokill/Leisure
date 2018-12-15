@@ -74,7 +74,6 @@ public class Search_Adapter extends BaseAdapter {
         TextView title;
         TextView pice;
         TextView score;
-        TextView detail;
         TextView label1;
         TextView label2;
     }
