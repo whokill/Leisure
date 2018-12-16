@@ -59,12 +59,6 @@ public class IndexFragment extends Fragment {
             "http://f.hiphotos.baidu.com/image/pic/item/09fa513d269759ee50f1971ab6fb43166c22dfba.jpg"
     };
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        HotCommodity();
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -78,6 +72,7 @@ public class IndexFragment extends Fragment {
             //用户已登录
         }
         initview();
+        HotCommodity();
         listView.addHeaderView(headview);
         pic_entity = new ArrayList<>();
         adapter = new Index_Adapter(getContext(), pic_entity);

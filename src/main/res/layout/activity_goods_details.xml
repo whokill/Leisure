@@ -40,7 +40,7 @@
         <com.bigkoo.convenientbanner.ConvenientBanner
             android:id="@+id/con_goods_banner"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="320dp"
             android:src="@mipmap/ic_launcher"
             app:canLoop="true"/>
         <TextView
@@ -122,7 +122,7 @@
 
                 <ImageView
                     android:id="@+id/iv_details_collection"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:src="@mipmap/keep"/>

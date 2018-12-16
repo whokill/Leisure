@@ -59,7 +59,7 @@ public class Search_Adapter extends BaseAdapter {
         Search_Entity entity = search_entities.get(position);
         Glide.with(context)
                 .load(entity.getPicurl())
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.logo)
                 .dontAnimate()
                 .into(holder.picurl);
         holder.title.setText(entity.getName());

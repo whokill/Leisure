@@ -1,6 +1,7 @@
 package cn.linghouse.UI;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.linghouse.App.ActivityController;
+import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 
 public class GoodDetailsActivity extends AppCompatActivity {
@@ -46,10 +48,15 @@ public class GoodDetailsActivity extends AppCompatActivity {
     //商品轮播图
     @BindView(R.id.con_goods_banner)
     ConvenientBanner conGoodsBanner;
+    //接收的images数组，作为轮播图的数据源
     private String[] image;
+    //接收到的分类
     private String sortname;
+    //接收到的详细描述
     private String detail;
+    //接收到的商品价格
     private String price;
+    //接收到的商品名称
     private String title;
     private List<String> list;
 
@@ -79,7 +86,7 @@ public class GoodDetailsActivity extends AppCompatActivity {
             public NetworkImageLoader createHolder() {
                 return new NetworkImageLoader();
             }
-        },list);
+        }, list);
     }
 
     @OnClick({R.id.iv_details_collection, R.id.iv_details_chat, R.id.iv_goods_details_back})
@@ -87,9 +94,11 @@ public class GoodDetailsActivity extends AppCompatActivity {
         switch (view.getId()) {
             //收藏图标
             case R.id.iv_details_collection:
+
                 break;
             //咨询图标
             case R.id.iv_details_chat:
+                ToastUtil.ShowLong("咨询");
                 break;
             //返回图标
             case R.id.iv_goods_details_back:
@@ -100,8 +109,9 @@ public class GoodDetailsActivity extends AppCompatActivity {
         }
     }
 
-    public class NetworkImageLoader implements Holder<String>{
+    public class NetworkImageLoader implements Holder<String> {
         private ImageView imageView;
+
         @Override
         public View createView(Context context) {
             imageView = new ImageView(context);

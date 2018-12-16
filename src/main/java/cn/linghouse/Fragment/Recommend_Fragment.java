@@ -60,16 +60,11 @@ public class Recommend_Fragment extends Fragment {
     private SharedPreferences sp;
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        getRecommend();
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_recommend, container, false);
         unbinder = ButterKnife.bind(this, view);
         ImmersionBar.with(this).init();
+        getRecommend();
         entity = new ArrayList<>();
         adapter = new Recommend_Adapter(entity, getContext());
         lvRecommend.setAdapter(adapter);

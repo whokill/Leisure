@@ -50,7 +50,7 @@ public class Index_Adapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position,View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
         if (convertView==null){
             LayoutInflater inflater = LayoutInflater.from(context);
@@ -68,7 +68,7 @@ public class Index_Adapter extends BaseAdapter {
             viewHolder.item_title1.setText(pic_entity.get(position).getTitle());
             Glide.with(context)
                     .load(pic_entity.get(position*2).getPic_url())
-                    .placeholder(R.mipmap.ic_launcher)
+                    .placeholder(R.mipmap.logo)
                     .dontAnimate()
                     .centerCrop()
                     .into(viewHolder.item_image1);
@@ -79,7 +79,7 @@ public class Index_Adapter extends BaseAdapter {
                 viewHolder.item_title2.setText(pic_entity.get(position).getTitle());
                 Glide.with(context)
                         .load(pic_entity.get(position*2+1).getPic_url())
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(R.mipmap.logo)
                         .dontAnimate()
                         .centerCrop()
                         .into(viewHolder.item_image2);

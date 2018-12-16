@@ -19,7 +19,7 @@
                 android:id="@+id/iv_item_image1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/logo"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:id="@+id/iv_item_image2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/logo"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout

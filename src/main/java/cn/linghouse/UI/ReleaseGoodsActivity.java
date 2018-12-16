@@ -597,33 +597,35 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
         params.addBodyParameter("sortName",classify);
         params.addBodyParameter("commodityName",name);
         params.addBodyParameter("price",price);
-        params.addBodyParameter("label",array+"");
+        for (int i =0;i<array.length;i++){
+            params.addBodyParameter("label",array[i]);
+        }
         params.addBodyParameter("details",detail);
         for (int i =0;i<files.length;i++){
             System.out.println(files[i]);
             params.addBodyParameter("images",files[i]);
         }
         x.http().post(params, new Callback.CommonCallback<String>() {
-
             @Override
             public void onSuccess(String result) {
                 loadingdialog.dismiss();
+                ToastUtil.ShowLong(result);
                 ToastUtil.ShowLong("创建商品成功");
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                Log.d("onError",ex.toString());
+                ToastUtil.ShowLong(ex.toString());
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
-                Log.d("onCancelled",cex.toString());
+                ToastUtil.ShowLong(cex.toString());
             }
 
             @Override
             public void onFinished() {
-                Log.d("onFinished","onFinished()");
+                ToastUtil.ShowLong("onFinished");
             }
         });
     }
