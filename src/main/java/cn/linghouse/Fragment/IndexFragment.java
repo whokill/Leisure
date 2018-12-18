@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.linghouse.Adapter.Index_Adapter;
+import cn.linghouse.App.Config;
 import cn.linghouse.Entity.Index_Pic_Entity;
 import cn.linghouse.UI.SearchActivity;
 import cn.linghouse.Util.ToastUtil;
@@ -112,7 +113,8 @@ public class IndexFragment extends Fragment {
     }
 
     private void HotCommodity() {
-        OkHttpUtils.post().url("http://192.168.137.1:8080/leisure/commodities/search")
+        OkHttpUtils.post()
+                .url(Config.hotCommodityUrl)
                 .addParams("searchMethod", "goods")
                 .addParams("page", "0")
                 .addParams("size", "20")
@@ -133,6 +135,7 @@ public class IndexFragment extends Fragment {
                         JSONArray images = object.getJSONArray("images");
                         String price = object.getString("price");
                         String commodityName = object.getString("commodityName");
+                        String cnumber = object.getString("commodityNumber");
                         String details = object.getString("details");
                         String picurl = images.getString(0);
                         img = Arrays.copyOf(img, img.length + 1);
@@ -150,6 +153,7 @@ public class IndexFragment extends Fragment {
                         entity.setDetail(details);
                         entity.setPic_url(picurl);
                         entity.setImages(img2);
+                        entity.setCnumber(cnumber);
                         pic_entity.add(entity);
                         adapter.notifyDataSetChanged();
                     }

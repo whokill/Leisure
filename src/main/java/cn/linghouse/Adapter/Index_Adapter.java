@@ -12,6 +12,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.signature.StringSignature;
+import com.zhy.http.okhttp.OkHttpUtils;
+
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,17 +29,17 @@ public class Index_Adapter extends BaseAdapter {
     private Context context;
     private List<Index_Pic_Entity> pic_entity;
 
-    public Index_Adapter(Context context,List<Index_Pic_Entity> entity){
+    public Index_Adapter(Context context, List<Index_Pic_Entity> entity) {
         this.context = context;
         this.pic_entity = entity;
     }
 
     @Override
     public int getCount() {
-        if (pic_entity==null){
+        if (pic_entity == null) {
             return 0;
-        }else{
-            return pic_entity.size()%2==0?pic_entity.size()/2:pic_entity.size()/2+1;
+        } else {
+            return pic_entity.size() % 2 == 0 ? pic_entity.size() / 2 : pic_entity.size() / 2 + 1;
         }
     }
 
@@ -50,53 +54,54 @@ public class Index_Adapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position,View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
-        if (convertView==null){
+        if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.activity_index_item,null);
+            convertView = inflater.inflate(R.layout.activity_index_item, null);
             viewHolder = new ViewHolder();
             viewHolder.item_image1 = convertView.findViewById(R.id.iv_item_image1);
             viewHolder.item_image2 = convertView.findViewById(R.id.iv_item_image2);
             viewHolder.item_title1 = convertView.findViewById(R.id.tv_item_title1);
             viewHolder.item_title2 = convertView.findViewById(R.id.tv_item_title2);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        if (!pic_entity.get(position*2).equals(viewHolder.item_image1.getTag(R.id.iv_item_image1))){
+        if (!pic_entity.get(position * 2).equals(viewHolder.item_image1.getTag(R.id.iv_item_image1))) {
             viewHolder.item_title1.setText(pic_entity.get(position).getTitle());
             Glide.with(context)
-                    .load(pic_entity.get(position*2).getPic_url())
+                    .load(pic_entity.get(position * 2).getPic_url())
                     .placeholder(R.mipmap.logo)
                     .dontAnimate()
                     .centerCrop()
                     .into(viewHolder.item_image1);
-            if (position*2+1>=pic_entity.size()){
+            if (position * 2 + 1 >= pic_entity.size()) {
                 viewHolder.item_image2.setVisibility(View.INVISIBLE);
-            }else if (!pic_entity.get(position*2+1).equals(viewHolder.item_image1.getTag(R.id.iv_item_image2))){
+            } else if (!pic_entity.get(position * 2 + 1).equals(viewHolder.item_image1.getTag(R.id.iv_item_image2))) {
                 viewHolder.item_image2.setVisibility(View.VISIBLE);
                 viewHolder.item_title2.setText(pic_entity.get(position).getTitle());
                 Glide.with(context)
-                        .load(pic_entity.get(position*2+1).getPic_url())
+                        .load(pic_entity.get(position * 2 + 1).getPic_url())
                         .placeholder(R.mipmap.logo)
                         .dontAnimate()
                         .centerCrop()
                         .into(viewHolder.item_image2);
-                viewHolder.item_image1.setTag(R.id.iv_item_image1,pic_entity.get(position*2+1));
+                viewHolder.item_image1.setTag(R.id.iv_item_image1, pic_entity.get(position * 2 + 1));
             }
-            viewHolder.item_image1.setTag(R.id.iv_item_image1,pic_entity.get(position*2));
+            viewHolder.item_image1.setTag(R.id.iv_item_image1, pic_entity.get(position * 2));
         }
 
         viewHolder.item_image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("title",pic_entity.get(position).getTitle());
-                intent.putExtra("price",pic_entity.get(position).getPrice());
-                intent.putExtra("details",pic_entity.get(position).getDetail());
-                intent.putExtra("imagelist",pic_entity.get(position*2).getImages());
-                intent.setClass(context,GoodDetailsActivity.class);
+                intent.putExtra("title", pic_entity.get(position).getTitle());
+                intent.putExtra("price", pic_entity.get(position).getPrice());
+                intent.putExtra("details", pic_entity.get(position).getDetail());
+                intent.putExtra("imagelist", pic_entity.get(position * 2).getImages());
+                intent.putExtra("cnumber", pic_entity.get(position * 2).getCnumber());
+                intent.setClass(context, GoodDetailsActivity.class);
                 context.startActivity(intent);
             }
         });
@@ -105,18 +110,19 @@ public class Index_Adapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("title",pic_entity.get(position).getTitle());
-                intent.putExtra("price",pic_entity.get(position).getPrice());
-                intent.putExtra("details",pic_entity.get(position).getDetail());
-                intent.putExtra("imagelist",pic_entity.get(position*2+1).getImages());
-                intent.setClass(context,GoodDetailsActivity.class);
+                intent.putExtra("title", pic_entity.get(position).getTitle());
+                intent.putExtra("price", pic_entity.get(position).getPrice());
+                intent.putExtra("details", pic_entity.get(position).getDetail());
+                intent.putExtra("imagelist", pic_entity.get(position * 2 + 1).getImages());
+                intent.putExtra("cnumber", pic_entity.get(position * 2 + 1).getCnumber());
+                intent.setClass(context, GoodDetailsActivity.class);
                 context.startActivity(intent);
             }
         });
         return convertView;
     }
 
-    public class ViewHolder{
+    public class ViewHolder {
         ImageView item_image1;
         ImageView item_image2;
         TextView item_title1;

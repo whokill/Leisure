@@ -1,5 +1,6 @@
 package cn.linghouse.UI;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -58,7 +60,10 @@ public class GoodDetailsActivity extends AppCompatActivity {
     private String price;
     //接收到的商品名称
     private String title;
+    //接收到的商品编号
+    private String cnumber;
     private List<String> list;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +77,8 @@ public class GoodDetailsActivity extends AppCompatActivity {
         detail = getIntent().getStringExtra("details");
         sortname = getIntent().getStringExtra("sortname");
         image = getIntent().getStringArrayExtra("imagelist");
+        cnumber = getIntent().getStringExtra("cnumber");
+        ToastUtil.ShowLong(cnumber);
         tvGoodsDetailsTitle.setText(title);
         tvGoodsDetailsPrice.setText(price);
         tvGoodsDetails.setText(detail);
@@ -87,6 +94,16 @@ public class GoodDetailsActivity extends AppCompatActivity {
                 return new NetworkImageLoader();
             }
         }, list);
+
+        //点击查看大图
+        conGoodsBanner.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                for (int i =0;i<image.length;i++){
+
+                }
+            }
+        });
     }
 
     @OnClick({R.id.iv_details_collection, R.id.iv_details_chat, R.id.iv_goods_details_back})
@@ -94,7 +111,7 @@ public class GoodDetailsActivity extends AppCompatActivity {
         switch (view.getId()) {
             //收藏图标
             case R.id.iv_details_collection:
-
+                ToastUtil.ShowLong("收藏");
                 break;
             //咨询图标
             case R.id.iv_details_chat:
@@ -107,6 +124,14 @@ public class GoodDetailsActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    /**
+     * 点击查看大图
+     * @param imagepath：要查看大图的图片路径
+     */
+    private void bigImage(String imagepath){
+
     }
 
     public class NetworkImageLoader implements Holder<String> {

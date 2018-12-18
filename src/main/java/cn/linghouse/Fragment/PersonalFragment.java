@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Process;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -20,33 +20,40 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.xuexiang.xqrcode.XQRCode;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.linghouse.App.ActivityController;
+import cn.linghouse.App.Config;
+import cn.linghouse.UI.AllOrderActivity;
 import cn.linghouse.UI.LoginActivity;
+import cn.linghouse.UI.MyBuyActivity;
+import cn.linghouse.UI.MyReleaseActivity;
+import cn.linghouse.UI.MySellActivity;
 import cn.linghouse.UI.ShoppingAddressActivity;
 import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 import okhttp3.Call;
+import okhttp3.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -78,6 +85,14 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.line_not_logged)
     LinearLayout lineNotLogged;
     Unbinder unbinder;
+    @BindView(R.id.tv_my_release)
+    TextView tvMyRelease;
+    @BindView(R.id.tv_my_sold)
+    TextView tvMySold;
+    @BindView(R.id.tv_my_buy)
+    TextView tvMyBuy;
+    @BindView(R.id.tv_my_all_order)
+    TextView tvMyAllOrder;
     private ImageView ivbigimage;
     private View view;
     private String name, collectionurl;
@@ -94,6 +109,10 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         ImmersionBar.with(this).init();
         unbinder = ButterKnife.bind(this, view);
 
+        tvMyRelease.setOnClickListener(this);
+        tvMyAllOrder.setOnClickListener(this);
+        tvMyBuy.setOnClickListener(this);
+        tvMySold.setOnClickListener(this);
         tvPersonMessage.setOnClickListener(this);
         tvPersonChangePassword.setOnClickListener(this);
         tvPersonChangeAccount.setOnClickListener(this);
@@ -232,28 +251,28 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 //上传收款二维码到后端
                 SharedPreferences share = getActivity().getSharedPreferences("Session", MODE_PRIVATE);
                 String sessionid = share.getString("sessionid", null);
-                RequestParams params = new RequestParams("http://192.168.137.1:8080/leisure/alipay/set");
+                RequestParams params = new RequestParams(Config.upCollectionImageUrl);
                 params.addHeader("cookie", sessionid);
                 params.addBodyParameter("alipayImage", imagePath);
                 x.http().post(params, new Callback.CommonCallback<String>() {
                     @Override
                     public void onSuccess(String result) {
-                        Log.i("onSuccess", result);
+                        ToastUtil.ShowLong(result);
                     }
 
                     @Override
                     public void onCancelled(CancelledException cex) {
-                        Log.i("onCancelled", cex.toString());
+                        ToastUtil.ShowLong(cex.toString());
                     }
 
                     @Override
                     public void onFinished() {
-                        Log.i("onFinished", "onFinished");
+                        ToastUtil.ShowLong("onFinish");
                     }
 
                     @Override
                     public void onError(Throwable ex, boolean isOnCallback) {
-                        Log.i("onError", ex.toString());
+                        ToastUtil.ShowLong(ex.toString());
                     }
                 });
                 //点击查看大图
@@ -291,15 +310,35 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 onDestroyView();
                 break;
+            //我的发布
+            case R.id.tv_my_release:
+                startActivity(new Intent(getContext(),MyReleaseActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                break;
+            //我卖出的
+            case R.id.tv_my_sold:
+                startActivity(new Intent(getContext(),MySellActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                break;
+            //我买到的
+            case R.id.tv_my_buy:
+                startActivity(new Intent(getContext(),MyBuyActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                break;
+            //我的全部交易
+            case R.id.tv_my_all_order:
+                startActivity(new Intent(getContext(),AllOrderActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                break;
             //修改密码
             case R.id.tv_person_change_password:
+
                 break;
             //注销登录
             case R.id.tv_person_change_account:
                 //调用切换账号的网络请求
                 chagneAccount();
                 break;
-
             //我的收货地址
             case R.id.tv_person_shopping_address:
                 startActivity(new Intent(getContext(), ShoppingAddressActivity.class));
@@ -319,7 +358,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
             case R.id.tv_person_exit_app:
                 ActivityController.finishAll();
                 //杀死该app的进程,彻底退出app
-                android.os.Process.killProcess(android.os.Process.myPid());
+                Process.killProcess(Process.myPid());
                 break;
             default:
                 break;
@@ -328,7 +367,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
     //注销当前用户
     private void chagneAccount() {
-        OkHttpUtils.get().url("http://192.168.137.1:8080/leisure/logout")
+        OkHttpUtils.get().url(Config.chagneAccountUrl)
                 .build()
                 .execute(new StringCallback() {
                     @Override

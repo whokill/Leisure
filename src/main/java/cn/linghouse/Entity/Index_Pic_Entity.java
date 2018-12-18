@@ -1,7 +1,5 @@
 package cn.linghouse.Entity;
 
-import java.util.ArrayList;
-
 public class Index_Pic_Entity {
     //商品图片url
     private String pic_url;
@@ -13,7 +11,28 @@ public class Index_Pic_Entity {
     private String price;
     //商品标签
     private String label;
+    //商品地址数组
     private String[] images;
+    //商品是否被收藏
+    private Boolean isCollection;
+    //商品编号
+    private String cnumber;
+
+    public String getCnumber() {
+        return cnumber;
+    }
+
+    public void setCnumber(String cnumber) {
+        this.cnumber = cnumber;
+    }
+
+    public Boolean getCollection() {
+        return isCollection;
+    }
+
+    public void setCollection(Boolean collection) {
+        isCollection = collection;
+    }
 
     public String[] getImages() {
         return images;

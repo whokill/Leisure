@@ -18,12 +18,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.linghouse.App.ActivityController;
+import cn.linghouse.App.Config;
 import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 import okhttp3.Call;
 
 public class FinalRegisActivity extends AppCompatActivity implements View.OnClickListener{
-    private String register_url = "http://139.199.2.193:8080/leisure/user/create";
     private String username,password;
     private EditText email;
     private TextView tvbacklogin;
@@ -59,7 +59,7 @@ public class FinalRegisActivity extends AppCompatActivity implements View.OnClic
                 if (mail!=InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS){
                     email.setError("邮箱格式错误");
                 }else{
-                    OkHttpUtils.post().url(register_url)
+                    OkHttpUtils.post().url(Config.registerUrl)
                             .addParams("username",username)
                             .addParams("password",password)
                             .addParams("email",email.getText().toString())

@@ -66,7 +66,7 @@ public class Recommend_Adapter extends BaseAdapter {
             viewHolder.recommend_title1.setText(recommend_entity.get(position).getRecommed_title());
             Glide.with(context)
                     .load(recommend_entity.get(position*2).getRecommed_pic_url())
-                    .placeholder(R.mipmap.ic_launcher)
+                    .placeholder(R.mipmap.logo)
                     .dontAnimate()
                     .centerCrop()
                     .into(viewHolder.recommend_image1);
@@ -77,7 +77,7 @@ public class Recommend_Adapter extends BaseAdapter {
                 viewHolder.recommend_title2.setText(recommend_entity.get(position).getRecommed_title());
                 Glide.with(context)
                         .load(recommend_entity.get(position*2+1).getRecommed_pic_url())
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(R.mipmap.logo)
                         .dontAnimate()
                         .centerCrop()
                         .into(viewHolder.recommend_image2);

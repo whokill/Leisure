@@ -49,9 +49,9 @@ import java.util.Locale;
 
 import cn.linghouse.Adapter.Search_Adapter;
 import cn.linghouse.App.ActivityController;
+import cn.linghouse.App.Config;
 import cn.linghouse.App.MyApplication;
 import cn.linghouse.Entity.Search_Entity;
-import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 import okhttp3.Call;
 
@@ -75,7 +75,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private LinearLayout linbutton, llscreening;
     private List<Search_Entity> search_entity;
     private String[][] img;
-    private String search_url = "http://192.168.137.1:8080/leisure/commodities/search";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -307,8 +306,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
      */
     private void searchGoogds_Default(String name, String page, String size) {
         OkHttpUtils.post()
-                .url(search_url)
-                .addParams("commodityName", name)
+                .url(Config.searchCommodityUrl)
+                .addParams("commodityName",name)
                 .addParams("searchMethod", "default")
                 .addParams("page", page)
                 .addParams("size", size)
@@ -334,7 +333,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
      */
     private void priceWay(String name, String priceway) {
         OkHttpUtils.post()
-                .url(search_url)
+                .url(Config.searchCommodityUrl)
                 .addParams("commodityName", name)
                 .addParams("searchMethod", "price")
                 .addParams("order", priceway)
@@ -362,7 +361,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
      */
     private void searchGoods_news(String name, String page, String size) {
         OkHttpUtils.post()
-                .url(search_url)
+                .url(Config.searchCommodityUrl)
                 .addParams("commodityName", name)
                 .addParams("searchMethod", "latest")
                 .addParams("page", page)
@@ -389,7 +388,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
      */
     private void searchGoods_score(String name, String page, String size) {
         OkHttpUtils.post()
-                .url(search_url)
+                .url(Config.searchCommodityUrl)
                 .addParams("commodityName", name)
                 .addParams("searchMethod", "goods")
                 .addParams("page", page)
@@ -418,7 +417,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
      */
     private void search_Goods_Area(String name, String max, String min, String page, String size) {
         OkHttpUtils.post()
-                .url(search_url)
+                .url(Config.searchCommodityUrl)
                 .addParams("commodityName", name)
                 .addParams("searchMethod", "area")
                 .addParams("page", page)
@@ -436,7 +435,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 SaxJson(response);
             }
         });
-
     }
 
     /**

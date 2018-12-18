@@ -36,6 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.linghouse.Adapter.Recommend_Adapter;
+import cn.linghouse.App.Config;
 import cn.linghouse.Entity.Recommend_Entity;
 import cn.linghouse.UI.LoginActivity;
 import cn.linghouse.leisure.R;
@@ -84,7 +85,7 @@ public class Recommend_Fragment extends Fragment {
 
     private void getRecommend() {
         OkHttpUtils.post()
-                .url("http://192.168.137.1:8080/leisure/commodities/search")
+                .url(Config.recommendCommodityUrl)
                 .addParams("searchMethod", "goods")
                 .addParams("page", "0")
                 .addParams("size", "20")

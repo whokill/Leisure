@@ -22,20 +22,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="cn.linghouse.UI.RegisterActivity" />
-        <activity
-            android:name="cn.linghouse.UI.FinalRegisActivity" />
+        <activity android:name="cn.linghouse.UI.RegisterActivity" />
+        <activity android:name="cn.linghouse.UI.FinalRegisActivity" />
         <activity
             android:name="cn.linghouse.UI.ReleaseGoodsActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="cn.linghouse.UI.LoginActivity" />
         <activity
-            android:name="cn.linghouse.UI.SearchActivity"/>
+            android:name="cn.linghouse.UI.SearchActivity" />
         <activity
             android:name="cn.linghouse.UI.GoodDetailsActivity" />
         <activity
             android:name="cn.linghouse.UI.ShoppingAddressActivity" />
+        <activity
+            android:name="cn.linghouse.UI.AllOrderActivity" />
+        <activity
+            android:name="cn.linghouse.UI.MySellActivity" />
+        <activity
+            android:name="cn.linghouse.UI.MyBuyActivity" />
+        <activity
+            android:name="cn.linghouse.UI.MyReleaseActivity"/>
     </application>
+
 </manifest>

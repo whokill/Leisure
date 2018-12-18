@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -17,7 +19,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,6 @@ import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
 import com.lzy.imagepicker.ui.ImagePreviewDelActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
@@ -52,24 +52,19 @@ import org.xutils.x;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import cn.linghouse.Adapter.ImagePickerAdapter;
 import cn.linghouse.App.ActivityController;
+import cn.linghouse.App.Config;
 import cn.linghouse.Util.KeyboardUtil;
 import cn.linghouse.Util.MyRadioGroup;
 import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
-import cn.qqtheme.framework.picker.AddressPicker;
 import cn.qqtheme.framework.picker.OptionPicker;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 import okhttp3.Call;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
 
 public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePickerAdapter.OnRecyclerViewItemClickListener, View.OnClickListener {
     public static final int IMAGE_ITEM_ADD = -1;
@@ -149,7 +144,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
         btnrelease.setOnClickListener(this);
     }
 
-    private void initLoadingDialog(){
+    private void initLoadingDialog() {
         loadingdialog = new ZLoadingDialog(ReleaseGoodsActivity.this);
         loadingdialog.setLoadingBuilder(Z_TYPE.TEXT)
                 .setLoadingColor(Color.BLACK)
@@ -236,9 +231,10 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
             //添加图片返回
             if (data != null && requestCode == REQUEST_CODE_SELECT) {
                 images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
-                files =  new File[images.size()];
-                for (int i =0;i<images.size();i++) {
-                    files[i]=new File(images.get(i).path);
+                files = new File[images.size()];
+                for (int i = 0; i < images.size(); i++) {
+                    files[i] = new File(images.get(i).path);
+
                 }
                 //1、不压缩直接显示
                 if (images != null) {
@@ -258,6 +254,20 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
             }
         }
     }
+
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1){
+                ImageItem item = new ImageItem();
+                item.path = (String) msg.obj;
+                selImageList.add(item);
+                adapter.setImages(selImageList);
+            }
+        }
+    };
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -337,7 +347,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                     pricedialog = new Dialog(ReleaseGoodsActivity.this, R.style.Dialog_Fullscreen);
                 }
                 if (priceview == null) {
-                    priceview = LayoutInflater.from(this).inflate(R.layout.releasegoods_price_dialog,null);
+                    priceview = LayoutInflater.from(this).inflate(R.layout.releasegoods_price_dialog, null);
                     pricedialog.setContentView(priceview);
                     etseprice = pricedialog.findViewById(R.id.se_et_price);
                     pinkage = pricedialog.findViewById(R.id.cb_pinkage);
@@ -556,7 +566,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                 } else {
                     //判断商品信息后，调用网络请求，将物品信息发布到后端
                     initLoadingDialog();
-                    createCommodity(etbabytitle.getText().toString(),etbabydescribe.getText().toString(),finalclassify, finalprice, finalway, list);
+                    createCommodity(etbabytitle.getText().toString(), etbabydescribe.getText().toString(), finalclassify, finalprice, finalway, list);
                 }
                 break;
             default:
@@ -583,27 +593,28 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
     /**
      * 创建商品的方法
      * 上传商品相关数据到后台
+     *
      * @param classify：商品分类
      * @param price：商品价格
      * @param way：商品交易方式
      * @param label：商品标签
      */
-    private void createCommodity(String name,String detail,String classify, String price, String way, List<String> label) {
-        SharedPreferences share = getSharedPreferences("Session",MODE_PRIVATE);
-        String sessionid= share.getString("sessionid","null");
-        String[]array = label.toArray(new String[label.size()]);
-        RequestParams params = new RequestParams("http://192.168.137.1:8080/leisure/create/commodity");
-        params.addHeader("cookie",sessionid);
-        params.addBodyParameter("sortName",classify);
-        params.addBodyParameter("commodityName",name);
-        params.addBodyParameter("price",price);
-        for (int i =0;i<array.length;i++){
-            params.addBodyParameter("label",array[i]);
+    private void createCommodity(String name, String detail, String classify, String price, String way, List<String> label) {
+        SharedPreferences share = getSharedPreferences("Session", MODE_PRIVATE);
+        String sessionid = share.getString("sessionid", "null");
+        String[] array = label.toArray(new String[label.size()]);
+        RequestParams params = new RequestParams(Config.createCommodityUrl);
+        params.addHeader("cookie", sessionid);
+        params.addBodyParameter("sortName", classify);
+        params.addBodyParameter("commodityName", name);
+        params.addBodyParameter("price", price);
+        for (int i = 0; i < array.length; i++) {
+            params.addBodyParameter("label", array[i]);
         }
-        params.addBodyParameter("details",detail);
-        for (int i =0;i<files.length;i++){
+        params.addBodyParameter("details", detail);
+        for (int i = 0; i < files.length; i++) {
             System.out.println(files[i]);
-            params.addBodyParameter("images",files[i]);
+            params.addBodyParameter("images", files[i]);
         }
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override

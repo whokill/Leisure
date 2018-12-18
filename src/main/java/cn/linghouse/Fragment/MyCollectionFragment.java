@@ -79,9 +79,9 @@ public class MyCollectionFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     * 获取登录用户名下面所对应的购物车里面的内容
+     * 获取登录用户名下面所对应的收藏内容
      */
-    private void GetCar(){
+    private void getCollection(){
         //网络请求
 
     }
