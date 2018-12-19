@@ -32,6 +32,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.4.0'
     implementation 'com.jph.takephoto:takephoto_library:4.0.3'
     implementation 'com.zhy:okhttputils:2.6.2'
+    implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.gyf.immersionbar:immersionbar:2.3.2-beta01'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'com.bigkoo:convenientbanner:2.0.5'

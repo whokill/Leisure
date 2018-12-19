@@ -16,6 +16,15 @@ public class Search_Entity {
     //商品标签
     private String label1;
     private String label2;
+    private String cnumber;
+
+    public String getCnumber() {
+        return cnumber;
+    }
+
+    public void setCnumber(String cnumber) {
+        this.cnumber = cnumber;
+    }
 
     public String getLabel2() {
         return label2;

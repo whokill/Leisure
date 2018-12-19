@@ -2,6 +2,7 @@ package cn.linghouse.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,20 +14,28 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.signature.StringSignature;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.util.List;
 import java.util.UUID;
 
+import cn.linghouse.App.Config;
 import cn.linghouse.Entity.Index_Pic_Entity;
 import cn.linghouse.UI.GoodDetailsActivity;
 import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
+import okhttp3.Call;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class Index_Adapter extends BaseAdapter {
     private Context context;
+    private Intent intent = new Intent();
     private List<Index_Pic_Entity> pic_entity;
 
     public Index_Adapter(Context context, List<Index_Pic_Entity> entity) {
@@ -69,7 +78,7 @@ public class Index_Adapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         if (!pic_entity.get(position * 2).equals(viewHolder.item_image1.getTag(R.id.iv_item_image1))) {
-            viewHolder.item_title1.setText(pic_entity.get(position).getTitle());
+            viewHolder.item_title1.setText(pic_entity.get(position * 2).getTitle());
             Glide.with(context)
                     .load(pic_entity.get(position * 2).getPic_url())
                     .placeholder(R.mipmap.logo)
@@ -78,9 +87,11 @@ public class Index_Adapter extends BaseAdapter {
                     .into(viewHolder.item_image1);
             if (position * 2 + 1 >= pic_entity.size()) {
                 viewHolder.item_image2.setVisibility(View.INVISIBLE);
+                viewHolder.item_title2.setVisibility(View.INVISIBLE);
             } else if (!pic_entity.get(position * 2 + 1).equals(viewHolder.item_image1.getTag(R.id.iv_item_image2))) {
                 viewHolder.item_image2.setVisibility(View.VISIBLE);
-                viewHolder.item_title2.setText(pic_entity.get(position).getTitle());
+                viewHolder.item_title2.setVisibility(View.VISIBLE);
+                viewHolder.item_title2.setText(pic_entity.get(position * 2 + 1).getTitle());
                 Glide.with(context)
                         .load(pic_entity.get(position * 2 + 1).getPic_url())
                         .placeholder(R.mipmap.logo)
@@ -95,10 +106,9 @@ public class Index_Adapter extends BaseAdapter {
         viewHolder.item_image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("title", pic_entity.get(position).getTitle());
-                intent.putExtra("price", pic_entity.get(position).getPrice());
-                intent.putExtra("details", pic_entity.get(position).getDetail());
+                intent.putExtra("title", pic_entity.get(position * 2).getTitle());
+                intent.putExtra("price", pic_entity.get(position * 2).getPrice());
+                intent.putExtra("details", pic_entity.get(position * 2).getDetail());
                 intent.putExtra("imagelist", pic_entity.get(position * 2).getImages());
                 intent.putExtra("cnumber", pic_entity.get(position * 2).getCnumber());
                 intent.setClass(context, GoodDetailsActivity.class);
@@ -109,10 +119,9 @@ public class Index_Adapter extends BaseAdapter {
         viewHolder.item_image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("title", pic_entity.get(position).getTitle());
-                intent.putExtra("price", pic_entity.get(position).getPrice());
-                intent.putExtra("details", pic_entity.get(position).getDetail());
+                intent.putExtra("title", pic_entity.get(position * 2 + 1).getTitle());
+                intent.putExtra("price", pic_entity.get(position * 2 + 1).getPrice());
+                intent.putExtra("details", pic_entity.get(position * 2 + 1).getDetail());
                 intent.putExtra("imagelist", pic_entity.get(position * 2 + 1).getImages());
                 intent.putExtra("cnumber", pic_entity.get(position * 2 + 1).getCnumber());
                 intent.setClass(context, GoodDetailsActivity.class);

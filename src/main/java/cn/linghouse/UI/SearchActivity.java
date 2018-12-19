@@ -192,12 +192,14 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 String title = search_entity.get(position).getName();
                 String detail = search_entity.get(position).getDetail();
                 String sortname = search_entity.get(position).getSortname();
+                String cnumber = search_entity.get(position).getCnumber();
                 String[] img2 = img[position];
                 Intent intent = new Intent();
                 intent.putExtra("title", title);
                 intent.putExtra("price", price);
                 intent.putExtra("details", detail);
                 intent.putExtra("sortname", sortname);
+                intent.putExtra("cnumber",cnumber);
                 intent.putExtra("imagelist",img2);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 intent.setClass(SearchActivity.this, GoodDetailsActivity.class);
@@ -471,6 +473,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     String label1 = label.getString(0);
                     String label2 = label.getString(1);
                     String picurl = images.getString(0);
+                    String cnumber = object.getString("commodityNumber");
                     img = Arrays.copyOf(img, img.length + 1);
                     img[img.length - 1] = new String[0];
                     String[] img1 = img[img.length - 1];
@@ -489,6 +492,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     entity.setPice(numprice);
                     entity.setDetail(details);
                     entity.setScore(score);
+                    entity.setCnumber(cnumber);
                     entity.setSortname(sortname);
                     entity.setLabel1(label1);
                     entity.setLabel2(label2);

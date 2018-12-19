@@ -103,13 +103,6 @@ public class IndexFragment extends Fragment {
                 startActivity(new Intent(getActivity(), SearchActivity.class));
             }
         });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
     }
 
     private void HotCommodity() {
@@ -121,7 +114,7 @@ public class IndexFragment extends Fragment {
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
-
+                Log.i("IndexError",e.toString());
             }
 
             @Override
@@ -134,8 +127,8 @@ public class IndexFragment extends Fragment {
                         JSONObject object = commend.getJSONObject(i);
                         JSONArray images = object.getJSONArray("images");
                         String price = object.getString("price");
-                        String commodityName = object.getString("commodityName");
                         String cnumber = object.getString("commodityNumber");
+                        String commodityName = object.getString("commodityName");
                         String details = object.getString("details");
                         String picurl = images.getString(0);
                         img = Arrays.copyOf(img, img.length + 1);
@@ -149,14 +142,14 @@ public class IndexFragment extends Fragment {
                         String[] img2 = img[i];
                         entity = new Index_Pic_Entity();
                         entity.setPrice(price);
+                        entity.setCnumber(cnumber);
                         entity.setTitle(commodityName);
                         entity.setDetail(details);
                         entity.setPic_url(picurl);
                         entity.setImages(img2);
-                        entity.setCnumber(cnumber);
                         pic_entity.add(entity);
-                        adapter.notifyDataSetChanged();
                     }
+                    adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

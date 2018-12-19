@@ -15,6 +15,15 @@ public class Recommend_Entity {
     //商品标签
     private String recommed_label;
     private String[] recommed_images;
+    private String cnumber;
+
+    public String getCnumber() {
+        return cnumber;
+    }
+
+    public void setCnumber(String cnumber) {
+        this.cnumber = cnumber;
+    }
 
     public String getRecommed_pic_url() {
         return recommed_pic_url;

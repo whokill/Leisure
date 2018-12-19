@@ -1,6 +1,5 @@
 package cn.linghouse.UI;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,11 +12,15 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
-import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
 import com.gyf.barlibrary.ImmersionBar;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.util.ArrayList;
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,8 +28,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.linghouse.App.ActivityController;
+import cn.linghouse.App.Config;
+import cn.linghouse.Entity.MessageEvent;
 import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
+import okhttp3.Call;
 
 public class GoodDetailsActivity extends AppCompatActivity {
     //商品价格
@@ -62,8 +68,9 @@ public class GoodDetailsActivity extends AppCompatActivity {
     private String title;
     //接收到的商品编号
     private String cnumber;
+    private boolean iscoll;
     private List<String> list;
-    private Dialog dialog;
+    private String sessionid;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,13 +83,13 @@ public class GoodDetailsActivity extends AppCompatActivity {
         price = getIntent().getStringExtra("price");
         detail = getIntent().getStringExtra("details");
         sortname = getIntent().getStringExtra("sortname");
-        image = getIntent().getStringArrayExtra("imagelist");
         cnumber = getIntent().getStringExtra("cnumber");
-        ToastUtil.ShowLong(cnumber);
+        image = getIntent().getStringArrayExtra("imagelist");
         tvGoodsDetailsTitle.setText(title);
         tvGoodsDetailsPrice.setText(price);
         tvGoodsDetails.setText(detail);
         tvGoodsDetailsSortname.setText(sortname);
+        iscollection();
         list = Arrays.asList(image);
         conGoodsBanner.setPointViewVisible(true);
         conGoodsBanner.setPageIndicator(new int[]{R.mipmap.unselect, R.mipmap.select});
@@ -94,13 +101,33 @@ public class GoodDetailsActivity extends AppCompatActivity {
                 return new NetworkImageLoader();
             }
         }, list);
+    }
 
-        //点击查看大图
-        conGoodsBanner.setOnItemClickListener(new OnItemClickListener() {
+    private void iscollection() {
+        SharedPreferences share = getSharedPreferences("Session", MODE_PRIVATE);
+        sessionid = share.getString("sessionid", "null");
+        OkHttpUtils.post()
+                .url(Config.isCollection)
+                .addHeader("cookie", sessionid)
+                .addParams("CN", cnumber)
+                .build().execute(new StringCallback() {
             @Override
-            public void onItemClick(int position) {
-                for (int i =0;i<image.length;i++){
+            public void onError(Call call, Exception e, int id) {
 
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    iscoll = jsonObject.getBoolean("data");
+                    if (iscoll == true) {
+                        ivDetailsCollection.setImageResource(R.mipmap.keep_checked);
+                    } else if (iscoll == false) {
+                        ivDetailsCollection.setImageResource(R.mipmap.keep);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -111,7 +138,13 @@ public class GoodDetailsActivity extends AppCompatActivity {
         switch (view.getId()) {
             //收藏图标
             case R.id.iv_details_collection:
-                ToastUtil.ShowLong("收藏");
+                if (iscoll == true) {
+                    ivDetailsCollection.setImageResource(R.mipmap.keep);
+                    joinCollection();
+                } else if (iscoll == false) {
+                    ivDetailsCollection.setImageResource(R.mipmap.keep_checked);
+                    joinCollection();
+                }
                 break;
             //咨询图标
             case R.id.iv_details_chat:
@@ -126,12 +159,38 @@ public class GoodDetailsActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 点击查看大图
-     * @param imagepath：要查看大图的图片路径
-     */
-    private void bigImage(String imagepath){
+    private void joinCollection() {
+        OkHttpUtils.post()
+                .url(Config.joinCollection)
+                .addHeader("cookie", sessionid)
+                .addParams("CN", cnumber)
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
 
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                try {
+                    EventBus.getDefault().post(new MessageEvent("开始更新"));
+                    JSONObject jsonObject = new JSONObject(response);
+                    String message = jsonObject.getString("message");
+                    if (message.equals("取消收藏")) {
+                        ivDetailsCollection.setImageResource(R.mipmap.keep);
+                        ToastUtil.ShowLong(message);
+                    } else if (message.equals("加入收藏")) {
+                        ivDetailsCollection.setImageResource(R.mipmap.keep_checked);
+                        ToastUtil.ShowLong(message);
+                    } else if (message.equals("商品都是你的还收藏什么？")) {
+                        ivDetailsCollection.setImageResource(R.mipmap.keep);
+                        ToastUtil.ShowLong(message);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public class NetworkImageLoader implements Holder<String> {

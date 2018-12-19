@@ -108,6 +108,7 @@ public class Recommend_Fragment extends Fragment {
                         String price = object.getString("price");
                         String details = object.getString("details");
                         String picurl = images.getString(0);
+                        String cnumber = object.getString("commodityNumber");
                         img = Arrays.copyOf(img, img.length + 1);
                         img[img.length - 1] = new String[0];
                         String[] img1 = img[img.length - 1];
@@ -120,12 +121,13 @@ public class Recommend_Fragment extends Fragment {
                         recommend_entity = new Recommend_Entity();
                         recommend_entity.setRecommed_title(commodityName);
                         recommend_entity.setRecommed_price(price);
+                        recommend_entity.setCnumber(cnumber);
                         recommend_entity.setRecommed_detail(details);
                         recommend_entity.setRecommed_pic_url(picurl);
                         recommend_entity.setRecommed_images(img2);
                         entity.add(recommend_entity);
-                        adapter.notifyDataSetChanged();
                     }
+                    adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

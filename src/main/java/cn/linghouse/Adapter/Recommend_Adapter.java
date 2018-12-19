@@ -62,39 +62,42 @@ public class Recommend_Adapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        if (!recommend_entity.get(position*2).equals(viewHolder.recommend_image1.getTag(R.id.iv_recommend_item_image1))){
-            viewHolder.recommend_title1.setText(recommend_entity.get(position).getRecommed_title());
+        if (!recommend_entity.get(position * 2).equals(viewHolder.recommend_image1.getTag(R.id.iv_recommend_item_image1))) {
+            viewHolder.recommend_title1.setText(recommend_entity.get(position * 2).getRecommed_title());
             Glide.with(context)
-                    .load(recommend_entity.get(position*2).getRecommed_pic_url())
+                    .load(recommend_entity.get(position * 2).getRecommed_pic_url())
                     .placeholder(R.mipmap.logo)
                     .dontAnimate()
                     .centerCrop()
                     .into(viewHolder.recommend_image1);
-            if (position*2+1>=recommend_entity.size()){
+            if (position * 2 + 1 >= recommend_entity.size()) {
                 viewHolder.recommend_image2.setVisibility(View.INVISIBLE);
-            }else if (!recommend_entity.get(position*2+1).equals(viewHolder.recommend_image1.getTag(R.id.iv_recommend_item_image2))){
+                viewHolder.recommend_title2.setVisibility(View.INVISIBLE);
+            } else if (!recommend_entity.get(position * 2 + 1).equals(viewHolder.recommend_image1.getTag(R.id.iv_recommend_item_image2))) {
                 viewHolder.recommend_image2.setVisibility(View.VISIBLE);
-                viewHolder.recommend_title2.setText(recommend_entity.get(position).getRecommed_title());
+                viewHolder.recommend_title2.setVisibility(View.VISIBLE);
+                viewHolder.recommend_title2.setText(recommend_entity.get(position * 2 + 1).getRecommed_title());
                 Glide.with(context)
-                        .load(recommend_entity.get(position*2+1).getRecommed_pic_url())
+                        .load(recommend_entity.get(position * 2 + 1).getRecommed_pic_url())
                         .placeholder(R.mipmap.logo)
                         .dontAnimate()
                         .centerCrop()
                         .into(viewHolder.recommend_image2);
-                viewHolder.recommend_image1.setTag(R.id.iv_recommend_item_image1,recommend_entity.get(position*2+1));
+                viewHolder.recommend_image1.setTag(R.id.iv_recommend_item_image1, recommend_entity.get(position * 2 + 1));
             }
-            viewHolder.recommend_image1.setTag(R.id.iv_recommend_item_image1,recommend_entity.get(position*2));
+            viewHolder.recommend_image1.setTag(R.id.iv_recommend_item_image1, recommend_entity.get(position * 2));
         }
 
         viewHolder.recommend_image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("title",recommend_entity.get(position).getRecommed_title());
-                intent.putExtra("price",recommend_entity.get(position).getRecommed_price());
-                intent.putExtra("details",recommend_entity.get(position).getRecommed_detail());
-                intent.putExtra("imagelist",recommend_entity.get(position*2).getRecommed_images());
-                intent.setClass(context,GoodDetailsActivity.class);
+                intent.putExtra("title", recommend_entity.get(position * 2).getRecommed_title());
+                intent.putExtra("price", recommend_entity.get(position * 2).getRecommed_price());
+                intent.putExtra("details", recommend_entity.get(position * 2).getRecommed_detail());
+                intent.putExtra("cnumber", recommend_entity.get(position * 2).getCnumber());
+                intent.putExtra("imagelist", recommend_entity.get(position * 2).getRecommed_images());
+                intent.setClass(context, GoodDetailsActivity.class);
                 context.startActivity(intent);
             }
         });
@@ -103,11 +106,12 @@ public class Recommend_Adapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.putExtra("title",recommend_entity.get(position).getRecommed_title());
-                intent.putExtra("price",recommend_entity.get(position).getRecommed_price());
-                intent.putExtra("details",recommend_entity.get(position).getRecommed_detail());
-                intent.putExtra("imagelist",recommend_entity.get(position*2+1).getRecommed_images());
-                intent.setClass(context,GoodDetailsActivity.class);
+                intent.putExtra("title", recommend_entity.get(position * 2 + 1).getRecommed_title());
+                intent.putExtra("price", recommend_entity.get(position * 2 + 1).getRecommed_price());
+                intent.putExtra("details", recommend_entity.get(position * 2 + 1).getRecommed_detail());
+                intent.putExtra("cnumber", recommend_entity.get(position * 2 + 1).getCnumber());
+                intent.putExtra("imagelist", recommend_entity.get(position * 2 + 1).getRecommed_images());
+                intent.setClass(context, GoodDetailsActivity.class);
                 context.startActivity(intent);
             }
         });
