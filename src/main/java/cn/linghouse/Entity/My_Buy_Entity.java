@@ -2,7 +2,7 @@ package cn.linghouse.Entity;
 /*
  *Create by on 2018/12/18
  *Author:Linghouse
- *describe:
+ *describe:我买到的实体类
  */
 
 public class My_Buy_Entity {

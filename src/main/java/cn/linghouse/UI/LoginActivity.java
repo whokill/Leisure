@@ -32,6 +32,7 @@ import java.util.List;
 
 import cn.linghouse.App.ActivityController;
 import cn.linghouse.App.Config;
+import cn.linghouse.Fragment.IndexFragment;
 import cn.linghouse.Util.CodeUtils;
 import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
@@ -51,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ImageView iv_code;
     private Button btnLogin;
     private CodeUtils codeUtils;
-    private String vercode;
+    private TextView tvfindpass;
     private TextView tvRegister;
     private TextView tvchangecode;
     private Handler handler;
@@ -82,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             ToastUtil.ShowLong(pre.getString("username", "未写入"));
                             startActivity(new Intent(LoginActivity.this, IndexActivity.class));
                             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            LoginActivity.this.finish();
                         } else {
                             ToastUtil.ShowShort(message);
                             etCode.setText("");
@@ -102,23 +104,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         etCode = findViewById(R.id.et_code);
         btnLogin = findViewById(R.id.btn_login);
         iv_code = findViewById(R.id.iv_code);
+        tvfindpass = findViewById(R.id.tv_find_pass);
 
         tvchangecode = findViewById(R.id.tv_change_code);
         tvRegister = findViewById(R.id.tv_register);
 
         btnLogin.setOnClickListener(this);
+        tvfindpass.setOnClickListener(this);
         tvRegister.setOnClickListener(this);
         tvchangecode.setOnClickListener(this);
         //TextView设置下划线
         tvRegister.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         tvchangecode.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        etUsername.setText("miaoling");
+        etUsername.setText("miao");
         etPassword.setText("123456");
     }
 
     private void GetCode() {
         OkHttpUtils.get()
-                .url(Config.loginCode)
+                .url(Config.verification)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -131,9 +135,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String data = jsonObject.getString("data");
-                            codeUtils = CodeUtils.getInstance();
-                            Bitmap bitmap = codeUtils.createBitmap(data);
-                            iv_code.setImageBitmap(bitmap);
+                            if (data.equals("null")) {
+                                ToastUtil.ShowShort("操作频繁,获取验证码失败,请稍后重试");
+                            } else {
+                                codeUtils = CodeUtils.getInstance();
+                                Bitmap bitmap = codeUtils.createBitmap(data);
+                                iv_code.setImageBitmap(bitmap);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -198,7 +206,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.tv_change_code:
                 GetCode();
                 break;
+            case R.id.tv_find_pass:
+                startActivity(new Intent(LoginActivity.this, FindPassActivity.class));
+                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                break;
+            default:
+                break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(LoginActivity.this,IndexActivity.class));
+        this.finish();
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
     }
 
     @Override

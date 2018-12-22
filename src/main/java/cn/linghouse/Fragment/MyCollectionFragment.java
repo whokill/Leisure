@@ -129,7 +129,6 @@ public class MyCollectionFragment extends Fragment implements View.OnClickListen
             case R.id.tv_click_jump_login:
                 startActivity(new Intent(getContext(), LoginActivity.class));
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                getActivity().finish();
                 break;
             default:
                 break;

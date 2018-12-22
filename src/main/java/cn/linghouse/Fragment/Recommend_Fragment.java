@@ -61,6 +61,24 @@ public class Recommend_Fragment extends Fragment {
     private SharedPreferences sp;
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            sp = getContext().getSharedPreferences("data", Context.MODE_PRIVATE);
+            isloggin = sp.getString("username", "false");
+            if (isloggin.equals("false")) {
+                //用户未登录
+                lineCommendLoggin.setVisibility(View.GONE);
+                lineCommendNotLogged.setVisibility(View.VISIBLE);
+            } else {
+                //用户已登录
+                lineCommendNotLogged.setVisibility(View.GONE);
+                lineCommendLoggin.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_recommend, container, false);
         unbinder = ButterKnife.bind(this, view);
@@ -69,17 +87,6 @@ public class Recommend_Fragment extends Fragment {
         entity = new ArrayList<>();
         adapter = new Recommend_Adapter(entity, getContext());
         lvRecommend.setAdapter(adapter);
-        sp = getContext().getSharedPreferences("data", Context.MODE_PRIVATE);
-        isloggin = sp.getString("username", "false");
-        if (isloggin.equals("false")) {
-            //用户未登录
-            lineCommendLoggin.setVisibility(View.GONE);
-            lineCommendNotLogged.setVisibility(View.VISIBLE);
-        } else {
-            //用户已登录
-            lineCommendNotLogged.setVisibility(View.GONE);
-            lineCommendLoggin.setVisibility(View.VISIBLE);
-        }
         return view;
     }
 

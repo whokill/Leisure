@@ -1,46 +1,35 @@
 package cn.linghouse.Fragment;
 
-import android.Manifest;
-import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentUris;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Process;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gyf.barlibrary.ImmersionBar;
-import com.xuexiang.xqrcode.XQRCode;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.xutils.common.Callback;
-import org.xutils.http.RequestParams;
-import org.xutils.x;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.linghouse.App.ActivityController;
 import cn.linghouse.App.Config;
@@ -50,30 +39,26 @@ import cn.linghouse.UI.MyBuyActivity;
 import cn.linghouse.UI.MyReleaseActivity;
 import cn.linghouse.UI.MySellActivity;
 import cn.linghouse.UI.ShoppingAddressActivity;
+import cn.linghouse.UI.SafeSettingActivity;
 import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 import okhttp3.Call;
-import okhttp3.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class PersonalFragment extends Fragment implements View.OnClickListener {
-    @BindView(R.id.ll_title)
-    LinearLayout llTitle;
     @BindView(R.id.iv_icon)
     ImageView ivIcon;
     @BindView(R.id.tv_login_name)
     TextView tvLoginName;
     @BindView(R.id.tv_person_message)
     TextView tvPersonMessage;
-    @BindView(R.id.tv_person_change_password)
-    TextView tvPersonChangePassword;
     @BindView(R.id.tv_person_change_account)
     TextView tvPersonChangeAccount;
     @BindView(R.id.tv_person_shopping_address)
     TextView tvPersonShoppingAddress;
-    @BindView(R.id.tv_person_collection)
-    TextView tvPersonCollection;
+    @BindView(R.id.tv_person_safe_setting)
+    TextView tvPersonSafeSetting;
     @BindView(R.id.iv_collection)
     ImageView ivCollection;
     @BindView(R.id.tv_person_exit_app)
@@ -93,212 +78,55 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     TextView tvMyBuy;
     @BindView(R.id.tv_my_all_order)
     TextView tvMyAllOrder;
-    private ImageView ivbigimage;
     private View view;
-    private String name, collectionurl;
-    private static final int CHOOSE_PHOTO = 1;
-    private Dialog bigdialog;
+    private String name;
+    private Dialog feedbackdialog;
     private SharedPreferences sp;
-    //ALIPAY_SHOP：是根据用户上传的支付宝收款二维码通过XQRCode解析出来的一串地址
-    public String ALIPAY_SHOP;
+    private EditText feedbackcontent;
+    private ImageView ivfeedback,ivfeedbackok;
+    private LinearLayout llfeedbacksuccess,llfeedback;
 
-    @Nullable
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            sp = getContext().getSharedPreferences("data", MODE_PRIVATE);
+            name = sp.getString("username", "false");
+            if (name.equals("false")) {
+                //用户未登录
+                lineLogin.setVisibility(View.GONE);
+                ivCollection.setVisibility(View.GONE);
+                lineNotLogged.setVisibility(View.VISIBLE);
+            } else {
+                //用户已经登录
+                ivCollection.setVisibility(View.VISIBLE);
+                lineLogin.setVisibility(View.VISIBLE);
+                lineNotLogged.setVisibility(View.GONE);
+                tvLoginName.setText(name);
+            }
+        }
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_personal, container, false);
-        ImmersionBar.with(this).init();
         unbinder = ButterKnife.bind(this, view);
+        ImmersionBar.with(this).init();
+        initview();
+        return view;
+    }
 
+    private void initview() {
         tvMyRelease.setOnClickListener(this);
         tvMyAllOrder.setOnClickListener(this);
         tvMyBuy.setOnClickListener(this);
         tvMySold.setOnClickListener(this);
         tvPersonMessage.setOnClickListener(this);
-        tvPersonChangePassword.setOnClickListener(this);
         tvPersonChangeAccount.setOnClickListener(this);
         tvClickLogin.setOnClickListener(this);
-        tvPersonCollection.setOnClickListener(this);
+        tvPersonSafeSetting.setOnClickListener(this);
         tvPersonShoppingAddress.setOnClickListener(this);
         tvPersonExitApp.setOnClickListener(this);
-
-        sp = getContext().getSharedPreferences("data", MODE_PRIVATE);
-        name = sp.getString("username", "false");
-        collectionurl = sp.getString("imageurl", "false");
-        if (name.equals("false")) {
-            //用户未登录
-            llTitle.setVisibility(View.VISIBLE);
-            lineLogin.setVisibility(View.GONE);
-            ivCollection.setVisibility(View.GONE);
-            lineNotLogged.setVisibility(View.VISIBLE);
-        } else {
-            //用户已经登录
-            llTitle.setVisibility(View.GONE);
-            ivCollection.setVisibility(View.VISIBLE);
-            lineLogin.setVisibility(View.VISIBLE);
-            lineNotLogged.setVisibility(View.GONE);
-            tvLoginName.setText(name);
-        }
-        if (collectionurl.equals("false")) {
-        } else {
-            ivCollection.setImageURI(Uri.parse(collectionurl));
-            ivCollection.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    bigdialog = new Dialog(getContext());
-                    bigdialog.setContentView(R.layout.dialog_big_image);
-                    ivbigimage = bigdialog.findViewById(R.id.iv_big_image);
-                    ivbigimage.setMinimumHeight(ivCollection.getMaxHeight());
-                    ivbigimage.setMinimumWidth(ivCollection.getMaxWidth());
-                    ivbigimage.setImageURI(Uri.parse(collectionurl));
-                    bigdialog.setCancelable(true);
-                    bigdialog.show();
-                    ivbigimage.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            bigdialog.dismiss();
-                        }
-                    });
-                }
-            });
-        }
-        return view;
-    }
-
-    //打开相册
-    private void openAlbum() {
-        Intent intent = new Intent("android.intent.action.GET_CONTENT");
-        intent.setType("image/*");
-        startActivityForResult(intent, CHOOSE_PHOTO);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openAlbum();
-                } else {
-                    ToastUtil.ShowShort("缺少必要权限");
-                }
-                break;
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case CHOOSE_PHOTO:
-                handleImageOnKitKat(data);
-                break;
-        }
-    }
-
-    @TargetApi(19)
-    private void handleImageOnKitKat(Intent data) {
-        if (data == null) {
-            return;
-        }
-        String imagepath = null;
-        Uri uri = data.getData();
-        if (DocumentsContract.isDocumentUri(getContext(), uri)) {
-            //如果是document类型的Uri,则通过document id处理
-            String docid = DocumentsContract.getDocumentId(uri);
-            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
-                String id = docid.split(":")[1];
-                String selection = MediaStore.Images.Media._ID + "=" + id;
-                imagepath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
-            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
-                Uri contenturi = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(docid));
-                imagepath = getImagePath(contenturi, null);
-            }
-        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
-            imagepath = getImagePath(uri, null);
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            imagepath = uri.getPath();
-        }
-        diaplayImage(imagepath);
-    }
-
-    private String getImagePath(Uri uri, String selection) {
-        String path = null;
-        //通过Uri和selection来获取真实的图片路径
-        Cursor cursor = getContext().getContentResolver().query(uri, null, selection, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-            }
-            cursor.close();
-        }
-        return path;
-    }
-
-    private void diaplayImage(String imagePath) {
-        if (imagePath != null) {
-            final Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            //保存解析后的二维码内容
-            String parseafter = XQRCode.analyzeQRCode(imagePath);
-            //判断是否是支付宝收款二维码,用布尔类型来保存结果
-            boolean iscode = parseafter.startsWith("HTTPS://QR.ALIPAY.COM");
-            if (!iscode) {
-                ToastUtil.ShowShort("您选取的不是支付宝的收款二维码,请重新选择");
-            } else {
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("imageurl", imagePath);
-                editor.commit();
-                ivCollection.setImageBitmap(bitmap);
-                //上传收款二维码到后端
-                SharedPreferences share = getActivity().getSharedPreferences("Session", MODE_PRIVATE);
-                String sessionid = share.getString("sessionid", null);
-                RequestParams params = new RequestParams(Config.upCollectionImageUrl);
-                params.addHeader("cookie", sessionid);
-                params.addBodyParameter("alipayImage", imagePath);
-                x.http().post(params, new Callback.CommonCallback<String>() {
-                    @Override
-                    public void onSuccess(String result) {
-                        ToastUtil.ShowLong(result);
-                    }
-
-                    @Override
-                    public void onCancelled(CancelledException cex) {
-                        ToastUtil.ShowLong(cex.toString());
-                    }
-
-                    @Override
-                    public void onFinished() {
-                        ToastUtil.ShowLong("onFinish");
-                    }
-
-                    @Override
-                    public void onError(Throwable ex, boolean isOnCallback) {
-                        ToastUtil.ShowLong(ex.toString());
-                    }
-                });
-                //点击查看大图
-                ivCollection.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        bigdialog = new Dialog(getContext());
-                        bigdialog.setContentView(R.layout.dialog_big_image);
-                        ivbigimage = bigdialog.findViewById(R.id.iv_big_image);
-                        ivbigimage.setMinimumHeight(ivCollection.getMaxHeight());
-                        ivbigimage.setMinimumWidth(ivCollection.getMaxWidth());
-                        ivbigimage.setImageBitmap(bitmap);
-                        bigdialog.setCancelable(true);
-                        bigdialog.show();
-                        ivbigimage.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                bigdialog.dismiss();
-                            }
-                        });
-                    }
-                });
-            }
-        } else {
-            ToastUtil.ShowLong("选取图片错误");
-        }
     }
 
     @Override
@@ -308,31 +136,31 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
             case R.id.tv_click_login:
                 startActivity(new Intent(getContext(), LoginActivity.class));
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                onDestroyView();
+                getActivity().finish();
+                break;
+            //用户反馈
+            case R.id.tv_person_message:
+                initFeedbackDialog();
                 break;
             //我的发布
             case R.id.tv_my_release:
-                startActivity(new Intent(getContext(),MyReleaseActivity.class));
-                getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                startActivity(new Intent(getContext(), MyReleaseActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             //我卖出的
             case R.id.tv_my_sold:
-                startActivity(new Intent(getContext(),MySellActivity.class));
-                getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                startActivity(new Intent(getContext(), MySellActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             //我买到的
             case R.id.tv_my_buy:
-                startActivity(new Intent(getContext(),MyBuyActivity.class));
-                getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                startActivity(new Intent(getContext(), MyBuyActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             //我的全部交易
             case R.id.tv_my_all_order:
-                startActivity(new Intent(getContext(),AllOrderActivity.class));
-                getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
-                break;
-            //修改密码
-            case R.id.tv_person_change_password:
-
+                startActivity(new Intent(getContext(), AllOrderActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             //注销登录
             case R.id.tv_person_change_account:
@@ -345,15 +173,10 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
 
-            //我的收款二维码
-            case R.id.tv_person_collection:
-                //打开相册，选取支付宝收款二维码并获取图片路径
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                        PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                } else {
-                    openAlbum();
-                }
+            //安全设置
+            case R.id.tv_person_safe_setting:
+                startActivity(new Intent(getContext(), SafeSettingActivity.class));
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
             case R.id.tv_person_exit_app:
                 ActivityController.finishAll();
@@ -363,6 +186,52 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+    //意见反馈Dialog相关属性设置
+    private void initFeedbackDialog(){
+        if (feedbackdialog==null){
+            feedbackdialog = new Dialog(getContext(),R.style.FeedBack_Dialog_Fullscreen);
+        }
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.feedback_dialog,null);
+        feedbackdialog.setContentView(view);
+        getActivity().getWindow().setLayout((ViewGroup.LayoutParams.MATCH_PARENT), ViewGroup.LayoutParams.MATCH_PARENT);
+        llfeedback = feedbackdialog.findViewById(R.id.ll_feedback);
+        llfeedbacksuccess = feedbackdialog.findViewById(R.id.ll_feedback_success);
+        feedbackcontent = feedbackdialog.findViewById(R.id.edt_feedback_content);
+        ivfeedback = feedbackdialog.findViewById(R.id.iv_feedback_back);
+        ivfeedbackok = feedbackdialog.findViewById(R.id.iv_feedback_ok);
+        llfeedbacksuccess.setVisibility(View.GONE);
+        ivfeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                feedbackdialog.dismiss();
+            }
+        });
+        ivfeedbackok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llfeedback.setVisibility(View.GONE);
+                ivfeedbackok.setVisibility(View.GONE);
+                llfeedbacksuccess.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+
+        setDialogWindowAttr(feedbackdialog,getContext(),Gravity.BOTTOM);
+    }
+
+
+    public static void setDialogWindowAttr(Dialog dlg, Context ctx, int gravity) {
+        Window window = dlg.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.gravity = gravity;
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        dlg.getWindow().setAttributes(lp);
+        dlg.show();
     }
 
     //注销当前用户
@@ -382,10 +251,13 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                         sp.getString("username", "");
                         ToastUtil.ShowLong(sp.getString("username", "未获取到"));
                         startActivity(new Intent(getContext(), LoginActivity.class));
-                        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                        getActivity().overridePendingTransition(android.R.anim.fade_in
+                                , android.R.anim.fade_out);
+                        getActivity().finish();
                     }
                 });
     }
+
 
     @Override
     public void onDestroyView() {

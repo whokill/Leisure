@@ -24,6 +24,9 @@ import com.bumptech.glide.Glide;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +38,7 @@ import java.util.List;
 import cn.linghouse.Adapter.Index_Adapter;
 import cn.linghouse.App.Config;
 import cn.linghouse.Entity.Index_Pic_Entity;
+import cn.linghouse.Entity.MessageEvent;
 import cn.linghouse.UI.SearchActivity;
 import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
@@ -75,6 +79,7 @@ public class IndexFragment extends Fragment {
         initview();
         HotCommodity();
         listView.addHeaderView(headview);
+        EventBus.getDefault().register(this);
         pic_entity = new ArrayList<>();
         adapter = new Index_Adapter(getContext(), pic_entity);
         listView.setAdapter(adapter);
@@ -157,6 +162,12 @@ public class IndexFragment extends Fragment {
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEvent(MessageEvent event){
+        pic_entity.clear();
+        HotCommodity();
+    }
+
     public class NetworkImageLoader implements Holder<String> {
         private ImageView imageView;
 
@@ -177,5 +188,11 @@ public class IndexFragment extends Fragment {
     public void onPause() {
         super.onPause();
         convenientBanner.stopTurning();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

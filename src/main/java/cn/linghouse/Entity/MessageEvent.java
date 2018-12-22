@@ -2,7 +2,7 @@ package cn.linghouse.Entity;
 /*
  *Create by on 2018/12/19
  *Author:Linghouse
- *describe:
+ *describe:EventBus事件实体类
  */
 
 public class MessageEvent {

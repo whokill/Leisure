@@ -103,12 +103,30 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="注册"
-            android:layout_marginRight="20px"
-            android:id="@+id/tv_register"
-            android:layout_marginTop="10dp"
             android:layout_gravity="right"
-            android:autoLink="all"
-            android:textSize="15sp"/>
+            android:text="找回密码"
+            android:id="@+id/tv_find_pass"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="25dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="还没有账号?      "
+                android:textSize="17sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="注册"
+                android:layout_marginRight="20px"
+                android:id="@+id/tv_register"
+                android:autoLink="all"
+                android:textSize="17sp"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

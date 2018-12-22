@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:gravity="center"
+        android:orientation="vertical">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="输入要提现到的银行卡号"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/et_bank_card_num"
+            android:layout_marginLeft="10dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="输入提现金额"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/et_deposit"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注：由于没有申请第三方支付接口,所以app内的金额、提现、充值等功能皆不可当真"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#ff0000"
+            android:layout_marginTop="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="bottom"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_deposit_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="50dp"
+                android:text="取消"
+                android:textColor="#ff0000" />
+
+            <TextView
+                android:id="@+id/tv_deposit_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="下一步"
+                android:textColor="#ff0000" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

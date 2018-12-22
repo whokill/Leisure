@@ -42,6 +42,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import com.zyao89.view.zloading.ZLoadingDialog;
 import com.zyao89.view.zloading.Z_TYPE;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,6 +58,7 @@ import java.util.List;
 import cn.linghouse.Adapter.ImagePickerAdapter;
 import cn.linghouse.App.ActivityController;
 import cn.linghouse.App.Config;
+import cn.linghouse.Entity.MessageEvent;
 import cn.linghouse.Util.KeyboardUtil;
 import cn.linghouse.Util.MyRadioGroup;
 import cn.linghouse.Util.ToastUtil;
@@ -146,7 +148,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
 
     private void initLoadingDialog() {
         loadingdialog = new ZLoadingDialog(ReleaseGoodsActivity.this);
-        loadingdialog.setLoadingBuilder(Z_TYPE.TEXT)
+        loadingdialog.setLoadingBuilder(Z_TYPE.DOUBLE_CIRCLE)
                 .setLoadingColor(Color.BLACK)
                 .setHintText("商品发布中,请稍后...")
                 .setHintTextSize(16)
@@ -256,11 +258,11 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
     }
 
     @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == 1){
+            if (msg.what == 1) {
                 ImageItem item = new ImageItem();
                 item.path = (String) msg.obj;
                 selImageList.add(item);
@@ -288,7 +290,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                     group = classifydialog.findViewById(R.id.rg_group);
                     tvcancel = classifydialog.findViewById(R.id.tv_classify_dialog_cancel);
                     tvensure = classifydialog.findViewById(R.id.tv_classify_dialog_ensure);
-                    OkHttpUtils.get().url("http://192.168.137.1:8080/leisure/sort/list")
+                    OkHttpUtils.get().url(Config.sortlist)
                             .build()
                             .execute(new StringCallback() {
                                 @Override
@@ -455,7 +457,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                             etlabel.setText("");
                             taglayout.setTags(list);
                         } else {
-                            ToastUtil.ShowShort("最多只能添加5个标签哦");
+                            ToastUtil.ShowShort("最多只能添加2个标签哦");
                         }
                     }
                 });
@@ -565,8 +567,14 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                     ToastUtil.ShowLong("没有标签");
                 } else {
                     //判断商品信息后，调用网络请求，将物品信息发布到后端
-                    initLoadingDialog();
-                    createCommodity(etbabytitle.getText().toString(), etbabydescribe.getText().toString(), finalclassify, finalprice, finalway, list);
+                    sp = getSharedPreferences("data", MODE_PRIVATE);
+                    String name = sp.getString("username", "false");
+                    if (name.equals("false")) {
+                        ToastUtil.ShowLong("用户未登录");
+                    } else {
+                        initLoadingDialog();
+                        createCommodity(etbabytitle.getText().toString(), etbabydescribe.getText().toString(), finalclassify, finalprice, finalway, list);
+                    }
                 }
                 break;
             default:
@@ -620,8 +628,8 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
             @Override
             public void onSuccess(String result) {
                 loadingdialog.dismiss();
-                ToastUtil.ShowLong(result);
                 ToastUtil.ShowLong("创建商品成功");
+                EventBus.getDefault().post(new MessageEvent("开始更新"));
             }
 
             @Override
@@ -644,6 +652,7 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         ImmersionBar.with(this).destroy();
         ActivityController.removeActivity(this);
     }

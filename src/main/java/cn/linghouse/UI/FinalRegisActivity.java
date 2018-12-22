@@ -23,11 +23,12 @@ import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 import okhttp3.Call;
 
-public class FinalRegisActivity extends AppCompatActivity implements View.OnClickListener{
-    private String username,password;
+public class FinalRegisActivity extends AppCompatActivity implements View.OnClickListener {
+    private String username, password;
     private EditText email;
     private TextView tvbacklogin;
     private Button register;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +37,6 @@ public class FinalRegisActivity extends AppCompatActivity implements View.OnClic
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
         password = intent.getStringExtra("password");
-        initview();
-    }
-
-    private void initview() {
         email = findViewById(R.id.et_mail);
         register = findViewById(R.id.btn_register);
         tvbacklogin = findViewById(R.id.tv_back_login);
@@ -49,43 +46,46 @@ public class FinalRegisActivity extends AppCompatActivity implements View.OnClic
 
         //为TextView设置下划线
         tvbacklogin.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_register:
-                int mail = email.getInputType();
-                if (mail!=InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS){
-                    email.setError("邮箱格式错误");
-                }else{
-                    OkHttpUtils.post().url(Config.registerUrl)
-                            .addParams("username",username)
-                            .addParams("password",password)
-                            .addParams("email",email.getText().toString())
-                            .build()
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onError(Call call, Exception e, int id) {
+                OkHttpUtils.post()
+                        .url(Config.registerUrl)
+                        .addParams("username", username)
+                        .addParams("password", password)
+                        .addParams("email", email.getText().toString())
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onResponse(String response, int id) {
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(response);
-                                        String msg = jsonObject.getString("msg");
-                                        ToastUtil.ShowShort(msg);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                            @Override
+                            public void onResponse(String response, int id) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    String message = jsonObject.getString("message");
+                                    int code = jsonObject.getInt("code");
+                                    String data = jsonObject.getString("data");
+                                    if (code!=200){
+                                        ToastUtil.ShowShort(message);
+                                    }else{
+                                        ToastUtil.ShowShort(data);
                                     }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            });
-                }
+                            }
+                        });
                 break;
             case R.id.tv_back_login:
-                startActivity(new Intent(FinalRegisActivity.this,LoginActivity.class));
-                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                startActivity(new Intent(FinalRegisActivity.this, LoginActivity.class));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 FinalRegisActivity.this.finish();
                 break;
         }

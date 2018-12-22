@@ -3,23 +3,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:id="@+id/ll_title"
-        android:background="@color/title"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="我的"
-            android:layout_weight="1"
-            android:layout_marginTop="5dp"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:layout_gravity="center"/>
-    </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -124,30 +107,6 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/changepwd"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center_vertical"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:text="修改密码"
-                        android:id="@+id/tv_person_change_password"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="center_vertical"
-                        android:textSize="18sp"
-                        android:textColor="#000000"/>
-                </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#DEDEDE"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:src="@mipmap/logout"
                         android:layout_marginLeft="10dp"
                         android:layout_gravity="center_vertical"/>
@@ -178,7 +137,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
-                        android:text="收获地址"
+                        android:text="收货地址"
                         android:id="@+id/tv_person_shopping_address"
                         android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
@@ -202,8 +161,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="60dp"
-                        android:text="收款二维码"
-                        android:id="@+id/tv_person_collection"
+                        android:text="安全设置"
+                        android:id="@+id/tv_person_safe_setting"
                         android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
                         android:textSize="18sp"

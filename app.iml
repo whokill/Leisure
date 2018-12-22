@@ -178,5 +178,6 @@
     <orderEntry type="library" name="Gradle: com.jph.takephoto:takephoto_library-4.0.3" level="project" />
     <orderEntry type="library" name="Gradle: com.gyf.immersionbar:immersionbar-2.3.2-beta01" level="project" />
     <orderEntry type="module" module-name="library" />
+    <orderEntry type="module" module-name="mypwdinputlibrary" />
   </component>
 </module>

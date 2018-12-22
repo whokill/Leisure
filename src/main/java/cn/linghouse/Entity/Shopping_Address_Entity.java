@@ -9,16 +9,6 @@ public class Shopping_Address_Entity {
     private String area;
     //详细地址
     private String detail_address;
-    //是否选中
-    private Boolean ischeck;
-
-    public Boolean getIscheck() {
-        return ischeck;
-    }
-
-    public void setIscheck(Boolean ischeck) {
-        this.ischeck = ischeck;
-    }
 
     public String getProvince() {
         return province;
