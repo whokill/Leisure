@@ -32,6 +32,7 @@ import cn.linghouse.Adapter.My_Buy_Adapter;
 import cn.linghouse.App.Config;
 import cn.linghouse.Entity.All_Order_Entity;
 import cn.linghouse.Entity.My_Buy_Entity;
+import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 
 public class MyBuyActivity extends AppCompatActivity {
@@ -72,25 +73,29 @@ public class MyBuyActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     JSONArray data = jsonObject.getJSONArray("data");
-                    for (int i = 0; i < data.length(); i++) {
-                        JSONObject object = data.getJSONObject(i);
-                        String editTime = object.getString("editTime");
-                        JSONObject commd = object.getJSONObject("commodity");
-                        JSONArray images = commd.getJSONArray("images");
-                        JSONArray label = commd.getJSONArray("label");
-                        String price = commd.getString("price");
-                        String commodityName = commd.getString("commodityName");
-                        String picurl = images.getString(0);
-                        String label1 = label.getString(0);
-                        String label2 = label.getString(1);
-                        entity = new My_Buy_Entity();
-                        entity.setMy_buy_picurl(picurl);
-                        entity.setMy_buy_name(commodityName);
-                        entity.setMy_buy_price(price);
-                        entity.setMy_buy_label1(label1);
-                        entity.setMy_buy_label2(label2);
-                        entity.setMy_buy_date(editTime);
-                        listentity.add(entity);
+                    if (data.length()<=0){
+                        ToastUtil.ShowShort("还没有买过商品");
+                    }else{
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject object = data.getJSONObject(i);
+                            String editTime = object.getString("editTime");
+                            JSONObject commd = object.getJSONObject("commodity");
+                            JSONArray images = commd.getJSONArray("images");
+                            JSONArray label = commd.getJSONArray("label");
+                            String price = commd.getString("price");
+                            String commodityName = commd.getString("commodityName");
+                            String picurl = images.getString(0);
+                            String label1 = label.getString(0);
+                            String label2 = label.getString(1);
+                            entity = new My_Buy_Entity();
+                            entity.setMy_buy_picurl(picurl);
+                            entity.setMy_buy_name(commodityName);
+                            entity.setMy_buy_price(price);
+                            entity.setMy_buy_label1(label1);
+                            entity.setMy_buy_label2(label2);
+                            entity.setMy_buy_date(editTime);
+                            listentity.add(entity);
+                        }
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {

@@ -39,8 +39,11 @@ import cn.linghouse.Adapter.Recommend_Adapter;
 import cn.linghouse.App.Config;
 import cn.linghouse.Entity.Recommend_Entity;
 import cn.linghouse.UI.LoginActivity;
+import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 import okhttp3.Call;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class Recommend_Fragment extends Fragment {
     @BindView(R.id.lv_recommend)
@@ -59,12 +62,13 @@ public class Recommend_Fragment extends Fragment {
     private String isloggin;
     private String[][] img = new String[0][0];
     private SharedPreferences sp;
+    private String sessionid;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser){
-            sp = getContext().getSharedPreferences("data", Context.MODE_PRIVATE);
+            sp = getContext().getSharedPreferences("data", MODE_PRIVATE);
             isloggin = sp.getString("username", "false");
             if (isloggin.equals("false")) {
                 //用户未登录
@@ -83,6 +87,8 @@ public class Recommend_Fragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_recommend, container, false);
         unbinder = ButterKnife.bind(this, view);
         ImmersionBar.with(this).init();
+        SharedPreferences share = getActivity().getSharedPreferences("Session", MODE_PRIVATE);
+        sessionid = share.getString("sessionid", "null");
         getRecommend();
         entity = new ArrayList<>();
         adapter = new Recommend_Adapter(entity, getContext());
@@ -93,7 +99,8 @@ public class Recommend_Fragment extends Fragment {
     private void getRecommend() {
         OkHttpUtils.post()
                 .url(Config.recommendCommodityUrl)
-                .addParams("searchMethod", "goods")
+                .addHeader("cookie",sessionid)
+                .addParams("searchMethod", "intimate")
                 .addParams("page", "0")
                 .addParams("size", "20")
                 .build().execute(new StringCallback() {
@@ -108,31 +115,35 @@ public class Recommend_Fragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject data = jsonObject.getJSONObject("data");
                     JSONArray commend = data.getJSONArray("commodities");
-                    for (int i = 0; i < commend.length(); i++) {
-                        JSONObject object = commend.getJSONObject(i);
-                        JSONArray images = object.getJSONArray("images");
-                        String commodityName = object.getString("commodityName");
-                        String price = object.getString("price");
-                        String details = object.getString("details");
-                        String picurl = images.getString(0);
-                        String cnumber = object.getString("commodityNumber");
-                        img = Arrays.copyOf(img, img.length + 1);
-                        img[img.length - 1] = new String[0];
-                        String[] img1 = img[img.length - 1];
-                        for (int k = 0; k < images.length(); k++) {
-                            img1 = Arrays.copyOf(img1, img1.length + 1);
-                            img1[img1.length - 1] = images.getString(k);
+                    if (commend.length()<=0){
+                        ToastUtil.ShowShort("商品数据暂时为空");
+                    }else{
+                        for (int i = 0; i < commend.length(); i++) {
+                            JSONObject object = commend.getJSONObject(i);
+                            JSONArray images = object.getJSONArray("images");
+                            String commodityName = object.getString("commodityName");
+                            String price = object.getString("price");
+                            String details = object.getString("details");
+                            String picurl = images.getString(0);
+                            String cnumber = object.getString("commodityNumber");
+                            img = Arrays.copyOf(img, img.length + 1);
+                            img[img.length - 1] = new String[0];
+                            String[] img1 = img[img.length - 1];
+                            for (int k = 0; k < images.length(); k++) {
+                                img1 = Arrays.copyOf(img1, img1.length + 1);
+                                img1[img1.length - 1] = images.getString(k);
+                            }
+                            img[img.length - 1] = img1;
+                            String[] img2 = img[i];
+                            recommend_entity = new Recommend_Entity();
+                            recommend_entity.setRecommed_title(commodityName);
+                            recommend_entity.setRecommed_price(price);
+                            recommend_entity.setCnumber(cnumber);
+                            recommend_entity.setRecommed_detail(details);
+                            recommend_entity.setRecommed_pic_url(picurl);
+                            recommend_entity.setRecommed_images(img2);
+                            entity.add(recommend_entity);
                         }
-                        img[img.length - 1] = img1;
-                        String[] img2 = img[i];
-                        recommend_entity = new Recommend_Entity();
-                        recommend_entity.setRecommed_title(commodityName);
-                        recommend_entity.setRecommed_price(price);
-                        recommend_entity.setCnumber(cnumber);
-                        recommend_entity.setRecommed_detail(details);
-                        recommend_entity.setRecommed_pic_url(picurl);
-                        recommend_entity.setRecommed_images(img2);
-                        entity.add(recommend_entity);
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {

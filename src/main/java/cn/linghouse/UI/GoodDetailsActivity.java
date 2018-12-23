@@ -1,11 +1,13 @@
 package cn.linghouse.UI;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,6 +58,8 @@ public class GoodDetailsActivity extends AppCompatActivity {
     //商品轮播图
     @BindView(R.id.con_goods_banner)
     ConvenientBanner conGoodsBanner;
+    @BindView(R.id.btn_shopping)
+    Button btnShopping;
     //接收的images数组，作为轮播图的数据源
     private String[] image;
     //接收到的分类
@@ -133,7 +137,7 @@ public class GoodDetailsActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick({R.id.iv_details_collection, R.id.iv_details_chat, R.id.iv_goods_details_back})
+    @OnClick({R.id.iv_details_collection, R.id.iv_details_chat, R.id.iv_goods_details_back, R.id.btn_shopping})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             //收藏图标
@@ -153,6 +157,17 @@ public class GoodDetailsActivity extends AppCompatActivity {
             //返回图标
             case R.id.iv_goods_details_back:
                 GoodDetailsActivity.this.finish();
+                break;
+            //立即购买
+            case R.id.btn_shopping:
+                String picurl = list.get(0);
+                Intent intent = new Intent();
+                intent.putExtra("picurl",picurl);
+                intent.putExtra("title",title);
+                intent.putExtra("price",price);
+                intent.setClass(GoodDetailsActivity.this,BuyNowActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                 break;
             default:
                 break;

@@ -47,37 +47,41 @@ public class MyReleaseActivity extends AppCompatActivity {
         sessionid = share.getString("sessionid", "null");
         getRelease();
         listentity = new ArrayList<>();
-        adapter = new My_Release_Adapter(this,listentity);
+        adapter = new My_Release_Adapter(this, listentity);
         lvMyReleaseOrder.setAdapter(adapter);
     }
 
-    private void getRelease(){
+    private void getRelease() {
         RequestParams params = new RequestParams(Config.myReleaseUrl);
-        params.addHeader("cookie",sessionid);
+        params.addHeader("cookie", sessionid);
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     JSONArray data = jsonObject.getJSONArray("data");
-                    for (int i =0;i<data.length();i++){
-                        JSONObject object = data.getJSONObject(i);
-                        JSONArray label = object.getJSONArray("label");
-                        JSONArray images = object.getJSONArray("images");
-                        String price = object.getString("price");
-                        String commodityName = object.getString("commodityName");
-                        String createTime = object.getString("createTime");
-                        String label1 = label.getString(0);
-                        String label2 = label.getString(0);
-                        String picurl = images.getString(0);
-                        entity = new My_Release_Entity();
-                        entity.setName(commodityName);
-                        entity.setDate(createTime);
-                        entity.setLabel1(label1);
-                        entity.setLabel2(label2);
-                        entity.setPrice(price);
-                        entity.setPicurl(picurl);
-                        listentity.add(entity);
+                    if (data.length() <= 0) {
+                        ToastUtil.ShowShort("还没有发布过商品");
+                    } else {
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject object = data.getJSONObject(i);
+                            JSONArray label = object.getJSONArray("label");
+                            JSONArray images = object.getJSONArray("images");
+                            String price = object.getString("price");
+                            String commodityName = object.getString("commodityName");
+                            String createTime = object.getString("createTime");
+                            String label1 = label.getString(0);
+                            String label2 = label.getString(0);
+                            String picurl = images.getString(0);
+                            entity = new My_Release_Entity();
+                            entity.setName(commodityName);
+                            entity.setDate(createTime);
+                            entity.setLabel1(label1);
+                            entity.setLabel2(label2);
+                            entity.setPrice(price);
+                            entity.setPicurl(picurl);
+                            listentity.add(entity);
+                        }
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -104,7 +108,7 @@ public class MyReleaseActivity extends AppCompatActivity {
 
     @OnClick(R.id.iv_my_release_back)
     public void onViewClicked() {
-        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         MyReleaseActivity.this.finish();
     }
 

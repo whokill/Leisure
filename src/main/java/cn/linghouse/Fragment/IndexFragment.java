@@ -128,31 +128,35 @@ public class IndexFragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject data = jsonObject.getJSONObject("data");
                     JSONArray commend = data.getJSONArray("commodities");
-                    for (int i = 0; i < commend.length(); i++) {
-                        JSONObject object = commend.getJSONObject(i);
-                        JSONArray images = object.getJSONArray("images");
-                        String price = object.getString("price");
-                        String cnumber = object.getString("commodityNumber");
-                        String commodityName = object.getString("commodityName");
-                        String details = object.getString("details");
-                        String picurl = images.getString(0);
-                        img = Arrays.copyOf(img, img.length + 1);
-                        img[img.length - 1] = new String[0];
-                        String[] img1 = img[img.length - 1];
-                        for (int k = 0; k < images.length(); k++) {
-                            img1 = Arrays.copyOf(img1, img1.length + 1);
-                            img1[img1.length - 1] = images.getString(k);
+                    if (commend.length()<=0){
+                        ToastUtil.ShowShort("商品数据暂时为空");
+                    }else{
+                        for (int i = 0; i < commend.length(); i++) {
+                            JSONObject object = commend.getJSONObject(i);
+                            JSONArray images = object.getJSONArray("images");
+                            String price = object.getString("price");
+                            String cnumber = object.getString("commodityNumber");
+                            String commodityName = object.getString("commodityName");
+                            String details = object.getString("details");
+                            String picurl = images.getString(0);
+                            img = Arrays.copyOf(img, img.length + 1);
+                            img[img.length - 1] = new String[0];
+                            String[] img1 = img[img.length - 1];
+                            for (int k = 0; k < images.length(); k++) {
+                                img1 = Arrays.copyOf(img1, img1.length + 1);
+                                img1[img1.length - 1] = images.getString(k);
+                            }
+                            img[img.length - 1] = img1;
+                            String[] img2 = img[i];
+                            entity = new Index_Pic_Entity();
+                            entity.setPrice(price);
+                            entity.setCnumber(cnumber);
+                            entity.setTitle(commodityName);
+                            entity.setDetail(details);
+                            entity.setPic_url(picurl);
+                            entity.setImages(img2);
+                            pic_entity.add(entity);
                         }
-                        img[img.length - 1] = img1;
-                        String[] img2 = img[i];
-                        entity = new Index_Pic_Entity();
-                        entity.setPrice(price);
-                        entity.setCnumber(cnumber);
-                        entity.setTitle(commodityName);
-                        entity.setDetail(details);
-                        entity.setPic_url(picurl);
-                        entity.setImages(img2);
-                        pic_entity.add(entity);
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {

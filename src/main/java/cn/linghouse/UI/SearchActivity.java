@@ -233,7 +233,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         restart = slidingMenu.findViewById(R.id.btn_restart);
         sure = slidingMenu.findViewById(R.id.btn_sure);
         linbutton = slidingMenu.findViewById(R.id.lin_button);
-        rgutils = slidingMenu.findViewById(R.id.rg_utils);
         slmin = slidingMenu.findViewById(R.id.sl_et_price_min);
         slmax = slidingMenu.findViewById(R.id.sl_et_price_max);
         slmin.hasFocus();

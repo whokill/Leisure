@@ -33,6 +33,7 @@ import cn.linghouse.App.ActivityController;
 import cn.linghouse.App.Config;
 import cn.linghouse.Entity.All_Order_Entity;
 import cn.linghouse.Entity.My_Sell_Entity;
+import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 
 public class MySellActivity extends AppCompatActivity {
@@ -68,25 +69,29 @@ public class MySellActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     JSONArray data = jsonObject.getJSONArray("data");
-                    for (int i = 0; i < data.length(); i++) {
-                        JSONObject object = data.getJSONObject(i);
-                        String tradstates = object.getString("tradeStatus");
-                        JSONObject commd = object.getJSONObject("commodity");
-                        JSONArray images = commd.getJSONArray("images");
-                        JSONArray label = commd.getJSONArray("label");
-                        String price = commd.getString("price");
-                        String commodityName = commd.getString("commodityName");
-                        String picurl = images.getString(0);
-                        String label1 = label.getString(0);
-                        String label2 = label.getString(1);
-                        entity = new My_Sell_Entity();
-                        entity.setPicurl(picurl);
-                        entity.setTitle(commodityName);
-                        entity.setPrice(price);
-                        entity.setLabel1(label1);
-                        entity.setLabel2(label2);
-                        entity.setTradstates(tradstates);
-                        sell_entityList.add(entity);
+                    if (data.length()<=0){
+                        ToastUtil.ShowShort("还没有卖出过商品");
+                    }else{
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject object = data.getJSONObject(i);
+                            String tradstates = object.getString("tradeStatus");
+                            JSONObject commd = object.getJSONObject("commodity");
+                            JSONArray images = commd.getJSONArray("images");
+                            JSONArray label = commd.getJSONArray("label");
+                            String price = commd.getString("price");
+                            String commodityName = commd.getString("commodityName");
+                            String picurl = images.getString(0);
+                            String label1 = label.getString(0);
+                            String label2 = label.getString(1);
+                            entity = new My_Sell_Entity();
+                            entity.setPicurl(picurl);
+                            entity.setTitle(commodityName);
+                            entity.setPrice(price);
+                            entity.setLabel1(label1);
+                            entity.setLabel2(label2);
+                            entity.setTradstates(tradstates);
+                            sell_entityList.add(entity);
+                        }
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {

@@ -1,37 +1,46 @@
 package cn.linghouse.Entity;
 
 public class Shopping_Address_Entity {
-    //选中的省份
-    private String province;
-    //选中的市
-    private String City;
-    //选中的区
-    private String area;
+    //大概地址
+    private String address;
     //详细地址
     private String detail_address;
+    //收件人姓名
+    private String name;
+    //收件人电话
+    private String cellphone;
+    private String id;
 
-    public String getProvince() {
-        return province;
+    public String getId() {
+        return id;
     }
 
-    public void setProvince(String province) {
-        this.province = province;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getCity() {
-        return City;
+    public String getAddress() {
+        return address;
     }
 
-    public void setCity(String city) {
-        City = city;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getArea() {
-        return area;
+    public String getName() {
+        return name;
     }
 
-    public void setArea(String area) {
-        this.area = area;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCellphone() {
+        return cellphone;
+    }
+
+    public void setCellphone(String cellphone) {
+        this.cellphone = cellphone;
     }
 
     public String getDetail_address() {

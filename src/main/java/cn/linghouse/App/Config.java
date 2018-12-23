@@ -21,7 +21,7 @@ public class Config {
     //验证码接口地址
     public static String verification  = "http://leisure.myosotis.cc:8080/leisure/verification";
     //我的全部交易接口地址
-    public static String getAllOrder = "http:leisure.myosotis.cc:8080/leisure/trade";
+    public static String getAllOrder = "http://leisure.myosotis.cc:8080/leisure/trade?=";
     //注销当前用户接口地址
     public static String chagneAccountUrl = "http://leisure.myosotis.cc:8080/leisure/logout";
     //上传用户收款二维码接口地址
@@ -46,4 +46,10 @@ public class Config {
     public static String deposit = "http://leisure.myosotis.cc:8080/leisure/balance/withdrawal";
     //充值余额接口地址
     public static String recharge = "http://leisure.myosotis.cc:8080/leisure/recharge";
+    //创建收获地址的接口
+    public static String createAddress = "http://leisure.myosotis.cc:8080/leisure/shipping/address/add";
+    //获取收获地址
+    public static String getAddress = "http://leisure.myosotis.cc:8080/leisure/shipping/address/get";
+    //设置默认收货地址
+    public static String setDefaultAddress = "http://leisure.myosotis.cc:8080/leisure/shipping/address/set";
 }

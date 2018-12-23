@@ -187,40 +187,49 @@ public class SafeSettingActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //发起网络请求
-                        OkHttpUtils.post()
-                                .url(Config.recharge)
-                                .addHeader("cookie",sessionid)
-                                .addParams("RMB", etrechargenum.getText().toString())
-                                .build().execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
+                        if (TextUtils.isEmpty(etrechargenum.getText().toString())){
+                            etrechargenum.setError("充值金额为空,你是打算充个寂寞?");
+                        }else{
+                            OkHttpUtils.post()
+                                    .url(Config.recharge)
+                                    .addHeader("cookie",sessionid)
+                                    .addParams("RMB", etrechargenum.getText().toString())
+                                    .build().execute(new StringCallback() {
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
 
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response);
-                                    String message = jsonObject.getString("message");
-                                    int code = jsonObject.getInt("code");
-                                    String data = jsonObject.getString("data");
-                                    if (code == 200) {
-                                        ToastUtil.ShowShort(message + "," + data);
-                                        rechargeDialog.dismiss();
-                                    } else {
-                                        ToastUtil.ShowShort(message);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
                                 }
-                            }
-                        });
+
+                                @Override
+                                public void onResponse(String response, int id) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        String message = jsonObject.getString("message");
+                                        int code = jsonObject.getInt("code");
+                                        String data = jsonObject.getString("data");
+                                        if (code == 200) {
+                                            ToastUtil.ShowShort(message + "," + data);
+                                            rechargeDialog.dismiss();
+                                        } else {
+                                            ToastUtil.ShowShort(message);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
                     }
                 });
                 break;
             default:
                 break;
         }
+    }
+
+    //获取对应账户的余额
+    private void getBalance(){
+        
     }
 
     public static void setDialogWindowAttr(Dialog dlg, Context ctx, int gravity) {

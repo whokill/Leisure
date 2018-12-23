@@ -38,7 +38,7 @@
                 android:layout_height="40dp"
                 android:id="@+id/iv_icon"
                 android:paddingLeft="10px"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="31dp"
                 android:src="@mipmap/leisurely_gaitubao_com_132x120"/>
         </LinearLayout>
     </RelativeLayout>
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     style="@style/my_radiobutton_style"
                     android:drawableTop="@mipmap/baby"
-                    android:text="母婴用品"/>
+                    android:text="母婴童装"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
