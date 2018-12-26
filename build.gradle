@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 android {
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
     compileSdkVersion 27
     defaultConfig {
         applicationId "cn.linghouse.leisure"

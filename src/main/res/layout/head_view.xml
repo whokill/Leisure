@@ -62,32 +62,37 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/my_radiobutton_style"
-                    android:drawableTop="@mipmap/phone"
-                    android:text="数码三C"/>
+                    android:text="手机数码"
+                    android:id="@+id/rb_head_view_phone"
+                    android:drawableTop="@mipmap/phone"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/my_radiobutton_style"
-                    android:drawableTop="@mipmap/life"
-                    android:text="生活用品"/>
+                    android:text="宠物生活"
+                    android:id="@+id/rb_head_view_pet"
+                    android:drawableTop="@mipmap/pet"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/my_radiobutton_style"
-                    android:drawableTop="@mipmap/baby"
-                    android:text="母婴童装"/>
+                    android:text="酒水饮料"
+                    android:id="@+id/rb_head_view_drinks"
+                    android:drawableTop="@mipmap/drinks"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/my_radiobutton_style"
-                    android:drawableTop="@mipmap/digital"
-                    android:text="电脑配件"/>
+                    android:text="礼品鲜花"
+                    android:id="@+id/rb_head_view_gifts"
+                    android:drawableTop="@mipmap/gifts"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/my_radiobutton_style"
-                    android:text="图书影音"
-                    android:drawableTop="@mipmap/video"/>
+                    android:text="母婴童装"
+                    android:id="@+id/rb_head_view_baby"
+                    android:drawableTop="@mipmap/baby"/>
             </RadioGroup>
         </TableRow>
         <TableRow
@@ -101,32 +106,37 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/my_radiobutton_style"
-                    android:drawableTop="@mipmap/skincare"
-                    android:text="美妆护肤"/>
+                    android:text="美妆护肤"
+                    android:id="@+id/rb_head_view_beautiful"
+                    android:drawableTop="@mipmap/beautiful"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/my_radiobutton_style"
-                    android:drawableTop="@mipmap/clothes"
-                    android:text="服装鞋帽"/>
+                    android:text="食品生鲜"
+                    android:id="@+id/rb_head_view_foods"
+                    android:drawableTop="@mipmap/foods"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/my_radiobutton_style"
-                    android:drawableTop="@mipmap/traffic"
-                    android:text="交通工具"/>
+                    android:text="钟表珠宝"
+                    android:id="@+id/rb_head_view_watches"
+                    android:drawableTop="@mipmap/watches"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/my_radiobutton_style"
-                    android:drawableTop="@mipmap/outdoor"
-                    android:text="运动户外"/>
+                    android:text="运动户外"
+                    android:id="@+id/rb_head_view_outdoor"
+                    android:drawableTop="@mipmap/outdoor"/>
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/my_radiobutton_style"
-                    android:text="其他用品"
-                    android:drawableTop="@mipmap/icon_all"/>
+                    android:text="医保健康"
+                    android:id="@+id/rb_head_view_health"
+                    android:drawableTop="@mipmap/health"/>
             </RadioGroup>
         </TableRow>
     </TableLayout>

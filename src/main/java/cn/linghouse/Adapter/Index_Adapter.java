@@ -111,6 +111,7 @@ public class Index_Adapter extends BaseAdapter {
                 intent.putExtra("details", pic_entity.get(position * 2).getDetail());
                 intent.putExtra("imagelist", pic_entity.get(position * 2).getImages());
                 intent.putExtra("cnumber", pic_entity.get(position * 2).getCnumber());
+                intent.putExtra("sortname", pic_entity.get(position * 2).getSortname());
                 intent.setClass(context, GoodDetailsActivity.class);
                 context.startActivity(intent);
             }
@@ -124,6 +125,7 @@ public class Index_Adapter extends BaseAdapter {
                 intent.putExtra("details", pic_entity.get(position * 2 + 1).getDetail());
                 intent.putExtra("imagelist", pic_entity.get(position * 2 + 1).getImages());
                 intent.putExtra("cnumber", pic_entity.get(position * 2 + 1).getCnumber());
+                intent.putExtra("sortname", pic_entity.get(position * 2 + 1).getSortname());
                 intent.setClass(context, GoodDetailsActivity.class);
                 context.startActivity(intent);
             }

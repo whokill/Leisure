@@ -17,6 +17,16 @@ public class Index_Pic_Entity {
     private Boolean isCollection;
     //商品编号
     private String cnumber;
+    //商品分类
+    private String sortname;
+
+    public String getSortname() {
+        return sortname;
+    }
+
+    public void setSortname(String sortname) {
+        this.sortname = sortname;
+    }
 
     public String getCnumber() {
         return cnumber;

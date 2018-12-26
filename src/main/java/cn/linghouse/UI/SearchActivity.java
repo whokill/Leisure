@@ -65,7 +65,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private Search_Adapter adapter;
     private TextView searchfaild;
     private Search_Entity entity;
-    private TextView tvclassify, tvnews, tvscore;
+    private TextView tvclassify, tvnews;
     private ZLoadingDialog dialog;
     private Button restart, sure;
     private SlidingMenu slidingMenu;
@@ -111,7 +111,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private void initview() {
         llscreening = findViewById(R.id.ll_screening);
         llscreening.setVisibility(View.GONE);
-        tvscore = findViewById(R.id.tv_score);
         tvnews = findViewById(R.id.tv_news);
         refreshLayout = findViewById(R.id.refresh);
         searchfaild = findViewById(R.id.tv_search_faild);
@@ -131,7 +130,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         searchback.setOnClickListener(this);
         tvsearch.setOnClickListener(this);
         tvnews.setOnClickListener(this);
-        tvscore.setOnClickListener(this);
         final List<String> data = new ArrayList<>();
         data.add("综合排序");
         data.add("价格升序");
@@ -273,12 +271,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 initdialog();
                 searchGoods_news(etsearch.getText().toString(), "0", "20");
                 break;
-            //搜索界面上的评分排序
-            case R.id.tv_score:
-                search_entity.clear();
-                initdialog();
-                searchGoods_score(etsearch.getText().toString(), "0", "20");
-                break;
             //侧滑菜单中的重置按钮,清除所有已经设置了的数据
             case R.id.btn_restart:
                 rgutils.clearCheck();
@@ -363,35 +355,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private void searchGoods_news(String name, String page, String size) {
         OkHttpUtils.post()
                 .url(Config.searchCommodityUrl)
-                .addParams("commodityName", name)
+                .addParams("commodityName",name)
                 .addParams("searchMethod", "latest")
-                .addParams("page", page)
-                .addParams("size", size)
-                .build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                SaxJson(response);
-            }
-        });
-    }
-
-    /**
-     * 根据商品分数来排序
-     *
-     * @param name
-     * @param page
-     * @param size
-     */
-    private void searchGoods_score(String name, String page, String size) {
-        OkHttpUtils.post()
-                .url(Config.searchCommodityUrl)
-                .addParams("commodityName", name)
-                .addParams("searchMethod", "goods")
                 .addParams("page", page)
                 .addParams("size", size)
                 .build().execute(new StringCallback() {
@@ -470,7 +435,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     String score = object.getString("score");
                     String sortname = sort.getString("sortName");
                     String label1 = label.getString(0);
-                    String label2 = label.getString(1);
+                    //String label2 = label.getString(1);
                     String picurl = images.getString(0);
                     String cnumber = object.getString("commodityNumber");
                     img = Arrays.copyOf(img, img.length + 1);
@@ -490,11 +455,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     entity.setName(name);
                     entity.setPice(numprice);
                     entity.setDetail(details);
-                    entity.setScore(score);
                     entity.setCnumber(cnumber);
                     entity.setSortname(sortname);
                     entity.setLabel1(label1);
-                    entity.setLabel2(label2);
+                    //entity.setLabel2(label2);
                     search_entity.add(entity);
                 }
             }

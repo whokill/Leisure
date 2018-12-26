@@ -62,6 +62,12 @@
                     android:text="设置姓名"
                     android:id="@+id/tv_item_reaper_name"/>
             </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="是否默认"
+                android:id="@+id/tv_item_isdefault"
+                android:layout_marginTop="10dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,11 +78,18 @@
                     android:layout_height="wrap_content"
                     android:text="联系电话:"/>
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="29dp"
+                    android:layout_weight="1"
                     android:text="设置电话"
                     android:id="@+id/tv_item_reaper_phone"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设为默认"
+                    android:id="@+id/tv_item_setdefault"
+                    android:layout_marginTop="30dp"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/tv_delete_address"
@@ -85,6 +98,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="10dp"
                 android:text="删除"
+                android:layout_marginTop="20dp"
                 android:textColor="#ff0000" />
         </LinearLayout>
     </LinearLayout>

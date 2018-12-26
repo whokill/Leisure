@@ -220,9 +220,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 llfeedbacksuccess.setVisibility(View.VISIBLE);
             }
         });
-
-
-
         setDialogWindowAttr(feedbackdialog,getContext(),Gravity.BOTTOM);
     }
 

@@ -67,14 +67,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="评分排序"
-                android:id="@+id/tv_score"
-                android:textColor="#000000"
-                android:gravity="center"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="更多筛选"
                 android:id="@+id/tv_classify"
                 android:textColor="#000000"

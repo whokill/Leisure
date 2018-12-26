@@ -38,6 +38,7 @@
         <activity android:name="cn.linghouse.UI.SafeSettingActivity" />
         <activity android:name="cn.linghouse.UI.FindPassActivity" />
         <activity android:name="cn.linghouse.UI.BuyNowActivity"></activity>
+        <activity android:name="cn.linghouse.UI.SortActivity"/>
     </application>
 
 </manifest>

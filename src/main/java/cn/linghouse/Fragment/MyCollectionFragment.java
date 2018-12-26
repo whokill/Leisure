@@ -157,36 +157,44 @@ public class MyCollectionFragment extends Fragment implements View.OnClickListen
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray data = jsonObject.getJSONArray("data");
-                    for (int i = 0; i < data.length(); i++) {
-                        JSONObject object = data.getJSONObject(i);
-                        JSONObject sort = object.getJSONObject("sort");
-                        JSONArray images = object.getJSONArray("images");
-                        String picurl = images.getString(0);
-                        String commodityName = object.getString("commodityName");
-                        String price = object.getString("price");
-                        Double numdouble = Double.parseDouble(price);
-                        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.CHINA);
-                        String numprice = format.format(numdouble);
-                        String details = object.getString("details");
-                        String cnumber = object.getString("commodityNumber");
-                        String sortname = sort.getString("sortName");
-                        img = Arrays.copyOf(img, img.length + 1);
-                        img[img.length - 1] = new String[0];
-                        String[] img1 = img[img.length - 1];
-                        for (int k = 0; k < images.length(); k++) {
-                            img1 = Arrays.copyOf(img1, img1.length + 1);
-                            img1[img1.length - 1] = images.getString(k);
+                    if (data.length()<=0){
+                        shoppingempty.setVisibility(View.VISIBLE);
+                        lvcollection.setVisibility(View.GONE);
+                    }else{
+                        shoppingempty.setVisibility(View.GONE);
+                        lvcollection.setVisibility(View.VISIBLE);
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject object = data.getJSONObject(i);
+                            JSONObject sort = object.getJSONObject("sort");
+                            JSONArray images = object.getJSONArray("images");
+                            String picurl = images.getString(0);
+                            String commodityName = object.getString("commodityName");
+                            String price = object.getString("price");
+                            Double numdouble = Double.parseDouble(price);
+                            NumberFormat format = NumberFormat.getCurrencyInstance(Locale.CHINA);
+                            String numprice = format.format(numdouble);
+                            String details = object.getString("details");
+                            String cnumber = object.getString("commodityNumber");
+                            String sortname = sort.getString("sortName");
+                            img = Arrays.copyOf(img, img.length + 1);
+                            img[img.length - 1] = new String[0];
+                            String[] img1 = img[img.length - 1];
+                            for (int k = 0; k < images.length(); k++) {
+                                img1 = Arrays.copyOf(img1, img1.length + 1);
+                                img1[img1.length - 1] = images.getString(k);
+                            }
+                            img[img.length - 1] = img1;
+                            entity = new My_Collection_Entity();
+                            entity.setPicurl(picurl);
+                            entity.setCnumber(cnumber);
+                            entity.setName(commodityName);
+                            entity.setDetails(details);
+                            entity.setPrice(numprice);
+                            entity.setSortname(sortname);
+                            listentity.add(entity);
                         }
-                        img[img.length - 1] = img1;
-                        entity = new My_Collection_Entity();
-                        entity.setPicurl(picurl);
-                        entity.setCnumber(cnumber);
-                        entity.setName(commodityName);
-                        entity.setDetails(details);
-                        entity.setPrice(numprice);
-                        entity.setSortname(sortname);
-                        listentity.add(entity);
                     }
+
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -60,7 +60,6 @@ public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Addr
         holder.cellphone.setText(entity.getCellphone());
         holder.itemView.setTag(position);
         holder.item_detail_address.setText(entity.getDetail_address());
-        getAddress(holder, position);
         if (check.contains(position)) {
             holder.ckdefault.setChecked(true);
         } else {
@@ -79,7 +78,7 @@ public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Addr
                     holder.ckdefault.setClickable(true);
                 }
                 if (holder.ckdefault.isChecked() == true) {
-                    setDefaultAddress(position, holder);
+                    //setDefaultAddress(position, holder);
                     //ToastUtil.ShowShort(position+"、"+entity.getId());
                 }
             }
@@ -88,6 +87,13 @@ public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Addr
             @Override
             public void onClick(View v) {
                 removeData(position);
+            }
+        });
+        holder.setdefault.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDefaultAddress(position, holder);
+                holder.isdefault.setText(entity.getIsdefault());
             }
         });
     }
@@ -105,34 +111,7 @@ public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Addr
 
             @Override
             public void onResponse(String response, int id) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONArray data = jsonObject.getJSONArray("data");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public void getAddress(MyHolder holder, int position) {
-        OkHttpUtils.get()
-                .url(Config.getAddress)
-                .addHeader("cookie", sessionid)
-                .build().execute(new StringCallback() {
-            @Override
-            public void onError(Call call, Exception e, int id) {
-
-            }
-
-            @Override
-            public void onResponse(String response, int id) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONArray data = jsonObject.getJSONArray("data");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                address_entity.get(position).setIsdefault("已设置");
             }
         });
     }
@@ -160,23 +139,24 @@ public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Addr
 
     class MyHolder extends RecyclerView.ViewHolder {
         private TextView item_detail_address;
-        private LinearLayout ll_line;
         private TextView deleteAddress;
         private CheckBox ckdefault;
         private TextView name;
+        private TextView isdefault;
+        private TextView setdefault;
         private TextView cellphone;
         private TextView item_address;
 
         public MyHolder(View itemView) {
             super(itemView);
-            ll_line = itemView.findViewById(R.id.ll_line);
             ckdefault = itemView.findViewById(R.id.ck_default);
             item_detail_address = itemView.findViewById(R.id.tv_item_detail_address);
             item_address = itemView.findViewById(R.id.tv_address);
             name = itemView.findViewById(R.id.tv_item_reaper_name);
+            isdefault = itemView.findViewById(R.id.tv_item_isdefault);
+            setdefault = itemView.findViewById(R.id.tv_item_setdefault);
             cellphone = itemView.findViewById(R.id.tv_item_reaper_phone);
             deleteAddress = itemView.findViewById(R.id.tv_delete_address);
-
         }
     }
 }

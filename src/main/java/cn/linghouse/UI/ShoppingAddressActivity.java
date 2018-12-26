@@ -53,8 +53,8 @@ public class ShoppingAddressActivity extends AppCompatActivity implements View.O
     private List<Shopping_Address_Entity> entity = new ArrayList<>();
     private Shopping_Address_Adapter adaper;
     private TextView addresssure, addresscancel;
-    private String mprovince,mcity,mdistrict;
-    private EditText etdetailsaddress,etreapername,etreaperphone;
+    private String mprovince, mcity, mdistrict;
+    private EditText etdetailsaddress, etreapername, etreaperphone;
     private AddressPicker picker;
     private String sessionid;
 

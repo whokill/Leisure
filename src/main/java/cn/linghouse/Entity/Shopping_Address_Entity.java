@@ -10,6 +10,15 @@ public class Shopping_Address_Entity {
     //收件人电话
     private String cellphone;
     private String id;
+    private String isdefault;
+
+    public String getIsdefault() {
+        return isdefault;
+    }
+
+    public void setIsdefault(String isdefault) {
+        this.isdefault = isdefault;
+    }
 
     public String getId() {
         return id;

@@ -1,4 +1,9 @@
 package cn.linghouse.Adapter;
+/*
+ *Create by on 2018/12/25
+ *Author:Linghouse
+ *describe:分类搜索商品实体类
+ */
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,26 +17,26 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import cn.linghouse.Entity.Search_Entity;
+import cn.linghouse.Entity.Sort_Entity;
 import cn.linghouse.leisure.R;
 
-public class Search_Adapter extends BaseAdapter {
-    private List<Search_Entity> search_entities;
+public class SortAdapter extends BaseAdapter {
+    private List<Sort_Entity> entityList;
     private Context context;
 
-    public Search_Adapter(List<Search_Entity> search_entities, Context context) {
-        this.search_entities = search_entities;
+    public SortAdapter(List<Sort_Entity> entityList, Context context) {
+        this.entityList = entityList;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return search_entities == null ? 0 : search_entities.size();
+        return entityList == null ? 0 : entityList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return search_entities.get(position);
+        return entityList.get(position);
     }
 
     @Override
@@ -44,33 +49,38 @@ public class Search_Adapter extends BaseAdapter {
         ViewHolder holder = null;
         if (convertView==null){
             LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.search_item,null);
+            convertView = inflater.inflate(R.layout.activity_sort_item,null);
             holder = new ViewHolder();
-            holder.title = convertView.findViewById(R.id.search_item_name);
-            holder.pice = convertView.findViewById(R.id.search_item_pice);
-            holder.picurl = convertView.findViewById(R.id.search_item_pic);
-            holder.label1 = convertView.findViewById(R.id.search_item_label1);
-            holder.label2 = convertView.findViewById(R.id.search_item_label2);
+            holder.picurl = convertView.findViewById(R.id.sort_item_pic);
+            holder.pice = convertView.findViewById(R.id.sort_item_pice);
+            holder.title = convertView.findViewById(R.id.sort_item_name);
+            holder.label1 = convertView.findViewById(R.id.sort_item_label1);
+            holder.label2 = convertView.findViewById(R.id.sort_item_label2);
+            holder.score = convertView.findViewById(R.id.sort_item_score);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-        Search_Entity entity = search_entities.get(position);
+        Sort_Entity entity = entityList.get(position);
         Glide.with(context)
                 .load(entity.getPicurl())
-                .placeholder(R.mipmap.logo)
                 .dontAnimate()
+                .centerCrop()
+                .placeholder(R.mipmap.logo)
                 .into(holder.picurl);
         holder.title.setText(entity.getName());
         holder.pice.setText(entity.getPice());
         holder.label1.setText(entity.getLabel1());
         holder.label2.setText(entity.getLabel2());
+        holder.score.setText(entity.getScore());
         return convertView;
     }
+
     public class ViewHolder{
         ImageView picurl;
         TextView title;
         TextView pice;
+        TextView score;
         TextView label1;
         TextView label2;
     }

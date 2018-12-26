@@ -60,6 +60,7 @@ public class SafeSettingActivity extends AppCompatActivity {
     private Button btnrecharge;
     private Dialog rechargeDialog;
     private String sessionid;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,12 +68,15 @@ public class SafeSettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_safe_setting);
         SharedPreferences share = getSharedPreferences("Session", MODE_PRIVATE);
         sessionid = share.getString("sessionid", "null");
+        sp = getSharedPreferences("data",MODE_PRIVATE);
+        name = sp.getString("username","未登录");
+        getBalance(name);
         util = new MyInputPwdUtil(this);
         util.getMyInputDialogBuilder().setAnimStyle(R.style.dialog_anim);
         ImmersionBar.with(this).init();
         ButterKnife.bind(this);
-        sp = getSharedPreferences("data", MODE_PRIVATE);
         tradingpass = sp.getString("tradingpass", "未设置");
+        ToastUtil.ShowShort(name);
         if (tradingpass.equals("未设置")) {
             tvTradingPassState.setText("未设置");
         } else {
@@ -210,6 +214,7 @@ public class SafeSettingActivity extends AppCompatActivity {
                                         if (code == 200) {
                                             ToastUtil.ShowShort(message + "," + data);
                                             rechargeDialog.dismiss();
+                                            getBalance(name);
                                         } else {
                                             ToastUtil.ShowShort(message);
                                         }
@@ -228,8 +233,34 @@ public class SafeSettingActivity extends AppCompatActivity {
     }
 
     //获取对应账户的余额
-    private void getBalance(){
-        
+    private void getBalance(String name){
+        OkHttpUtils.get()
+                .addHeader("cookie",sessionid)
+                .url(Config.infomation+name)
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int code = jsonObject.getInt("code");
+                    String message = jsonObject.getString("message");
+                    if (code==200){
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        String balance = data.getString("balance");
+                        tvBalance.setText(balance);
+                    }else{
+                        ToastUtil.ShowShort(message);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public static void setDialogWindowAttr(Dialog dlg, Context ctx, int gravity) {

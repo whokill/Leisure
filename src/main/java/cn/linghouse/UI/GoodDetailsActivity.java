@@ -165,6 +165,7 @@ public class GoodDetailsActivity extends AppCompatActivity {
                 intent.putExtra("picurl",picurl);
                 intent.putExtra("title",title);
                 intent.putExtra("price",price);
+                intent.putExtra("cnumber",cnumber);
                 intent.setClass(GoodDetailsActivity.this,BuyNowActivity.class);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
@@ -200,6 +201,9 @@ public class GoodDetailsActivity extends AppCompatActivity {
                     } else if (message.equals("商品都是你的还收藏什么？")) {
                         ivDetailsCollection.setImageResource(R.mipmap.keep);
                         ToastUtil.ShowLong(message);
+                    }else{
+                        ivDetailsCollection.setImageResource(R.mipmap.keep);
+                        ToastUtil.ShowShort(message);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

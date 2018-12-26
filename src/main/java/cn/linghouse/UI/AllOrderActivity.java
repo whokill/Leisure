@@ -80,7 +80,7 @@ public class AllOrderActivity extends AppCompatActivity {
                     }else{
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject object = data.getJSONObject(i);
-                            String tradstates = object.getString("tradeStatus");
+                            int tradstates = object.getInt("tradeStatus");
                             JSONObject commd = object.getJSONObject("commodity");
                             JSONArray images = commd.getJSONArray("images");
                             JSONArray label = commd.getJSONArray("label");
@@ -88,14 +88,18 @@ public class AllOrderActivity extends AppCompatActivity {
                             String commodityName = commd.getString("commodityName");
                             String picurl = images.getString(0);
                             String label1 = label.getString(0);
-                            String label2 = label.getString(1);
+                            //String label2 = label.getString(1);
                             entity = new All_Order_Entity();
                             entity.setPicurl(picurl);
+                            if (tradstates==11){
+                                entity.setTradstates("进行中");
+                            }else if (tradstates==12){
+                                entity.setTradstates("已完成");
+                            }
                             entity.setTitle(commodityName);
                             entity.setPrice(price);
                             entity.setLabel1(label1);
-                            entity.setLabel2(label2);
-                            entity.setTradstates(tradstates);
+                            //entity.setLabel2(label2);
                             listentity.add(entity);
                         }
                     }
@@ -129,3 +133,5 @@ public class AllOrderActivity extends AppCompatActivity {
         ActivityController.removeActivity(this);
     }
 }
+
+//E-R图、项目实现：功能描述、界面截图、操作描述、核心代码、数据库逻辑设计表格(自绘)、测试用例(百度)
