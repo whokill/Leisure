@@ -11,6 +11,7 @@ import android.os.Process;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,6 +44,7 @@ import cn.linghouse.UI.MyReleaseActivity;
 import cn.linghouse.UI.MySellActivity;
 import cn.linghouse.UI.ShoppingAddressActivity;
 import cn.linghouse.UI.SafeSettingActivity;
+import cn.linghouse.UI.wallpaper;
 import cn.linghouse.Util.ToastUtil;
 import cn.linghouse.leisure.R;
 import okhttp3.Call;
@@ -86,8 +88,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     private Dialog feedbackdialog;
     private SharedPreferences sp;
     private EditText feedbackcontent;
-    private ImageView ivfeedback,ivfeedbackok;
-    private LinearLayout llfeedbacksuccess,llfeedback;
+    private ImageView ivfeedback, ivfeedbackok;
+    private LinearLayout llfeedbacksuccess, llfeedback;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -181,10 +183,12 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getContext(), SafeSettingActivity.class));
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 break;
+            //退出app
             case R.id.tv_person_exit_app:
-                ActivityController.finishAll();
+                startActivity(new Intent(getContext(), wallpaper.class));
+                /*ActivityController.finishAll();
                 //杀死该app的进程,彻底退出app
-                Process.killProcess(Process.myPid());
+                Process.killProcess(Process.myPid());*/
                 break;
             default:
                 break;
@@ -192,11 +196,11 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     }
 
     //意见反馈Dialog相关属性设置
-    private void initFeedbackDialog(){
-        if (feedbackdialog==null){
-            feedbackdialog = new Dialog(getContext(),R.style.FeedBack_Dialog_Fullscreen);
+    private void initFeedbackDialog() {
+        if (feedbackdialog == null) {
+            feedbackdialog = new Dialog(getContext(), R.style.FeedBack_Dialog_Fullscreen);
         }
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.feedback_dialog,null);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.feedback_dialog, null);
         feedbackdialog.setContentView(view);
         getActivity().getWindow().setLayout((ViewGroup.LayoutParams.MATCH_PARENT), ViewGroup.LayoutParams.MATCH_PARENT);
         llfeedback = feedbackdialog.findViewById(R.id.ll_feedback);
@@ -208,19 +212,23 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         ivfeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 feedbackdialog.dismiss();
             }
         });
         ivfeedbackok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                llfeedback.setVisibility(View.GONE);
-                ivfeedbackok.setVisibility(View.GONE);
-                llfeedbacksuccess.setVisibility(View.VISIBLE);
+                if (TextUtils.isEmpty(feedbackcontent.getText().toString())) {
+                    feedbackcontent.setError("反馈意见为空,没人看的,老哥");
+                } else {
+                    llfeedback.setVisibility(View.GONE);
+                    ivfeedbackok.setVisibility(View.GONE);
+                    llfeedbacksuccess.setVisibility(View.VISIBLE);
+                }
             }
         });
-        setDialogWindowAttr(feedbackdialog,getContext(),Gravity.BOTTOM);
+        setDialogWindowAttr(feedbackdialog, getContext(), Gravity.BOTTOM);
     }
 
 
@@ -257,7 +265,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                     }
                 });
     }
-
 
     @Override
     public void onDestroyView() {

@@ -82,7 +82,6 @@ public class MyRadioGroup extends RadioGroup {
         totalHeight += getPaddingTop() + getPaddingBottom();
         setMeasuredDimension(widthMode == MeasureSpec.EXACTLY ? widthSize : maxWidth,
                 heightMode == MeasureSpec.EXACTLY ? heightSize : totalHeight);
-
     }
 
     @Override

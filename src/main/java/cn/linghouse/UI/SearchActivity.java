@@ -435,7 +435,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     String score = object.getString("score");
                     String sortname = sort.getString("sortName");
                     String label1 = label.getString(0);
-                    //String label2 = label.getString(1);
+                    String label2 = label.getString(1);
                     String picurl = images.getString(0);
                     String cnumber = object.getString("commodityNumber");
                     img = Arrays.copyOf(img, img.length + 1);
@@ -458,7 +458,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     entity.setCnumber(cnumber);
                     entity.setSortname(sortname);
                     entity.setLabel1(label1);
-                    //entity.setLabel2(label2);
+                    entity.setLabel2(label2);
                     search_entity.add(entity);
                 }
             }

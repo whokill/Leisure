@@ -133,5 +133,3 @@ public class AllOrderActivity extends AppCompatActivity {
         ActivityController.removeActivity(this);
     }
 }
-
-//E-R图、项目实现：功能描述、界面截图、操作描述、核心代码、数据库逻辑设计表格(自绘)、测试用例(百度)

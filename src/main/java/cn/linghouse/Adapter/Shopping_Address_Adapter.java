@@ -60,32 +60,9 @@ public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Addr
         holder.cellphone.setText(entity.getCellphone());
         holder.itemView.setTag(position);
         holder.item_detail_address.setText(entity.getDetail_address());
-        if (check.contains(position)) {
-            holder.ckdefault.setChecked(true);
-        } else {
-            holder.ckdefault.setChecked(false);
-        }
-        holder.ckdefault.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (check.contains(position)) {
-                    notifyDataSetChanged();
-                    holder.ckdefault.setClickable(false);
-                } else {
-                    notifyDataSetChanged();
-                    check.clear();
-                    check.add(position);
-                    holder.ckdefault.setClickable(true);
-                }
-                if (holder.ckdefault.isChecked() == true) {
-                    //setDefaultAddress(position, holder);
-                    //ToastUtil.ShowShort(position+"、"+entity.getId());
-                }
-            }
-        });
         holder.deleteAddress.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+                public void onClick(View v) {
                 removeData(position);
             }
         });
@@ -93,7 +70,6 @@ public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Addr
             @Override
             public void onClick(View v) {
                 setDefaultAddress(position, holder);
-                holder.isdefault.setText(entity.getIsdefault());
             }
         });
     }
@@ -111,7 +87,7 @@ public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Addr
 
             @Override
             public void onResponse(String response, int id) {
-                address_entity.get(position).setIsdefault("已设置");
+                holder.isdefault.setText("已设置");
             }
         });
     }
@@ -140,7 +116,6 @@ public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Addr
     class MyHolder extends RecyclerView.ViewHolder {
         private TextView item_detail_address;
         private TextView deleteAddress;
-        private CheckBox ckdefault;
         private TextView name;
         private TextView isdefault;
         private TextView setdefault;
@@ -149,7 +124,6 @@ public class Shopping_Address_Adapter extends RecyclerView.Adapter<Shopping_Addr
 
         public MyHolder(View itemView) {
             super(itemView);
-            ckdefault = itemView.findViewById(R.id.ck_default);
             item_detail_address = itemView.findViewById(R.id.tv_item_detail_address);
             item_address = itemView.findViewById(R.id.tv_address);
             name = itemView.findViewById(R.id.tv_item_reaper_name);

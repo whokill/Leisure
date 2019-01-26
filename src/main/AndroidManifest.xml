@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -37,8 +38,9 @@
         <activity android:name="cn.linghouse.UI.MyReleaseActivity" />
         <activity android:name="cn.linghouse.UI.SafeSettingActivity" />
         <activity android:name="cn.linghouse.UI.FindPassActivity" />
-        <activity android:name="cn.linghouse.UI.BuyNowActivity"></activity>
-        <activity android:name="cn.linghouse.UI.SortActivity"/>
+        <activity android:name="cn.linghouse.UI.BuyNowActivity" />
+        <activity android:name="cn.linghouse.UI.SortActivity" />
+        <activity android:name="cn.linghouse.UI.wallpaper"></activity>
     </application>
 
 </manifest>

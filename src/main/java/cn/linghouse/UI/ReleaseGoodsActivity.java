@@ -130,14 +130,12 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
         etbabydescribe = findViewById(R.id.et_baby_describe);
         babyclassify = findViewById(R.id.ll_baby_classify);
         babypice = findViewById(R.id.ll_baby_pice);
-        cellphone = findViewById(R.id.ll_cell_phone);
         choiceway = findViewById(R.id.ll_choice_way);
         choicelabel = findViewById(R.id.ll_label);
         tvuserclassify = findViewById(R.id.tv_user_classify);
         userprice = findViewById(R.id.tv_user_classify_price);
         userway = findViewById(R.id.tv_user_way);
         tvuserlabel = findViewById(R.id.tv_user_label);
-        tvcellphone = findViewById(R.id.tv_cell_phone);
 
         selImageList = new ArrayList<>();
         adapter = new ImagePickerAdapter(this, selImageList, maxImgCount);
@@ -149,7 +147,6 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
         ivback.setOnClickListener(this);
         babyclassify.setOnClickListener(this);
         babypice.setOnClickListener(this);
-        cellphone.setOnClickListener(this);
         choiceway.setOnClickListener(this);
         choicelabel.setOnClickListener(this);
         btnrelease.setOnClickListener(this);
@@ -547,25 +544,6 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
             case R.id.tv_classify_dialog_cancel:
                 classifydialog.dismiss();
                 break;
-            //联系方式
-            case R.id.ll_cell_phone:
-                if (cellphonedialog == null) {
-                    cellphonedialog = new Dialog(this);
-                }
-                View view = LayoutInflater.from(this).inflate(R.layout.cell_phone_dialog, null);
-                cellphonedialog.setContentView(view);
-                etcellphone = cellphonedialog.findViewById(R.id.et_cell_phone);
-                tvcellphonecancel = cellphonedialog.findViewById(R.id.tv_cell_phone_cancel);
-                tvcellphonesure = cellphonedialog.findViewById(R.id.tv_cell_phone_sure);
-                tvcellphonesure.setOnClickListener(this);
-                tvcellphonecancel.setOnClickListener(this);
-                setDialogWindowAttr(cellphonedialog, this, Gravity.CENTER);
-                if (TextUtils.isEmpty(phone)) {
-                } else {
-                    etcellphone.setSelection(etcellphone.length());
-                }
-                cellphonedialog.show();
-                break;
             //价格Dialog中的确定
             case R.id.tv_cell_phone_sure:
                 if (TextUtils.isEmpty(etcellphone.getText().toString())) {
@@ -607,8 +585,6 @@ public class ReleaseGoodsActivity extends AppCompatActivity implements ImagePick
                 } else if (list == null || list.size() == 0) {
                     //list为空，也就是没有添加任何标签
                     ToastUtil.ShowLong("没有标签");
-                } else if (TextUtils.isEmpty(etcellphone.getText().toString())) {
-                    ToastUtil.ShowShort("联系方式不能为空");
                 } else {
                     //判断商品信息后，调用网络请求，将物品信息发布到后端
                     sp = getSharedPreferences("data", MODE_PRIVATE);

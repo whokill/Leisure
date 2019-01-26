@@ -12,8 +12,6 @@ public class Sort_Entity {
     private String name;
     //商品单价
     private String pice;
-    //商品评分
-    private String score;
     //卖家昵称
     private String seller;
     //商品详情
@@ -54,14 +52,6 @@ public class Sort_Entity {
 
     public void setPice(String pice) {
         this.pice = pice;
-    }
-
-    public String getScore() {
-        return score;
-    }
-
-    public void setScore(String score) {
-        this.score = score;
     }
 
     public String getSeller() {

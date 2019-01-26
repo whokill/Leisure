@@ -56,7 +56,6 @@ public class SortAdapter extends BaseAdapter {
             holder.title = convertView.findViewById(R.id.sort_item_name);
             holder.label1 = convertView.findViewById(R.id.sort_item_label1);
             holder.label2 = convertView.findViewById(R.id.sort_item_label2);
-            holder.score = convertView.findViewById(R.id.sort_item_score);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
@@ -72,7 +71,6 @@ public class SortAdapter extends BaseAdapter {
         holder.pice.setText(entity.getPice());
         holder.label1.setText(entity.getLabel1());
         holder.label2.setText(entity.getLabel2());
-        holder.score.setText(entity.getScore());
         return convertView;
     }
 
@@ -80,7 +78,6 @@ public class SortAdapter extends BaseAdapter {
         ImageView picurl;
         TextView title;
         TextView pice;
-        TextView score;
         TextView label1;
         TextView label2;
     }

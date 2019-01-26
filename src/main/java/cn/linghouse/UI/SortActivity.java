@@ -150,7 +150,6 @@ public class SortActivity extends AppCompatActivity {
                             entity.setName(name);
                             entity.setPice(numprice);
                             entity.setDetail(details);
-                            entity.setScore(score);
                             entity.setSortname(sortname);
                             entity.setCnumber(cnumber);
                             entity.setLabel1(label1);
